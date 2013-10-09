@@ -1,0 +1,72 @@
+### module.mk
+
+
+LOCAL_PATH             :=$(call MyDir)
+
+##------------------------------------------XiongMai---------------------------------#
+LOCAL_MODULE           :=libXM_sdk
+
+XiongMai_SDK_Dir:=src/XiongMai
+
+XiongMai_SRCS:=$(XiongMai_SDK_Dir)/xm_sdk.c
+
+LOCAL_SRC_FILES        :=$(XiongMai_SRCS)
+
+LOCAL_INCLUDE_DIRS     :=$(LOCAL_PATH)/inc osa_include $(LOCAL_PATH)/$(XiongMai_SDK_Dir)/inc
+
+LOCAL_EXPORT_HEADER_TO	 :=sdk_include
+LOCAL_EXPORT_HEADER_DIRS :=$(LOCAL_PATH)
+
+LOCAL_LIBRARY_DIRS	:=$(LOCAL_PATH)/$(XiongMai_SDK_Dir)/lib
+
+#LOCAL_ARLIBS			:=$(XiongMai_SDK_Dir)/lib/libconfigmodule.a \
+							$(XiongMai_SDK_Dir)/lib/libdecodersdk.a \
+							$(XiongMai_SDK_Dir)/lib/libh264play.a \
+							$(XiongMai_SDK_Dir)/lib/libnetsdk.a
+
+LOCAL_STATIC_LIBRARIES  :=libcommon libreport libtest
+
+include $(BUILD_HOST_SHARED_LIBRARY)
+
+
+##------------------------------------------DaHua---------------------------------#
+#include $(CLEAR_VARS)
+
+#LOCAL_MODULE           :=libHK_sdk
+
+#DaHua_SDK_Dir:=src/DaHua
+
+#DaHua_SRCS:=
+
+#LOCAL_SRC_FILES        :=$(DaHua_SRCS)
+
+#LOCAL_INCLUDE_DIRS     :=$(LOCAL_PATH) osa_include
+
+#LOCAL_EXPORT_HEADER_TO	 :=sdk_include
+#LOCAL_EXPORT_HEADER_DIRS :=$(LOCAL_PATH)
+
+#LOCAL_STATIC_LIBRARIES  :=libcommon libreport libtest
+
+#include $(BUILD_HOST_SHARED_LIBRARY)
+
+
+##------------------------------------------HaiKang---------------------------------#
+#include $(CLEAR_VARS)
+
+#LOCAL_MODULE           :=libDH_sdk
+
+#HaiKang_SDK_Dir:=src/DaHua
+
+#HaiKang_SRCS:=
+
+#LOCAL_SRC_FILES        :=$(HaiKang_SRCS)
+
+#LOCAL_INCLUDE_DIRS     :=$(LOCAL_PATH) osa_include
+
+#LOCAL_EXPORT_HEADER_TO	 :=sdk_include
+#LOCAL_EXPORT_HEADER_DIRS :=$(LOCAL_PATH)
+
+#LOCAL_STATIC_LIBRARIES  :=libcommon libreport libtest
+
+#include $(BUILD_HOST_SHARED_LIBRARY)
+

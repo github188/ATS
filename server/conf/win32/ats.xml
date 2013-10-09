@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ATS>
+    <module name="device">
+		<file dev_name="XM_IPC">C:\ats\test_event\xm_ipc.xml</file>
+		<file dev_name="DaHua_IPC">C:\ats\test_event\DaHua_IPC.xml</file>
+		<file dev_name="HaiKang_IPC">C:\ats\test_event\HaiKang_IPC.xml</file>
+		<file dev_name="dummyDev">C:\ats\test_event\dummy.xml</file>
+    </module>
+    
+    <module name="test">
+        <!--测试模块-->
+        <state>on</state>
+    </module>
+    
+    <module name="report">
+        <!--报告模块-->
+        <state>on</state>
+        <output>STDOUT</output>
+    </module>
+	
+    <module name="erp">
+        <!--ERP模块-->
+        <state>off</state>
+	</module>
+
+    <module name="gui">
+        <!--GUI模块-->
+        <state>on</state>
+    </module>
+	
+    <module name="log">
+        <!--日志-->
+        <state>on</state>
+        <!--0: off, 1: fatal, 2: error, 3: warn, 4:info, 5:debug-->
+        <level>4</level>
+        <file>stdout</file>
+        <!--file>C:\ats_log.txt</file-->
+    </module>
+</ATS>

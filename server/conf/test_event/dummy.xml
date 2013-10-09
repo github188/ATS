@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test_templete>
+
+    <test_event name="VersionTest">
+        <!--优先级：1-->
+        <priority>1</priority>
+        <!--测试用例1-->
+        <test_case>
+            <!--输入数据-->
+            <input_data>
+                <!--字符串型-->
+                <string></string>
+                <!--整型-->
+                <int></int>
+            </input_data>
+            <!--期望输出-->
+            <expect_out>
+                <!--期望输出版本号1.1.1-->
+                <string>1.1.1</string>
+            </expect_out>
+        </test_case>
+        <!--测试用例2-->
+        <test_case>
+        </test_case>
+    </test_event>
+    
+    <test_event name="LiveMediaTest">
+        <!--实时流播放测试-->
+        <name>LiveMedia</name>
+        <priority>10</priority>
+        <input_data>
+            <param></param>
+            <param></param>
+            <param></param>
+        </input_data>
+        <output_data>
+            <return></return>
+        </output_data>
+    </test_event>
+    
+    <test_event name="DummyTest">
+        <!--画面清晰度测试-->
+    </test_event>
+    
+</test_templete>

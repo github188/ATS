@@ -1,0 +1,28 @@
+# Object files
+*.o
+
+# Libraries
+#*.lib
+*.a
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# ats
+out/*
+gui/src/src.pro.user.*
+
+libs/libsdk/xm_sdk/Debug/*
+libs/libsdk/xm_sdk/xm_sdk/Debug
+
+*.ncb
+
+gui/build-debug/*

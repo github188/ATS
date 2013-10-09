@@ -1,0 +1,119 @@
+define all-srcs-in-dir
+$(strip \
+	$(shell find $(1) -name "*.c")
+)
+endef
+
+define repack-static-lib
+$(strip \
+    ldir=$(TMP_DIR)/.WHOLE/$(basename $(notdir $(1)))_objs;\
+    rm -rf $$ldir; \
+    mkdir -p $$ldir; \
+    filelist=; \
+    for f in `$(AR) t $(1) | \grep '\.o$$'`; do \
+        $(AR) p $(1) $$f > $$ldir/$$f; \
+        filelist="$$filelist $$ldir/$$f"; \
+    done ; \
+	$(AR) $(ARFLAGS)  $@ $$filelist; \
+)
+endef
+
+
+
+TOOL:=MINGW32
+#TOOL:=GNUC
+
+
+ifeq (MINGW32, $(TOOL))
+#CC:=i486-mingw32-gcc
+#AR:=i486-mingw32-ar
+_PREFIX:=i586-mingw32msvc
+CC:=$(_PREFIX)-gcc
+AR:=$(_PREFIX)-ar
+TOOL_ROOT_DIR:=/usr/$(_PREFIX)
+endif
+
+ifeq (GNUC, $(TOOL))
+CC:=gcc
+AR:=ar
+endif
+
+
+export C_INCLUDE_PATH=$(TOOL_ROOT_DIR) /usr/include
+
+
+STATIC_LIB_SUFFIX:=.a
+SHARED_LIB_SUFFIX:=.so
+
+SHARED_LIB_TARGET:=libosa$(SHARED_LIB_SUFFIX)
+STATIC_LIB_TARGET:=libosa$(STATIC_LIB_SUFFIX)
+
+
+COMMON_SRC_DIR:=src/common
+ifeq (MINGW32, $(TOOL))
+OS_SRC_DIR:=src/win32
+endif
+ifeq (GNUC, $(TOOL))
+OS_SRC_DIR:=src/linux
+endif
+
+
+BUILD_DIR:=build
+TMP_DIR	:=/tmp
+INCLUDE_DIRS:=-Iinclude
+
+ifeq (MINGW32, $(TOOL))
+ARLIBS:=$(TOOL_ROOT_DIR)/lib/libws2_32.a
+endif
+
+ifeq (GNUC, $(TOOL))
+LDLIBS:=-ldl -lpthread
+endif
+
+
+ARFLAGS:=rcs
+CFLAGS:=$(INCLUDE_DIRS) -fno-builtin  -w
+LDFLAGS:=
+
+
+COMMON_SRCS:=$(call all-srcs-in-dir, $(COMMON_SRC_DIR))
+OS_SRCS:=$(call all-srcs-in-dir, $(OS_SRC_DIR))
+
+
+ALL_SRCS:=$(COMMON_SRCS) $(OS_SRCS)
+ALL_OBJS:=$(addprefix $(BUILD_DIR)/, $(ALL_SRCS:.c=.o))
+
+
+ifeq (MINGW32, $(TOOL))
+_T:=$(BUILD_DIR)/$(STATIC_LIB_TARGET)
+endif
+
+ifeq (GNUC, $(TOOL))
+_T:=$(BUILD_DIR)/$(SHARED_LIB_TARGET) $(BUILD_DIR)/$(STATIC_LIB_TARGET)
+endif
+
+
+all:$(_T)
+
+$(BUILD_DIR)/$(SHARED_LIB_TARGET):$(ALL_OBJS)
+	@echo "[LD]  -->	$@"
+	@mkdir -p $(dir $@)
+	@$(CC) $(LDFLAGS) $(CFLAGS) -shared -fPIC -o $@ $^ $(LDLIBS)
+
+
+$(BUILD_DIR)/$(STATIC_LIB_TARGET):$(ALL_OBJS)
+	@echo "[AR]  -->	$@"
+	@mkdir -p $(dir $@)
+	@$(if $(ARLIBS), $(call repack-static-lib, $(ARLIBS)), )
+	@$(AR) $(ARFLAGS) $@ $(filter %.o, $^)
+
+
+$(BUILD_DIR)/%.o:%.c
+	@echo "[CC]  -->	$@"
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+
+clean:
+	@echo "[RM]  -->	$(BUILD_DIR)"
+	@rm -rf build

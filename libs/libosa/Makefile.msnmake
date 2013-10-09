@@ -1,0 +1,117 @@
+
+BUILD_DIR=build
+
+TARGET=$(BUILD_DIR)\libosa.lib
+
+SRCS=$(BUILD_DIR)\osa_dir.cpp   \
+	$(BUILD_DIR)\osa_dll.cpp   \
+	$(BUILD_DIR)\osa_file.cpp   \
+	$(BUILD_DIR)\osa_log.cpp   \
+	$(BUILD_DIR)\osa_mem.cpp   \
+	$(BUILD_DIR)\osa_msg.cpp   \
+	$(BUILD_DIR)\osa_random.cpp   \
+	$(BUILD_DIR)\osa_select.cpp   \
+	$(BUILD_DIR)\osa_socket.cpp   \
+	$(BUILD_DIR)\osa_thread.cpp   \
+	$(BUILD_DIR)\osa_timer.cpp \
+    $(BUILD_DIR)\osa_time.cpp
+
+
+OBJS=$(BUILD_DIR)\osa_dir.obj   \
+	$(BUILD_DIR)\osa_dll.obj   \
+	$(BUILD_DIR)\osa_file.obj   \
+	$(BUILD_DIR)\osa_log.obj   \
+	$(BUILD_DIR)\osa_mem.obj   \
+	$(BUILD_DIR)\osa_msg.obj   \
+	$(BUILD_DIR)\osa_random.obj   \
+	$(BUILD_DIR)\osa_select.obj   \
+	$(BUILD_DIR)\osa_socket.obj   \
+	$(BUILD_DIR)\osa_thread.obj   \
+	$(BUILD_DIR)\osa_timer.obj  \
+    $(BUILD_DIR)\osa_time.obj \
+	$(BUILD_DIR)\osa_cvt.obj
+
+
+
+CC=cl
+AR=lib
+
+INC_DIRS=-I".\include"  \
+		-I"D:\Program Files\VC2008\VC\PlatformSDK\Include" \
+		-I"D:\Program Files\VC2008\PlatformSDK\Include"  \
+		-I"D:\Program Files\VC2008\include"
+		
+CFLAGS=$(INC_DIRS) -nologo -DWIN32 -D__WIN32__
+
+
+all: prebuild build
+
+
+prebuild:
+	@if not exist "$(BUILD_DIR)" mkdir $(BUILD_DIR)
+	@copy  "src\common\osa_log.c" "$(BUILD_DIR)\osa_log.cpp"
+	@copy  "src\common\osa_mem.c" "$(BUILD_DIR)\osa_mem.cpp"
+	@copy  "src\common\osa_msg.c" "$(BUILD_DIR)\osa_msg.cpp"
+	@copy  "src\common\osa_random.c" "$(BUILD_DIR)\osa_random.cpp"
+   
+	@copy  "src\win32\osa_dir.c"  "$(BUILD_DIR)\osa_dir.cpp"
+    @copy  "src\win32\osa_dll.c"  "$(BUILD_DIR)\osa_dll.cpp"
+    @copy  "src\win32\osa_file.c"  "$(BUILD_DIR)\osa_file.cpp"
+    @copy  "src\win32\osa_select.c"  "$(BUILD_DIR)\osa_select.cpp"
+    @copy  "src\win32\osa_socket.c"  "$(BUILD_DIR)\osa_socket.cpp"
+    @copy  "src\win32\osa_thread.c"  "$(BUILD_DIR)\osa_thread.cpp"
+    @copy  "src\win32\osa_time.c"  "$(BUILD_DIR)\osa_time.cpp"
+    @copy  "src\win32\osa_timer.c"  "$(BUILD_DIR)\osa_timer.cpp"
+    @copy  "src\win32\osa_cvt.c"  "$(BUILD_DIR)\osa_cvt.cpp"
+    
+	
+	
+build:$(TARGET)
+	
+
+$(TARGET):$(OBJS)
+    @echo "Archiving ...."
+    @$(AR) /OUT:$@ $(OBJS)
+	
+$(BUILD_DIR)\osa_dir.obj:$(BUILD_DIR)\osa_dir.cpp
+	@$(CC) -c $(CFLAGS) $(BUILD_DIR)\osa_dir.cpp /Fo"$@"
+	
+$(BUILD_DIR)\osa_dll.obj:$(BUILD_DIR)\osa_dll.cpp
+	@$(CC) -c $(CFLAGS) $(BUILD_DIR)\osa_dll.cpp /Fo"$@"
+
+$(BUILD_DIR)\osa_file.obj:$(BUILD_DIR)\osa_file.cpp
+	@$(CC) -c $(CFLAGS) $(BUILD_DIR)\osa_file.cpp /Fo"$@"
+
+$(BUILD_DIR)\osa_log.obj:$(BUILD_DIR)\osa_log.cpp
+	@$(CC) -c $(CFLAGS) $(BUILD_DIR)\osa_log.cpp /Fo"$@"
+
+$(BUILD_DIR)\osa_mem.obj:$(BUILD_DIR)\osa_mem.cpp
+	@$(CC) -c $(CFLAGS) $(BUILD_DIR)\osa_mem.cpp /Fo"$@"
+
+$(BUILD_DIR)\osa_msg.obj:$(BUILD_DIR)\osa_msg.cpp
+	@$(CC) -c $(CFLAGS) $(BUILD_DIR)\osa_msg.cpp /Fo"$@"
+
+$(BUILD_DIR)\osa_random.obj:$(BUILD_DIR)\osa_random.cpp
+	@$(CC) -c $(CFLAGS) $(BUILD_DIR)\osa_random.cpp /Fo"$@"
+
+$(BUILD_DIR)\osa_select.obj:$(BUILD_DIR)\osa_select.cpp
+	@$(CC) -c $(CFLAGS) $(BUILD_DIR)\osa_select.cpp /Fo"$@"
+
+$(BUILD_DIR)\osa_thread.obj:$(BUILD_DIR)\osa_thread.cpp
+	@$(CC) -c $(CFLAGS) $(BUILD_DIR)\osa_thread.cpp /Fo"$@"
+
+$(BUILD_DIR)\osa_socket.obj:$(BUILD_DIR)\osa_socket.cpp
+	@$(CC) -c $(CFLAGS) $(BUILD_DIR)\osa_socket.cpp /Fo"$@"
+
+$(BUILD_DIR)\osa_timer.obj:$(BUILD_DIR)\osa_timer.cpp
+	@$(CC) -c $(CFLAGS) $(BUILD_DIR)\osa_timer.cpp /Fo"$@"
+
+$(BUILD_DIR)\osa_time.obj:$(BUILD_DIR)\osa_time.cpp
+	@$(CC) -c $(CFLAGS) $(BUILD_DIR)\osa_time.cpp /Fo"$@"
+
+$(BUILD_DIR)\osa_cvt.obj:$(BUILD_DIR)\osa_cvt.cpp
+	@$(CC) -c $(CFLAGS) $(BUILD_DIR)\osa_cvt.cpp /Fo"$@"
+
+    
+clean:
+	@del /s /f /q $(BUILD_DIR)
