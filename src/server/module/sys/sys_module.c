@@ -7,7 +7,7 @@
 #include "module.h"
 #include "conf_xml.h"
 #include "log.h"
-#include "sys.h"
+#include "module/sys.h"
 
 
 osa_err_t   sys_begin(ats_module_t *m, int argc, char **argv);

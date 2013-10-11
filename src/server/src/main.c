@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     }
     
     // 加载系统中的测试驱动
-    if (ATS_TestDrvLoad(conf) != OSA_ERR_OK)
+    if (ats_tdrv_plugin_load(conf) != OSA_ERR_OK)
     {
         ats_log_error("Failed to load the driver for test!\n");
         goto release;

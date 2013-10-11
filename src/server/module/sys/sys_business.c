@@ -9,6 +9,7 @@
 #include "log.h"
 #include "cJSON.h"
 #include "device.h"
+#include "bus.h"
 
 
 osa_bool_t  devLocked = OSA_FALSE;
@@ -84,7 +85,7 @@ osa_err_t   sysGetDevs(osa_ioch_t *ioch, osa_msg_t *msg)
     }
 
     cJSON *dev = NULL;
-    for (l=devBus->devListHead.next; l!=&devBus->devListHead; l=l->next)
+    for (l=devbus->ele_list_head.next; l!=&devbus->ele_list_head; l=l->next)
     {
         node = osa_list_entry(l, ats_device_t, list);
         cJSON_AddItemToArray(devArray, dev=cJSON_CreateObject());
@@ -116,23 +117,33 @@ osa_err_t   sysTestDevice(osa_ioch_t *ioch, osa_msg_t *msg)
     cJSON *root = cJSON_Parse((char *)msg->data);
     osa_ret_val_if_fail(root != NULL, OSA_ERR_ERR);
 
-    char *devName = cJSON_GetObjectItem(root, "dev_name")->valuestring;
+    char *devname= cJSON_GetObjectItem(root, "dev_name")->valuestring;
 
-    ats_device_t *dev = ATS_DevBusFindDev(devName);
+    ats_bus_t   *devbus = ats_bus_find("dev_bus");
+    if (!devbus)
+    {
+        ats_log_error("device bus not found!\n");
+        return OSA_ERR_ERR;
+    }
+
+    ats_device_t *dev = ats_device_find(devbus, devname);
     osa_ret_val_if_fail(dev != NULL, OSA_ERR_ERR);
 
     if (dev->drv)
     {
         osa_sockaddr_t *clientAddr=&((osa_socket_t *)(ioch->priv))->addr.in_addr;
         // 打开报告文件
+#if 0
         if (dev->drv->report.open && dev->drv->report.open(&dev->drv->report, clientAddr) != OSA_ERR_OK)
         {
             ats_log_error("Failed to  open report file!\n");
         }
+#endif
     }
 
     ats_device_tTest(dev);
 
+#if 0
     if (dev->drv)
     {
         if (dev->drv->report.close && dev->drv->report.close(&dev->drv->report) != OSA_ERR_OK)
@@ -140,6 +151,7 @@ osa_err_t   sysTestDevice(osa_ioch_t *ioch, osa_msg_t *msg)
             ats_log_error("Failed to close report file!\n");
         }
     }
+#endif
 }
 
 

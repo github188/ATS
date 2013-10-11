@@ -8,36 +8,39 @@
 
 #include "test_event.h"
 #include "data.h"
-#include "ats.h"
-#include "_log.h"
 #include "xml_parse.h"
 
 
 #define     TEST_DEFAULT_PRIORITY       100
 
 
-osa_err_t       dummyTestParseConf(ATS_TestEvent *self, osa_char_t *cf);
-ATS_TestResult  dummyTestStart(void *testCase);
-osa_err_t       dummyBegin(ATS_TestEvent *self);
-void            dummySuccessCall(ATS_TestEvent *self);
-void            dummyFailedCall(ATS_TestEvent *self);
-void            dummyEnd(ATS_TestEvent *self);
+osa_err_t       dummyTestParseConf(ats_tevent_t *self, osa_char_t *cf);
+ats_result_t  dummyTestStart(void *testCase);
+osa_err_t       dummyBegin(ats_tevent_t *self);
+void            dummySuccessCall(ats_tevent_t *self);
+void            dummyFailedCall(ats_tevent_t *self);
+void            dummyEnd(ats_tevent_t *self);
 
-ATS_TestEvent   dummyTestEvent=
+ats_tevent_t   dummyTestEvent=
 {
     .name       = "DummyTest",
-    .priority   = TEST_DEFAULT_PRIORITY,
-    .parseConf  = dummyTestParseConf,
-    .begin      = dummyBegin,
-    .startTest  = dummyTestStart,
-    .stopTest   = NULL,
-    .successFunc= dummySuccessCall,
-    .failedFunc = dummyFailedCall,
-    .end        = dummyEnd,
+    .attr =
+    {
+        .proi   = TEST_DEFAULT_PRIORITY,
+    },
+    .ops =
+    {
+        .init       = dummy_init,
+        .test_start = dummyTestStart,
+        .test_stop  = NULL,
+        .suss_cb    = dummySuccessCall,
+        .fail_cb    = dummyFailedCall,
+        .fini       = dummyEnd,
+    },
 };
 
 
-ATS_TestResult  dummyTestStart(void *testCase)
+ats_result_t  dummyTestStart(void *testCase)
 {
     TP_LogInfo("start test dummy module!\n");
 
@@ -49,33 +52,33 @@ ATS_TestResult  dummyTestStart(void *testCase)
 }
 
 
-void    dummySuccessCall(ATS_TestEvent *self)
+void    dummySuccessCall(ats_tevent_t *self)
 {
     TP_LogInfo("dummy test success call!\n");
 }
 
 
-void    dummyFailedCall(ATS_TestEvent *self)
+void    dummyFailedCall(ats_tevent_t *self)
 {
     TP_LogInfo("dummy test failed call!\n");
 
 }
 
 
-osa_err_t   dummyTestParseConf(ATS_TestEvent *self, osa_char_t *cf)
+osa_err_t   dummyTestParseConf(ats_tevent_t *self, osa_char_t *cf)
 {
     dummyTestParse(self, cf);
     return OSA_ERR_OK;
 }
 
 
-osa_err_t   dummyBegin(ATS_TestEvent *self)
+osa_err_t   dummyBegin(ats_tevent_t *self)
 {
     printf("----------------------------BEGIN----------------------------------------\n");
     return OSA_ERR_OK;
 }
 
-void    dummyEnd(ATS_TestEvent *self)
+void    dummyEnd(ats_tevent_t *self)
 {
 
     printf("----------------------------END------------------------------------------\n");

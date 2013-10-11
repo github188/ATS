@@ -19,7 +19,7 @@ extern "C" {
 #endif
 
 
-osa_err_t   dummyTestParse(ATS_TestEvent *tp, osa_char_t *cf);
+osa_err_t   dummyTestParse(ats_tevent_t *te, osa_char_t *cf);
 
 
 #ifdef __cplusplus
