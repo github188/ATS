@@ -4,10 +4,10 @@
  */
 
 
-#include "ats.h"
 #include "osa.h"
 #include "device.h"
 #include "log.h"
+#include "bus.h"
 
 
 static void _def_dev_remove(ats_device_t *self);
@@ -69,7 +69,7 @@ ats_device_t  *ats_device_find(ats_bus_t *dev_bus, const osa_char_t *name)
     ats_device_t    *node   = NULL;
     osa_list_t      *l      = NULL;
 
-    for (l = dev_bus.ele_list_head.next; l != &dev_bus.ele_list_head; l = l->next)
+    for (l = dev_bus->ele_list_head.next; l != &dev_bus->ele_list_head; l = l->next)
     {
         node = osa_list_entry(l, ats_device_t, list);
         if (!strcmp(node->name, name))
@@ -83,7 +83,7 @@ ats_device_t  *ats_device_find(ats_bus_t *dev_bus, const osa_char_t *name)
 
 osa_err_t   ats_device_register(ats_bus_t *dev_bus, ats_device_t *dev)
 {
-    ats_device_t *p = NULL
+    ats_device_t *p = NULL;
     
     if ((p = ats_device_find(dev_bus, dev->name)) != NULL)
     {
@@ -110,7 +110,7 @@ osa_err_t   ats_device_unregister(ats_bus_t *dev_bus, const osa_char_t *dev_name
         osa_list_remove(&p->list);
         if (p->remove)
         {
-            p->remove();
+            p->remove(p);
         }
         ats_log_info("Unregister device : name(%s)\n", p->name);
     }

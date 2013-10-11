@@ -10,7 +10,7 @@
 #include "osa.h"
 
 
-struct ATS_REPOR_CLASS
+struct ATS_REPORT_CLASS
 {
     osa_uint32_t fd;
     void         *user_data;

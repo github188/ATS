@@ -7,6 +7,7 @@
 #include "osa.h"
 #include "class.h"
 #include "module.h"
+#include "bus.h"
 
 static osa_list_t   mod_list_head = OSA_LIST_HEAD(mod_list_head);
 
@@ -44,7 +45,7 @@ osa_err_t ats_module_register(ats_module_t *m, const osa_char_t *name, ats_mops_
     if ((p = ats_module_find(m->name)) != NULL)
     {
         ats_log_warn("Replace module : name(%s)\n", m->name);
-        p = bus;
+        p = m;
     }
     else
     {
@@ -52,20 +53,6 @@ osa_err_t ats_module_register(ats_module_t *m, const osa_char_t *name, ats_mops_
         osa_list_insert_before(&mod_list_head, &m->list);
     }
     
-    return OSA_ERR_OK;
-}
-
-
-osa_err_t ATS_ModuleUnregister(ats_module_t *module)
-{
-    ats_module_t  *p = NULL;
-
-    if ((p = ATS_ModuleFind(module->name)) != NULL)
-    {
-        p = NULL;
-    }
-
-    ats_log_info("Unregister module : name(%s)\n", module->name);
     return OSA_ERR_OK;
 }
 
@@ -96,14 +83,7 @@ void ats_module_init_all(int argc, char **argv)
     for (l = mod_list_head.next; l != &mod_list_head; l = l->next)
     {
         node = osa_list_entry(l, ats_module_t, list);
-        if (node->ops->parse_conf)
-        {
-            if (node->ops->parse_conf(node) != OSA_ERR_OK)
-            {
-                ats_log_error("Failed to initialize module (%s) when parse the configuration file!\n", node->name);
-                continue;
-            }
-        }
+
         if (node->ops->begin)
         {
             if (node->ops->begin(node, argc, argv) != OSA_ERR_OK)

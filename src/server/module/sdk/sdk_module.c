@@ -6,7 +6,6 @@
 
 #include "osa.h"
 #include "module.h"
-#include "conf.h"
 #include "log.h"
 #include "module/sdk.h"
 

@@ -48,19 +48,19 @@ struct ATS_IMAGE_CLASS
 };
 
 
-image_t     *ats_image_new();
-image_t     *ats_image_new_ex(osa_uint32_t width, 
-                        osa_uint32_t height, 
-                        ats_image_tDepth depth, 
-                        osa_uint32_t channels, 
-                        osa_char_t *data);
-void        ats_image_delete(image_t *img);
+ats_image_t     *ats_image_new();
+ats_image_t     *ats_image_new_ex(osa_uint32_t      width, 
+                                osa_uint32_t        height, 
+                                ats_image_depth_t   depth, 
+                                osa_uint32_t        channels, 
+                                osa_char_t          *data);
+void        ats_image_delete(ats_image_t *img);
 
 
-void        ats_image_set_roi(image_t *img, osa_uint32_t x, osa_uint32_t y, osa_uint32_t w, osa_uint32_t h);
-void        ats_image_2_cvimage(image_t *img, void **out_pp_cvimg);
+void        ats_image_set_roi(ats_image_t *img, osa_uint32_t x, osa_uint32_t y, osa_uint32_t w, osa_uint32_t h);
+void        ats_image_2_cvimage(ats_image_t *img, void **out_pp_cvimg);
 
-void        ats_image_scan(image_t *img, void (*each_pixel_func)(void *pixel));
+void        ats_image_scan(ats_image_t *img, void (*each_pixel_func)(void *pixel));
 
 
 

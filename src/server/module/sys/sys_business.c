@@ -9,7 +9,6 @@
 #include "log.h"
 #include "cJSON.h"
 #include "device.h"
-#include "dev_bus.h"
 
 
 osa_bool_t  devLocked = OSA_FALSE;
@@ -59,11 +58,16 @@ osa_err_t   sysGetDevs(osa_ioch_t *ioch, osa_msg_t *msg)
 {
     ats_log_info("Get camera devices!\n");
 
-    ATS_Device *node  = NULL;
+    ats_device_t *node  = NULL;
     osa_list_t *l = NULL;
     osa_size_t  cnt = 0;
 
-    ATS_DevBus  *devBus = ATS_DevBusGet();
+    ats_bus_t   *devbus = ats_bus_find("dev_bus");
+    if (!devbus)
+    {
+        ats_log_error("device bus not found!\n");
+        return OSA_ERR_ERR;
+    }
 
     cJSON *root = cJSON_CreateObject();
     if (!root)
@@ -82,7 +86,7 @@ osa_err_t   sysGetDevs(osa_ioch_t *ioch, osa_msg_t *msg)
     cJSON *dev = NULL;
     for (l=devBus->devListHead.next; l!=&devBus->devListHead; l=l->next)
     {
-        node = osa_list_entry(l, ATS_Device, list);
+        node = osa_list_entry(l, ats_device_t, list);
         cJSON_AddItemToArray(devArray, dev=cJSON_CreateObject());
 
         cJSON_AddStringToObject(dev, "name", node->name);
@@ -114,7 +118,7 @@ osa_err_t   sysTestDevice(osa_ioch_t *ioch, osa_msg_t *msg)
 
     char *devName = cJSON_GetObjectItem(root, "dev_name")->valuestring;
 
-    ATS_Device *dev = ATS_DevBusFindDev(devName);
+    ats_device_t *dev = ATS_DevBusFindDev(devName);
     osa_ret_val_if_fail(dev != NULL, OSA_ERR_ERR);
 
     if (dev->drv)
@@ -127,7 +131,7 @@ osa_err_t   sysTestDevice(osa_ioch_t *ioch, osa_msg_t *msg)
         }
     }
 
-    ATS_DeviceTest(dev);
+    ats_device_tTest(dev);
 
     if (dev->drv)
     {
@@ -150,7 +154,7 @@ osa_err_t   sysLoginDevice(osa_ioch_t *ioch, osa_msg_t *msg)
     char *user = cJSON_GetObjectItem(root, "user")->valuestring;
     char *passwd = cJSON_GetObjectItem(root, "password")->valuestring;
 
-    ATS_Device *dev = ATS_DevBusFindDev(devName);
+    ats_device_t *dev = ATS_DevBusFindDev(devName);
     osa_ret_val_if_fail(dev != NULL, OSA_ERR_ERR);
 
     osa_err_t flag = OSA_ERR_ERR;

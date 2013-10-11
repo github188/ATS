@@ -16,9 +16,9 @@ extern "C" {
 static ats_log_t log;
 
 
-osa_err_t ATS_LogOpen(const osa_char_t *logfile)
+osa_err_t ats_log_open(const osa_char_t *logfile)
 {
-    osa_assert(cf != NULL);
+    osa_assert(logfile != NULL);
 
     log.file = osa_file_open(logfile, OSA_F_APPEND);
     if (!log.file)
@@ -68,7 +68,7 @@ void ats_log_write(osa_uint8_t log_type, char *file, osa_uint32_t line, const ch
     char        buf[1024] = {0};
     osa_size_t  sz = 0;
 
-    switch (logType)
+    switch (log_type)
     {
     case ATS_LOG_FATAL:
     {

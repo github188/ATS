@@ -5,23 +5,20 @@
 
 
 #include "osa.h"
-#include "dev_prober.h"
 #include "device.h"
+#include "module/dev_prober.h"
 
 
-void onvifProbe();
+void onvif_probe();
 
 
-ATS_DevProber   onvifProber =
+ats_devprober_t onvifProber =
 {
     .name   = "OnvifProber",
-    .info = {
-        .dp_class = 10,
-    },
-    .probe = onvifProbe,
+    .probe = onvif_probe,
 };
 
-void onvifProbe()
+void onvif_probe()
 {
     osa_bool_t devIsAlive = OSA_TRUE;
 
@@ -37,8 +34,16 @@ void onvifProbe()
     }
     else
     {
-        ATS_Device *xmNetCamera = ATS_DeviceNew("XiongMai_NetCamera");
-        ATS_DeviceSetInfo(xmNetCamera, "192.168.1.30", 34567, "admin", "");
-        ATS_DevBusHangDev(xmNetCamera);
+        ats_bus_t *devbus = ats_bus_find("dev_bus");
+        if (!devbus)
+        {
+            ats_log_error("no device bus found!\n");
+            return;
+        }
+
+        ats_device_t *xm_net_camera= ats_device_new("XiongMai_NetCamera");
+        ats_device_setinfo(xm_net_camera, "192.168.1.30", 34567, "admin", "");
+
+        ats_device_register(devbus, xm_net_camera);
     }
 }

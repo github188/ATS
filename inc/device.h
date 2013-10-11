@@ -28,7 +28,7 @@ struct ATS_DEVICE_CLASS
     osa_char_t      name[OSA_NAME_MAX];     // 设备名字
     ats_devinfo_t   info;                   // 设备其他信息
 
-    ats_testdrv_t   *drv;                   // 测试驱动，每款设备对应一个测试驱动
+    ats_tdrv_t      *drv;                   // 测试驱动，每款设备对应一个测试驱动
     ats_sdk_t       *sdk;                   // SDK
     osa_list_t      list;                   // 设备链表
 

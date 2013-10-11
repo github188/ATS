@@ -8,9 +8,9 @@ PROJECT_MODULE_OWNER   :=hello
 
 
 # mingw32
-TOOL:=MINGW32
+#TOOL:=MINGW32
 # gcc
-#TOOL:=GNUC
+TOOL:=GNUC
 
 
 $(if $(strip $(TOOL)), , $(error TOOL is null!)) 

@@ -12,7 +12,7 @@
 #include "conf_xml.h"
 #include "sys_business.h"
 #include "device.h"
-#include "dev_bus.h"
+#include "bus.h"
 
 
 #define     CLIENT_MAX      100

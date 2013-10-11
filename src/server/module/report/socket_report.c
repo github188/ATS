@@ -10,38 +10,38 @@
  */
 
 #include "osa.h"
-#include "report.h"
 #include "cJSON.h"
 #include "log.h"
+#include "module/report.h"
 
 
 osa_socket_t *reportSock = NULL;
 
-osa_err_t   socketReportOpen(ATS_Report *self, void *priv);
-osa_err_t   socketReportClose(ATS_Report *self);
-osa_size_t  socketReportWrite(ATS_Report *self, const osa_char_t *buf, osa_size_t size);
-osa_size_t  socketReportRead(ATS_Report *self, osa_char_t *outBuf, osa_size_t size);
-osa_err_t   socketReportCtrl(ATS_Report *self, osa_uint32_t cmd, void *arg);
+osa_err_t   sock_report_open(ats_report_t *self, void *user_data);
+osa_err_t   sock_report_close(ats_report_t *self);
+osa_size_t  sock_report_write(ats_report_t *self, const osa_char_t *buf, osa_size_t size);
+osa_size_t  sock_report_read(ats_report_t *self, osa_char_t *outBuf, osa_size_t size);
+osa_err_t   sock_report_ctrl(ats_report_t *self, osa_uint32_t cmd, void *arg);
 
 
-void        ATS_ReportSysInit(ATS_Report *report)
+void ATS_ReportSysInit(ats_report_t *report)
 {
-    report->open = socketReportOpen;
-    report->close = socketReportClose;
-    report->write = socketReportWrite;
-    report->read = socketReportRead;
-    report->ctrl = socketReportCtrl;
+    report->open = sock_report_open;
+    report->close = sock_report_close;
+    report->write = sock_report_write;
+    report->read = sock_report_read;
+    report->ctrl = sock_report_ctrl;
 }
 
 
-osa_err_t   socketReportOpen(ATS_Report *self, void *priv)
+osa_err_t   sock_report_open(ats_report_t *self, void *user_data)
 {
     // priv : osa_sockaddr_t *
-    self->priv = priv;
+    self->user_data = user_data;
 
     if (reportSock)
     {
-        socketReportClose(self);
+        sock_report_close(self);
     }
 
 
@@ -51,7 +51,7 @@ osa_err_t   socketReportOpen(ATS_Report *self, void *priv)
 }
 
 
-osa_err_t   socketReportClose(ATS_Report *self)
+osa_err_t   sock_report_close(ats_report_t *self)
 {
     if (reportSock)
     {
@@ -63,7 +63,7 @@ osa_err_t   socketReportClose(ATS_Report *self)
     return OSA_ERR_OK;
 }
 
-osa_size_t  socketReportWrite(ATS_Report *self, const osa_char_t *buf, osa_size_t size)
+osa_size_t  sock_report_write(ats_report_t *self, const osa_char_t *buf, osa_size_t size)
 {
     osa_size_t sz = 0;
 
@@ -74,7 +74,7 @@ osa_size_t  socketReportWrite(ATS_Report *self, const osa_char_t *buf, osa_size_
     }
 
     osa_sockaddr_t  reportAddr, *paddr;
-    paddr = self->priv;
+    paddr = self->user_data;
 
     // port : 3000
     osa_sockaddr_set(&reportAddr, inet_ntoa(paddr->in_addr.sin_addr), 3000);
@@ -85,7 +85,7 @@ osa_size_t  socketReportWrite(ATS_Report *self, const osa_char_t *buf, osa_size_
 }
 
 
-osa_size_t  socketReportRead(ATS_Report *self, osa_char_t *outBuf, osa_size_t size)
+osa_size_t  sock_report_read(ats_report_t *self, osa_char_t *outBuf, osa_size_t size)
 {
     if (!reportSock)
     {
@@ -97,7 +97,7 @@ osa_size_t  socketReportRead(ATS_Report *self, osa_char_t *outBuf, osa_size_t si
 }
 
 
-osa_err_t   socketReportCtrl(ATS_Report *self, osa_uint32_t cmd, void *arg)
+osa_err_t   sock_report_ctrl(ats_report_t *self, osa_uint32_t cmd, void *arg)
 {
     return OSA_ERR_OK;
 }

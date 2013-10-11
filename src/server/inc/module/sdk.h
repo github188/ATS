@@ -9,7 +9,7 @@
 
 
 osa_err_t   osa_sdk_mod_init();
-vodi        osa_sdk_mod_exit();
+void        osa_sdk_mod_exit();
 
 
 #endif

@@ -14,7 +14,7 @@
 
 
 static osa_err_t   erp_begin(ats_module_t *m, int argc, char **argv);
-static void        erp_end(ats_module *m);
+static void        erp_end(ats_module_t *m);
 
 
 static ats_module_t erp_module;
@@ -24,7 +24,7 @@ static ats_mops_t   erp_mops;
 osa_err_t ats_erp_mod_init()
 {
     erp_mops.begin = erp_begin;
-    erp_ops.end = erp_end;
+    erp_mops.end =   erp_end;
     
     return ats_module_register(&erp_module, "erp", &erp_mops);
 }
@@ -48,7 +48,7 @@ static osa_err_t erp_begin(ats_module_t *m, int argc, char **argv)
     return OSA_ERR_OK;
 }
 
-static void erp_end(ats_module *m)
+static void erp_end(ats_module_t *m)
 {
     
 }

@@ -15,11 +15,10 @@
 static osa_err_t report_begin(ats_module_t *m, int argc, char **argv);
 static void     report_end(ats_module_t *m);
 
-static osa_module_t     report_module;
-static osa_mops_t       report_ops;
+static ats_module_t     report_module;
+static ats_mops_t       report_ops;
 
 
-osa_err_t ats_report_mod_init()
 osa_err_t ats_report_mod_init()
 {
     report_ops.begin = report_begin;

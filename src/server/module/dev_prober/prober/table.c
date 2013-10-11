@@ -5,18 +5,18 @@
 
 
 #include "osa.h"
-#include "dev_prober.h"
+#include "module/dev_prober.h"
 
 
 
 #define DEV_PROBER(dp)  &dp
 
 /**----------------------------------------*/
-extern ATS_DevProber    dummyProber;
-extern ATS_DevProber    onvifProber;
+extern ats_devprober_t    dummyProber;
+extern ats_devprober_t    onvifProber;
 
 
-ATS_DevProber   *g_devProberTable[] =
+ats_devprober_t   *g_devProberTable[] =
 {
     DEV_PROBER(dummyProber),
     DEV_PROBER(onvifProber),
