@@ -10,7 +10,7 @@
 #include <stdarg.h>
 
 
-void    _logit(osa_logtype_t type, osa_char_t *f, osa_uint32_t l, osa_char_t *fmt, ...)
+void    _logit(osa_logtype_t type, osa_char_t *f, osa_uint32_t l, const osa_char_t *fmt, ...)
 {
     va_list ap;
 

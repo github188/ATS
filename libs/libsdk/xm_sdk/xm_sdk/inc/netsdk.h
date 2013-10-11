@@ -4,6 +4,8 @@
 #include <vector>
 using namespace std;
 
+#define NETMODULE_EXPORTS
+
 #ifdef NETMODULE_EXPORTS
 #define H264_DVR_API  extern "C" __declspec(dllexport)
 #else

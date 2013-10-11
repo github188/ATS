@@ -29,8 +29,12 @@ static osa_int32_t      playID = -1;
 // private function
 static osa_err_t    xmSDK_Init(void);
 static void         xmSDK_Exit(void);
-static osa_err_t    xmSDK_LoginDevice(osa_char_t *ip, osa_uint32_t port, osa_char_t *user, osa_char_t *passwd);
-static osa_err_t    xmSDK_PlayLiveMedia(osa_uint32_t playNum, osa_uint32_t chNum, void *priv);
+static void         xmSDK_MatchDev(SDK_Layer *self, const osa_char_t *devName);
+static osa_err_t    xmSDK_LoginDevice(const osa_char_t *ip, osa_uint32_t port, 
+                                        const osa_char_t *user, const osa_char_t *passwd);
+static SDK_MediaFD  xmSDK_PlayLiveMedia(osa_uint32_t playNum, osa_uint32_t chNum, void *priv);
+static osa_err_t	xmSDK_StopLiveMedia(SDK_MediaFD mfd)
+
 
 static void         _realDataCB(long h, long dtype, char *out_buf, long size, long priv);
 
@@ -49,6 +53,7 @@ SDK_Layer   *SDK_PluginGet()
     xm_sdk.SDK_Exit = xmSDK_Exit;
     xm_sdk.SDK_LoginDevice = xmSDK_LoginDevice;
     xm_sdk.SDK_PlayLiveMedia = xmSDK_PlayLiveMedia;
+	xm_sdk.SDK_StopLiveMedia = xmSDK_StopLiveMedia;
 
     return &xm_sdk;
 }
@@ -58,7 +63,15 @@ SDK_Layer   *SDK_PluginGet()
 //-------------------------------------priv---------------------
 static osa_err_t   xmSDK_Init(void)
 {
-    SDK_LogInfo("initialize Xiong Mai SDK!\n");
+	SDK_LogOpen(SDK_LOG_FILE);
+	
+	if (H264_DVR_Init(NULL, 0) != TRUE)
+	{
+		SDK_LogError("Failed to initialize XiongMai SDK!\n");
+		return OSA_ERR_ERR;
+	}
+	
+	SDK_LogInfo("Succeed to initialize XiongMai SDK\n")
 
     return OSA_ERR_OK;
 }
@@ -66,10 +79,14 @@ static osa_err_t   xmSDK_Init(void)
 
 static void        xmSDK_Exit(void)
 {
-    SDK_LogInfo("finalize Xiong Mai SDK!\n");
+    SDK_LogInfo("Exit Xiong Mai SDK!\n");
+
+	H264_DVR_Cleanup();
+	
+	SDK_LogClose();
 }
 
-static osa_err_t    xmSDK_LoginDevice(osa_char_t *ip, osa_uint32_t port, osa_char_t *user, osa_char_t *passwd)
+static osa_err_t    xmSDK_LoginDevice(const osa_char_t *ip, osa_uint32_t port, const osa_char_t *user, const osa_char_t *passwd)
 {
     if (loginID > 0)
     {
@@ -79,17 +96,20 @@ static osa_err_t    xmSDK_LoginDevice(osa_char_t *ip, osa_uint32_t port, osa_cha
     H264_DVR_DEVICEINFO devInfo;
     int nerror = 0;
 
-    if ((loginID = H264_DVR_Login(ip, port, user, passwd, &devInfo, &nerror)) <= 0)
+    if ((loginID = H264_DVR_Login((char *)ip, port, (char *)user, (char *)passwd, &devInfo, &nerror)) <= 0)
     {
         SDK_LogError("Failed to login device: ip(%s), port(%d), user(%s), passwd(%s)!\n", ip, port, user, passwd);
         return OSA_ERR_ERR;
     }
 
+	SDK_LogInfo("Succeed to login device: softwareVerion(%s), hardwareVersion(%s), serialNumber(%s)\n", 
+				devInfo.sSoftWareVersion,  devInfo.sHardWareVersion, devInfo.sSerialNumber);
+
     return OSA_ERR_OK;
 }
 
 
-static osa_err_t    xmSDK_PlayLiveMedia(osa_uint32_t playNum, osa_uint32_t chNum, void *priv)
+static SDK_MediaFD   xmSDK_PlayLiveMedia(osa_uint32_t playNum, osa_uint32_t chNum, void *priv)
 {
     if (loginID < 0)
     {
@@ -114,8 +134,10 @@ static osa_err_t    xmSDK_PlayLiveMedia(osa_uint32_t playNum, osa_uint32_t chNum
         SDK_LogError("Failed to set stream mode!\n");
         return OSA_ERR_ERR;
     }
+	
+	HWND playWnd = (HWND)(*(HWND *)priv);
 
-    if (H264_PLAY_Play(playNum, (HWND)priv) != TRUE)
+    if (H264_PLAY_Play(playNum, playWnd) != TRUE)
     {
         SDK_LogError("Failed to play stream!\n");
         return OSA_ERR_ERR;
@@ -128,7 +150,7 @@ static osa_err_t    xmSDK_PlayLiveMedia(osa_uint32_t playNum, osa_uint32_t chNum
 
     if ((playID = H264_DVR_RealPlay(loginID, &clientInfo)) == 0)
     {
-        SDK_LogError("Failed to play real-time stream!\n");
+        SDK_LogError("Failed to start real-time play!\n");
         return OSA_ERR_ERR;
     }
 
@@ -144,6 +166,23 @@ static void _realDataCB(long h, long dtype, char *out_buf, long size, long priv)
 }
 
 
+static osa_err_t	xmSDK_StopLiveMedia(SDK_MediaFD mfd)
+{
+	if (mfd <= 0)
+	{
+		return OSA_ERR_OK;
+	}
+
+	H264_DVR_StopRealPlay(mfd);
+}
+
+
+static void         xmSDK_MatchDev(SDK_Layer *self, const osa_char_t *devName)
+{
+    osa_assert(devName != NULL);
+    
+    
+}
 
 #ifdef __cplusplus
 }

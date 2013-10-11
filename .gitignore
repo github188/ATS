@@ -1,5 +1,6 @@
 # Object files
 *.o
+*.obj
 
 # Libraries
 #*.lib
@@ -22,6 +23,7 @@ gui/src/src.pro.user.*
 
 libs/libsdk/xm_sdk/Debug/*
 libs/libsdk/xm_sdk/xm_sdk/Debug
+libs/libsdk/xm_sdk/Release/*
 
 *.ncb
 

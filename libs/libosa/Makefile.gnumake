@@ -60,7 +60,7 @@ endif
 
 BUILD_DIR:=build
 TMP_DIR	:=/tmp
-INCLUDE_DIRS:=-Iinclude
+INCLUDE_DIRS:=-Iinc
 
 ifeq (MINGW32, $(TOOL))
 ARLIBS:=$(TOOL_ROOT_DIR)/lib/libws2_32.a

@@ -19,8 +19,8 @@
 typedef struct _WIN32_DIR
 {
     osa_dir_t           parent;
-    HANDLE              dir;
-    WIN32_FIND_DATA     finddata;
+    intptr_t            handler;
+    struct _finddata_t  finddata;
 } WIN32_Dir;
 
 
@@ -29,11 +29,22 @@ osa_dir_t   *osa_dir_open(const osa_char_t *name)
 {
     osa_assert(name != NULL);
 
+    if (osa_dir_is_exist(name) != OSA_TRUE)
+    {
+        osa_log_error("Directory not exist : %s\n", name);
+        return NULL;
+    }
+
+    osa_char_t file[MAX_PATH+1] = {0};
+
+    strncpy(file, name, strlen(name));
+    strcat(file, "\\*.*");
+
     WIN32_Dir   *p = (WIN32_Dir *)osa_mem_alloc(sizeof(WIN32_Dir));
 
-    p->dir = FindFirstFile((LPCSTR)name, &p->finddata );
+    p->handler = _findfirst(file, &p->finddata );
 
-    if (p->dir == INVALID_HANDLE_VALUE)
+    if (p->handler < 0)
     {
         goto err;
     }
@@ -53,6 +64,8 @@ osa_err_t     osa_dir_close(osa_dir_t *dir)
 {
     WIN32_Dir   *p = OSA_STRUCT_ENTRY(dir, WIN32_Dir, parent);
 
+    _findclose(p->handler);
+
     osa_mem_free(p);
 
     return OSA_ERR_OK;
@@ -63,17 +76,28 @@ osa_err_t     osa_dir_read(osa_dir_t *dir, osa_dirent_t *out_entry)
 {
     WIN32_Dir   *p = OSA_STRUCT_ENTRY(dir, WIN32_Dir, parent);
 
-    WIN32_FIND_DATA finddata;
-
-    if (!FindNextFile(p->dir, &finddata))
+    if (_findnext(p->handler, &p->finddata) != 0)
     {
-        printf("---------%d\n", GetLastError());
         return OSA_ERR_ERR;
     }
 
-    // BUG: ignore current directory
+    int attr = p->finddata.attrib;
 
-    strncpy(out_entry->name, (char *)finddata.cFileName, OSA_NAME_MAX-1);
+    if (attr & _A_ARCH)
+    {
+        out_entry->ft = OSA_FT_ARCHIVE;
+    }
+    else if (attr & _A_SUBDIR)
+    {
+        out_entry->ft = OSA_FT_DIRECTORY;
+    }
+    else
+    {
+        out_entry->ft = OSA_FT_UNKNOWN;
+    }
+
+    strncpy(out_entry->name, p->finddata.name, OSA_MIN(FILENAME_MAX, OSA_NAME_MAX-1));
+    out_entry->size = p->finddata.size;
 
     return OSA_ERR_OK;
 }

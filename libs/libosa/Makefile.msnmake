@@ -36,7 +36,7 @@ OBJS=$(BUILD_DIR)\osa_dir.obj   \
 CC=cl
 AR=lib
 
-INC_DIRS=-I".\include"  \
+INC_DIRS=-I".\inc"  \
 		-I"D:\Program Files\VC2008\VC\PlatformSDK\Include" \
 		-I"D:\Program Files\VC2008\PlatformSDK\Include"  \
 		-I"D:\Program Files\VC2008\include"

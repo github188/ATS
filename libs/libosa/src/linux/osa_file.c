@@ -130,3 +130,23 @@ osa_bool_t    osa_file_is_exist(const osa_char_t *name)
 
     return OSA_TRUE;
 }
+
+
+const osa_char_t *osa_file_suffix(const osa_char_t *name)
+{
+    osa_assert(name != NULL);
+
+    const osa_char_t *p = name + strlen(name) - 1;
+
+    while (*p)
+    {
+        if (*p == '.')
+        {
+            break;
+        }
+        p--;
+    }
+
+    return (*p=='\0')? NULL: p;
+}
+

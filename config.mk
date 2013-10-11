@@ -1,16 +1,16 @@
 PROJECT_OUT            :=$(PROJECT_TOP_DIR)/out
 PROJECT_VERSION        :=1.1.1
 PROJECT_BUILD_ID       :=1234
-PROJECT_BUILD_TYPE     :=debug
+PROJECT_BUILD_TYPE     :=release
 PROJECT_COMPANY        :=TuoAn
 PROJECT_MODULE_OWNER   :=hello
 
 
 
 # mingw32
-#TOOL:=MINGW32
+TOOL:=MINGW32
 # gcc
-TOOL:=GNUC
+#TOOL:=GNUC
 
 
 $(if $(strip $(TOOL)), , $(error TOOL is null!)) 

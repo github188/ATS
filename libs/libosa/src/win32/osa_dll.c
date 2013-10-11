@@ -15,9 +15,9 @@ osa_err_t   osa_dll_load(osa_dll_t *dll, const osa_char_t *file)
 {
     osa_assert(file != NULL);
 
-    if ((dll->handler=LoadLibrary((LPCSTR)file)) == 0)
+    if ((dll->handler=LoadLibraryA((LPCSTR)file)) == NULL)
     {
-        osa_log_error("Failed to load library : file(%s), %s\n", file, GetLastError());
+        osa_log_error("Failed to load library : file(%s), %d\n", file, GetLastError());
         return OSA_ERR_ERR;
     }
 
@@ -43,7 +43,7 @@ void        *osa_dll_sym(osa_dll_t *dll, const osa_char_t *symbol)
     void *p = GetProcAddress(dll->handler, symbol);
     if (!p)
     {
-        osa_log_error("No symbol found: %s, %s\n", symbol, GetLastError());
+        osa_log_error("No symbol found: %s, %d\n", symbol, GetLastError());
     }
 
     return p;
