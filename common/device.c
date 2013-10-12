@@ -8,6 +8,8 @@
 #include "device.h"
 #include "log.h"
 #include "bus.h"
+#include "test_drv.h"
+#include "sdk.h"
 
 
 static void _def_dev_remove(ats_device_t *self);
@@ -83,6 +85,31 @@ osa_err_t   ats_device_register(ats_bus_t *dev_bus, ats_device_t *dev)
         ats_log_info("Register new device : name(%s)\n", dev->name);
         osa_list_insert_before(&dev_bus->ele_list_head, &dev->list);
     }
+    
+    /** find the driver */
+    ats_bus_t *tdrv_bus = ats_bus_find("tdrv_bus");
+    if (!tdrv_bus)
+    {
+        ats_log_error("no test driver bus found!\n");
+    }
+    
+    ats_tdrv_t *node = NULL;
+    osa_list_t *l = NULL;
+    
+    for (l=tdrv_bus->ele_list_head.next; l!=&tdrv_bus->ele_list_head; l=l->next)
+    {
+        node = osa_list_entry(l, ats_tdrv_t, list);
+        if (tdrv_bus->ops->match)
+        {
+            if (tdrv_bus->ops->match(node, dev) == OSA_TRUE)
+            {
+                ats_log_info("Device matched driver!\n");
+                break;
+            }
+        }
+    }
+    
+    /** find the sdk */
     
     return OSA_ERR_OK;
 }
