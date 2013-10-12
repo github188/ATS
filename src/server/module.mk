@@ -17,26 +17,25 @@ all_srcs:= \
 		module/sys/sys.c  \
 		module/sys/sys_business.c  \
 		module/sys/sys_module.c  \
-		module/test/test_event/dummy_test.c  \
-		module/test/test_event/table.c  \
-		module/test/test_event/version_test.c  \
 		module/test/test_event.c  \
 		module/test/test_module.c  \
-		module/test/test_event/xml_parse.cpp  \
-		src/main.c  \
-		src/test_drv.c  \
-		src/conf_xml.cpp
+		module/test/test.c \
+		src/conf_xml.cpp \
+		src/test_drv.c \
+		src/sys_bus.c \
+		src/main.c
 
 LOCAL_SRC_FILES        :=$(all_srcs)
 
 
 LOCAL_INCLUDE_DIRS     :=$(LOCAL_PATH)/inc \
 						$(PROJECT_TOP_DIR)/inc \
+						$(LOCAL_PATH)/src \
 						osa_include \
 						tinyxml_include \
 						cjson_include
 						
-LOCAL_STATIC_LIBRARIES :=libosa libtinyxml libcjson
+LOCAL_STATIC_LIBRARIES :=libosa libtinyxml libcjson libcommon
 
 
 LOCAL_ARLIBS           :=

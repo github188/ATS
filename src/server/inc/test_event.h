@@ -1,4 +1,4 @@
-/**
+ /**
  * test_event.h
  *
  */
@@ -6,8 +6,10 @@
 #ifndef __TEST_EVENT_H__
 #define __TEST_EVENT_H__
 
-#include "__class.h"
+
 #include "osa.h"
+#include "class.h"
+#include "__class.h"
 
 
 #ifdef __cplusplus
@@ -70,11 +72,12 @@ typedef struct
 struct ATS_TEST_EVENT_CLASS
 {
     osa_char_t      *name;      // 测试项名称   
-    ats_testattr_t  attr;       // attribute
-    ats_report_t    *report;    // report
-    osa_list_t      list;       // 链表
+    ats_tevent_ops_t ops;       // ops
     
-    ats_tevent_ops_t *ops;       // ops
+    /** private data */
+    ats_testattr_t  attr;       // attribute
+    ats_report_t	*report;    // report
+    osa_list_t      list;       // 链表
 };
 
 
@@ -86,7 +89,7 @@ ats_tevent_t    *ats_tevent_get(const osa_char_t *tevent_name);
 
 ats_tevent_t    *ats_tevent_find(ats_tdrv_t *drv, const osa_char_t *tevent_name);
 osa_err_t       ats_tevent_register(ats_tdrv_t *drv, ats_tevent_t *tevent);
-osa_err_t       ats_tevent_unregister(ats_tdrv_t *rv, const osa_char_t *tevent_name);
+osa_err_t       ats_tevent_unregister(ats_tdrv_t *drv, const osa_char_t *tevent_name);
 
 
 #ifdef __cplusplus

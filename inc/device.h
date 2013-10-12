@@ -48,7 +48,4 @@ osa_err_t       ats_device_register(ats_bus_t *dev_bus, ats_device_t *dev);
 osa_err_t       ats_device_unregister(ats_bus_t *dev_bus, const osa_char_t *dev_name);
 
 
-void            ats_device_test(ats_device_t *dev);
-
-
 #endif

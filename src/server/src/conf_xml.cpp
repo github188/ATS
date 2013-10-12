@@ -9,6 +9,8 @@
 #include "log.h"
 #include "module.h"
 #include "test_drv.h"
+#include "bus.h"
+#include "test_event.h"
 
 
 #ifdef __cplusplus
@@ -16,14 +18,14 @@ extern "C" {
 #endif
 
 
-TiXmlElement *get_module_root(char *xmlfile, const char *node_name)
+TiXmlElement *get_module_root(const char *xmlfile, const char *node_name)
 {
     osa_assert(xmlfile != NULL);
     osa_assert(node_name != NULL);
 
     if (osa_file_is_exist(xmlfile) != OSA_TRUE)
     {
-        ats_log_error("File not exist!\n", xmlfile);
+        ats_log_error("File not exist: %s!\n", xmlfile);
         return NULL;
     }
 
@@ -69,7 +71,7 @@ osa_err_t xml_parse_report_conf(const osa_char_t *cf, cf_report_t *out_data)
     moduleRoot = get_module_root(cf, "report");
     if (!moduleRoot)
     {
-        ats_log_error("Failed to get module xml root!\n");
+        ats_log_error("Failed to get module xml root()!\n");
         goto err;
     }
 
@@ -83,11 +85,11 @@ osa_err_t xml_parse_report_conf(const osa_char_t *cf, cf_report_t *out_data)
     }
     if (!strcmp(node->FirstChild()->Value(), "on"))
     {
-        out_data->state = ATS_MODULE_ON;
+        out_data->state = ATS_ON;
     }
     else
     {
-        out_data->state = ATS_MODULE_OFF;
+        out_data->state = ATS_OFF;
     }
 
     return OSA_ERR_OK;
@@ -120,11 +122,11 @@ osa_err_t xml_parse_log_conf(const osa_char_t *cf, cf_log_t *out_data)
     }
     if (!strcmp(node->FirstChild()->Value(), "on"))
     {
-        out_data->state = ATS_MODULE_ON;
+        out_data->state = ATS_ON;
     }
     else
     {
-        out_data->state = ATS_MODULE_OFF;
+        out_data->state = ATS_OFF;
     }
 
     node = moduleRoot->FirstChildElement("level");
@@ -173,11 +175,11 @@ osa_err_t xml_parse_test_conf(const osa_char_t *cf, cf_test_t *out_data)
     }
     if (!strcmp(node->FirstChild()->Value(), "on"))
     {
-        out_data->state = ATS_MODULE_ON;
+        out_data->state = ATS_ON;
     }
     else
     {
-        out_data->state = ATS_MODULE_OFF;
+        out_data->state = ATS_OFF;
     }
 
     return OSA_ERR_OK;
@@ -193,29 +195,30 @@ osa_err_t xml_parse_dev_conf(const osa_char_t *cf)
     TiXmlElement    *moduleRoot = NULL;
     TiXmlElement    *node       = NULL;
 
-    moduleRoot = get_module_root(cf, "device");
+    moduleRoot = get_module_root(cf, "test_driver");
     if (!moduleRoot)
     {
         ats_log_error("Failed to get module xml root!\n");
         return OSA_ERR_ERR;
     }
 
+    ats_bus_t   *tdrv_bus = ats_bus_find("tdrv_bus");
+    
     TiXmlAttribute  *attr = NULL;
-    ATS_TestDrv *tdv = NULL;
+    ats_tdrv_t *tdv = NULL;
 
-    node = moduleRoot->FirstChildElement("file");
+    node = moduleRoot->FirstChildElement("drvfile");
 
     while (node)
     {
         attr = node->FirstAttribute();
         osa_assert(attr != NULL);
 
-        tdv = ATS_TestDrvNew(attr->Value(), node->FirstChild()->Value());
+        tdv = ats_tdrv_new(attr->Value(), node->FirstChild()->Value());
 
-        // 挂接测试驱动到设备总线
-        ATS_DevBusHangDrv(tdv);
+        ats_tdrv_register(tdrv_bus, tdv);
 
-        node = node->NextSiblingElement("file");
+        node = node->NextSiblingElement("drvfile");
     }
 
     return OSA_ERR_OK;

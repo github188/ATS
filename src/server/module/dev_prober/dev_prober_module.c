@@ -9,6 +9,7 @@
 #include "module.h"
 #include "conf_xml.h"
 #include "log.h"
+#include "config.h"
 #include "module/dev_prober.h"
 
 
@@ -27,6 +28,8 @@ osa_err_t ats_devprober_mod_init()
     devprober_mops.begin = devprober_begin;
     devprober_mops.end = devprober_end;
     
+    devprober_module.conf_file = ATS_CONFIG_FILE;
+    
     return ats_module_register(&devprober_module, "devprober", &devprober_mops);
 }
 
@@ -39,7 +42,7 @@ static osa_err_t devprober_begin(ats_module_t *m, int argc, char **argv)
 {
     // 创建设备探测线程
     osa_thread_init(&devprober_thread, "devprober_thread", devprober_routine, NULL);
-
+  
     if (osa_thread_start(&devprober_thread) != OSA_ERR_OK)
     {
         ats_log_error("Failed to start device prober thread!\n");

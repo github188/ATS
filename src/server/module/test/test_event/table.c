@@ -15,14 +15,14 @@
 #define TEST_EVENT(tp)  &tp
 
 
-extern ATS_TestEvent    dummyTestEvent;
-extern ATS_TestEvent    versionTestEvent;
+extern ats_tevent_t    dummy_test_event;
+extern ats_tevent_t    version_test_event;
 
 
-static ATS_TestEvent   *g_tpTable[] =
+static ats_tevent_t   *g_tpTable[] =
 {
-    TEST_EVENT(dummyTestEvent),
-    TEST_EVENT(versionTestEvent),
+    TEST_EVENT(dummy_test_event),
+    TEST_EVENT(version_test_event),
 };
 
 

@@ -133,12 +133,12 @@ osa_bool_t    osa_file_is_exist(const osa_char_t *name)
 {
     osa_assert(name != NULL);
 
-    if (_access(name, 0) < 0)
+    if (_access(name, 0) == 0)
     {
-        return OSA_FALSE;
+        return OSA_TRUE;
     }
 
-    return OSA_TRUE;
+    return OSA_FALSE;
 }
 
 const osa_char_t *osa_file_suffix(const osa_char_t *name)

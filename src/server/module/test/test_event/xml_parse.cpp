@@ -8,7 +8,7 @@
 
 #include "xml_parse.h"
 #include "data.h"
-#include "_log.h"
+#include "log.h"
 #include "tinyxml.h"
 
 
@@ -24,13 +24,13 @@ TiXmlElement *_getTestPointRoot(osa_char_t *xmlfile, char *node_name)
 
     if (doc->LoadFile()!=true)
     {
-        TP_LogError("Failed to load xml: %s\n", xmlfile);
+        ats_log_error("Failed to load xml: %s\n", xmlfile);
         return NULL;
     }
 
     if ((root = doc->RootElement())==NULL)
     {
-        TP_LogError("Failed to get xml root: %s\n", xmlfile);
+        ats_log_error("Failed to get xml root: %s\n", xmlfile);
         return NULL;
     }
 
@@ -53,7 +53,7 @@ TiXmlElement *_getTestPointRoot(osa_char_t *xmlfile, char *node_name)
 
 
 static TEST_Dummy  dummy[2];
-osa_err_t   dummyTestParse(ATS_TestEvent *tp, osa_char_t *cf)
+osa_err_t   dummyTestParse(ats_tevent_t *tp, osa_char_t *cf)
 {
     osa_uint32_t    i;
 
@@ -63,9 +63,9 @@ osa_err_t   dummyTestParse(ATS_TestEvent *tp, osa_char_t *cf)
     strcpy(dummy[1].dummyIn, "test");
     strcpy(dummy[1].dummyExpOut, "first");
 
-    tp->testCaseBox.caseNum = 2;
-    tp->testCaseBox.caseSize = sizeof(TEST_Dummy);
-    tp->testCaseBox.privData = dummy;
+    tp->attr.tcb.tc_num = 2;
+    tp->attr.tcb.tc_size = sizeof(TEST_Dummy);
+    tp->attr.tcb.tc_cases = dummy;
 
     return OSA_ERR_OK;
 }

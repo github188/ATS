@@ -50,18 +50,6 @@ void ats_device_setinfo(ats_device_t *dev,
 }
 
 
-void    ats_device_test(ats_device_t *dev)
-{
-    if (dev->drv)
-    {
-        ats_log_info("Start test device : %s\n", dev->name);
-        
-        ATS_TestDrvParseConf(dev->drv);
-        ATS_TestDrvDoTest(dev->drv);
-    }
-}
-
-
 ats_device_t  *ats_device_find(ats_bus_t *dev_bus, const osa_char_t *name)
 {
     osa_assert(name != NULL);

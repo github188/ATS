@@ -9,7 +9,8 @@ srcs:= \
 		device.c \
 		image.c \
 		log.c \
-		module.c
+		module.c \
+		sdk.c
 
 LOCAL_SRC_FILES        :=$(srcs)
 

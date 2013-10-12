@@ -7,6 +7,7 @@
 #include "osa.h"
 #include "module.h"
 #include "log.h"
+#include "config.h"
 #include "module/sdk.h"
 
 
@@ -18,6 +19,8 @@ osa_err_t osa_sdk_mod_init()
 {
     sdk_mops.begin = NULL;
     sdk_mops.end = NULL;
+    
+    sdk_module.conf_file = ATS_CONFIG_FILE;
     
     return ats_module_register(&sdk_module, "sdk", &sdk_mops);
 }

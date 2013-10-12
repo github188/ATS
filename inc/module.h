@@ -32,9 +32,9 @@ typedef struct
 struct ATS_MODULE_CLASS
 {
     osa_char_t      name[OSA_NAME_MAX];
+    osa_char_t      *conf_file;
     
     ats_switch_t    state;
-    osa_char_t      conf_file[OSA_NAME_MAX];
     osa_list_t      list;
     
     ats_mops_t      *ops;
@@ -47,9 +47,11 @@ struct ATS_MODULE_CLASS
 
 ats_module_t    *ats_module_find(const char *mod_name);
 osa_err_t       ats_module_register(ats_module_t *m, const osa_char_t *name, ats_mops_t *ops);
-osa_err_t       ats_moudle_unregister(const osa_char_t *mod_name);
+osa_err_t       ats_module_unregister(const osa_char_t *mod_name);
 
-void            ats_module_init_all(int argc, char **argv);
+void            ats_module_all_init(int argc, char **argv);
+void            ats_module_all_fini();
+
 
 #ifdef __cplusplus
 }

@@ -4,101 +4,68 @@
  */
 
 
-/**
- *  UDP/ SOCK_DGRAM数据传输
- *
- */
-
 #include "osa.h"
 #include "cJSON.h"
 #include "log.h"
 #include "module/report.h"
 
 
-osa_socket_t *reportSock = NULL;
-
-osa_err_t   sock_report_open(ats_report_t *self, void *user_data);
-osa_err_t   sock_report_close(ats_report_t *self);
-osa_size_t  sock_report_write(ats_report_t *self, const osa_char_t *buf, osa_size_t size);
-osa_size_t  sock_report_read(ats_report_t *self, osa_char_t *outBuf, osa_size_t size);
-osa_err_t   sock_report_ctrl(ats_report_t *self, osa_uint32_t cmd, void *arg);
+static osa_socket_t  *report_sock;
+static osa_sockaddr_t report_addr;
 
 
-void ATS_ReportSysInit(ats_report_t *report)
+ats_report_t *ats_report_open(void *user_data)
 {
-    report->open = sock_report_open;
-    report->close = sock_report_close;
-    report->write = sock_report_write;
-    report->read = sock_report_read;
-    report->ctrl = sock_report_ctrl;
-}
-
-
-osa_err_t   sock_report_open(ats_report_t *self, void *user_data)
-{
-    // priv : osa_sockaddr_t *
-    self->user_data = user_data;
-
-    if (reportSock)
+    report_sock = osa_udpsock_open();
+    if (!report_sock)
     {
-        sock_report_close(self);
+        ats_log_error("Failed to open report socket!\n");
+        return NULL;
     }
+    
+    ats_report_t *rpt = (ats_report_t *)osa_mem_alloc(sizeof(ats_report_t));
+    
+    rpt->fd = -1;
+    rpt->user_data = user_data;
+    
+    osa_sockaddr_t  *paddr = (osa_sockaddr_t *)user_data;
 
-
-    reportSock = osa_udpsock_open();
-
-    return OSA_ERR_OK;
+    osa_sockaddr_set(&report_addr, inet_ntoa(paddr->in_addr.sin_addr), 3000);
+    
+    return rpt;
 }
 
-
-osa_err_t   sock_report_close(ats_report_t *self)
+void ats_report_close(ats_report_t *rpt)
 {
-    if (reportSock)
+    if (rpt->fd > 0)
     {
-        osa_udpsock_close(reportSock);
+        osa_udpsock_close(report_sock);
     }
-
-    reportSock = NULL;
-
-    return OSA_ERR_OK;
+    report_sock = NULL;
+    osa_mem_free(rpt);
 }
 
-osa_size_t  sock_report_write(ats_report_t *self, const osa_char_t *buf, osa_size_t size)
+osa_size_t ats_report_write(ats_report_t *rpt, const osa_char_t *buf, osa_size_t size)
 {
-    osa_size_t sz = 0;
-
-    if (!reportSock)
+    if (!report_sock)
     {
-        ats_log_error("Please open socket first!\n");
         return 0;
     }
-
-    osa_sockaddr_t  reportAddr, *paddr;
-    paddr = self->user_data;
-
-    // port : 3000
-    osa_sockaddr_set(&reportAddr, inet_ntoa(paddr->in_addr.sin_addr), 3000);
-
-    sz = osa_udpsock_write_dgram(reportSock, buf, size, &reportAddr);
-
-    return sz;
+    
+    return osa_udpsock_write_dgram(report_sock, buf, size, &report_addr);
 }
 
-
-osa_size_t  sock_report_read(ats_report_t *self, osa_char_t *outBuf, osa_size_t size)
+osa_size_t ats_report_read(ats_report_t *rpt, osa_char_t *out_buf, osa_size_t size)
 {
-    if (!reportSock)
+    if (!report_sock)
     {
-        ats_log_error("Please open socket first!\n");
         return 0;
     }
-
-    return 0;
+    
+    return osa_udpsock_read_dgram(report_sock, out_buf, size);
 }
 
-
-osa_err_t   sock_report_ctrl(ats_report_t *self, osa_uint32_t cmd, void *arg)
+osa_err_t    ats_report_ctrl(ats_report_t *rpt, osa_uint32_t cmd, void *param)
 {
-    return OSA_ERR_OK;
+    return OSA_ERR_ERR;
 }
-

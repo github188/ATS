@@ -34,7 +34,7 @@ static osa_size_t  _sysIOCHWrite(osa_ioch_t *self, osa_char_t *data, osa_size_t 
 static osa_size_t  _sysIOCHRead(osa_ioch_t *self, osa_char_t *out_data, osa_size_t size);
 
 
-void    ATS_SysInit()
+osa_err_t ats_sys_init()
 {
     ats_log_info("Initialize system !\n");
 
@@ -44,7 +44,7 @@ void    ATS_SysInit()
     if (!sysServer)
     {
         ats_log_error("Failed to open agent socket!\n");
-        return;
+        return OSA_ERR_ERR;
     }
 
     osa_sockaddr_t  serverAddr;
@@ -55,6 +55,7 @@ void    ATS_SysInit()
     if (err != OSA_ERR_OK)
     {
         ats_log_error("Failed to listen socket!\n");
+        return OSA_ERR_ERR;
     }
 
     sysIOCH.open    = _sysIOCHOpen;
@@ -64,7 +65,7 @@ void    ATS_SysInit()
 }
 
 
-void    ATS_SysExec()
+void ats_sys_exec()
 {
     ats_log_info("Start system message loop!\n");
 

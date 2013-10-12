@@ -71,9 +71,11 @@ struct ATS_SDK_CLASS
 
 
 
-// 获取SDK插件对象
-OSA_API ats_sdk_t   *ats_sdk_plugin_load();
+ats_sdk_t   *ats_sdk_plugin_load(const osa_char_t *plugin_file);
 
+ats_sdk_t   *ats_sdk_find(ats_bus_t *sdk_bus, const osa_char_t *sdk_name);
+osa_err_t   ats_sdk_register(ats_bus_t *sdk_bus, ats_sdk_t *sdk);
+osa_err_t   ats_sdk_unregisetr(ats_bus_t *sdk_bus, const osa_char_t *sdk_name);
 
 
 #ifdef __cplusplus

@@ -6,88 +6,76 @@
  */
 
 
+
+#include "xml_parse.h"
 #include "test_event.h"
 #include "data.h"
-#include "xml_parse.h"
+#include "log.h"
+#include "module/report.h"
 
 
-#define     TEST_DEFAULT_PRIORITY       100
+static osa_err_t       dummy_init(ats_tevent_t *self);
+static ats_result_t    dummy_test_start(void *testCase);
+static void            dummy_suss_cb(ats_tevent_t *self);
+static void            dummy_fail_cb(ats_tevent_t *self);
+static void            dummy_fini(ats_tevent_t *self);
 
 
-osa_err_t       dummyTestParseConf(ats_tevent_t *self, osa_char_t *cf);
-ats_result_t  dummyTestStart(void *testCase);
-osa_err_t       dummyBegin(ats_tevent_t *self);
-void            dummySuccessCall(ats_tevent_t *self);
-void            dummyFailedCall(ats_tevent_t *self);
-void            dummyEnd(ats_tevent_t *self);
-
-ats_tevent_t   dummyTestEvent=
+ats_tevent_t   dummy_test_event=
 {
     .name       = "DummyTest",
-    .attr =
-    {
-        .proi   = TEST_DEFAULT_PRIORITY,
-    },
     .ops =
     {
         .init       = dummy_init,
-        .test_start = dummyTestStart,
+        .test_start = dummy_test_start,
         .test_stop  = NULL,
-        .suss_cb    = dummySuccessCall,
-        .fail_cb    = dummyFailedCall,
-        .fini       = dummyEnd,
+        .suss_cb    = dummy_suss_cb,
+        .fail_cb    = dummy_fail_cb,
+        .fini       = dummy_fini,
     },
 };
 
 
-ats_result_t  dummyTestStart(void *testCase)
+static osa_err_t dummy_init(ats_tevent_t *self)
 {
-    TP_LogInfo("start test dummy module!\n");
+    return OSA_ERR_OK;
+}
+
+ats_result_t dummy_test_start(void *testCase)
+{
+    ats_log_info("start test dummy module!\n");
 
     TEST_Dummy  *d = (TEST_Dummy *)testCase;
 
     printf("in : %s, out: %s\n", d->dummyIn, d->dummyExpOut);
 
-    return ATS_TEST_SUCCESS;
+    return ATS_SUCCEED;
 }
 
 
-void    dummySuccessCall(ats_tevent_t *self)
+void dummy_suss_cb(ats_tevent_t *self)
 {
-    TP_LogInfo("dummy test success call!\n");
+    ats_log_info("dummy test success call!\n");
 }
 
 
-void    dummyFailedCall(ats_tevent_t *self)
+static void dummy_fail_cb(ats_tevent_t *self)
 {
-    TP_LogInfo("dummy test failed call!\n");
+    ats_log_info("dummy test failed call!\n");
 
 }
 
 
-osa_err_t   dummyTestParseConf(ats_tevent_t *self, osa_char_t *cf)
+static void dummy_fini(ats_tevent_t *self)
 {
-    dummyTestParse(self, cf);
-    return OSA_ERR_OK;
-}
-
-
-osa_err_t   dummyBegin(ats_tevent_t *self)
-{
-    printf("----------------------------BEGIN----------------------------------------\n");
-    return OSA_ERR_OK;
-}
-
-void    dummyEnd(ats_tevent_t *self)
-{
-
-    printf("----------------------------END------------------------------------------\n");
-    osa_uint32_t allTimes = self->statistic.testTimes;
-    osa_uint32_t failTimes = self->statistic.failedTimes;
+    osa_uint32_t all_times = self->attr.stat.test_times;
+    osa_uint32_t fail_times = self->attr.stat.fail_times;
+    osa_double_t fail_rate = (all_times == 0)? 0: (fail_times/(all_times *1.0)*100);
 
     osa_char_t buf[1024]  = {0};
 
-    sprintf(buf, "[%s] Test Times: %d, Fail Times: %d, Fail Rate: %.2f%%", self->name, allTimes, failTimes, failTimes/(allTimes *1.0)*100);
+    sprintf(buf, "[%s] Test Times: %d, Fail Times: %d, Fail Rate: %.2f%%", 
+                self->name, all_times, fail_times, fail_rate);
 
-    self->report->write(self->report, buf, sizeof(buf));
+    ats_report_write(self->report, buf, sizeof(buf));
 }

@@ -8,6 +8,8 @@
 #include "class.h"
 #include "module.h"
 #include "bus.h"
+#include "log.h"
+
 
 static osa_list_t   mod_list_head = OSA_LIST_HEAD(mod_list_head);
 
@@ -41,7 +43,7 @@ osa_err_t ats_module_register(ats_module_t *m, const osa_char_t *name, ats_mops_
     m->ops = ops;
     
     ats_module_t   *p = NULL;
-
+    
     if ((p = ats_module_find(m->name)) != NULL)
     {
         ats_log_warn("Replace module : name(%s)\n", m->name);
@@ -57,11 +59,11 @@ osa_err_t ats_module_register(ats_module_t *m, const osa_char_t *name, ats_mops_
 }
 
 
-osa_err_t       ats_moudle_unregister(const osa_char_t *mod_name)
+osa_err_t ats_module_unregister(const osa_char_t *mod_name)
 {
     osa_assert(mod_name != NULL);
     
-    ats_bus_t *p = NULL;
+    ats_module_t *p = NULL;
     
     if ((p = ats_module_find(mod_name)) != NULL)
     {
@@ -72,7 +74,7 @@ osa_err_t       ats_moudle_unregister(const osa_char_t *mod_name)
     return OSA_ERR_OK;
 }
 
-void ats_module_init_all(int argc, char **argv)
+void ats_module_all_init(int argc, char **argv)
 {
     osa_uint32_t i;
     osa_err_t   err;
@@ -88,9 +90,25 @@ void ats_module_init_all(int argc, char **argv)
         {
             if (node->ops->begin(node, argc, argv) != OSA_ERR_OK)
             {
-                ats_log_error("Faieldt to begin module (%s)!\n", node->name);
+                ats_log_error("Failed to begin module (%s)!\n", node->name);
                 continue;
             }
+        }
+    }
+}
+
+void ats_module_all_fini()
+{
+    ats_module_t    *node   = NULL;
+    osa_list_t      *l      = NULL;
+
+    for (l = mod_list_head.next; l != &mod_list_head; l = l->next)
+    {
+        node = osa_list_entry(l, ats_module_t, list);
+
+        if (node->ops->end)
+        {
+            node->ops->end(node);
         }
     }
 }

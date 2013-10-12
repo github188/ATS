@@ -7,6 +7,7 @@
 #include "osa.h"
 #include "log.h"
 
+#include <stdarg.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,7 +24,6 @@ osa_err_t ats_log_open(const osa_char_t *logfile)
     log.file = osa_file_open(logfile, OSA_F_APPEND);
     if (!log.file)
     {
-        osa_log_error("Failed to open log file: %s\n", logfile);
         return OSA_ERR_ERR;
     }
 

@@ -9,7 +9,9 @@
 #include "module.h"
 #include "conf_xml.h"
 #include "log.h"
+#include "config.h"
 #include "module/report.h"
+
 
 
 static osa_err_t report_begin(ats_module_t *m, int argc, char **argv);
@@ -24,12 +26,14 @@ osa_err_t ats_report_mod_init()
     report_ops.begin = report_begin;
     report_ops.end = report_end;
     
+    report_module.conf_file = ATS_CONFIG_FILE;
+    
     return ats_module_register(&report_module, "report", &report_ops);
 }
 
 void ats_report_mod_exit()
 {
-    ats_moudle_unregister("report");
+    ats_module_unregister("report");
 }
 
 static osa_err_t report_begin(ats_module_t *m, int argc, char **argv)
@@ -44,6 +48,6 @@ static osa_err_t report_begin(ats_module_t *m, int argc, char **argv)
     
 }
 
-static void     report_end(ats_module_t *m)
+static void report_end(ats_module_t *m)
 {
 }

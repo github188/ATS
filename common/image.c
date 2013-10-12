@@ -7,6 +7,7 @@
 #include "osa.h"
 #include "class.h"
 #include "image.h"
+#include "log.h"
 
 
 ats_image_t *image_new()
@@ -31,7 +32,7 @@ ats_image_t *ats_image_new_ex(osa_uint32_t width, osa_uint32_t height, ats_image
     img->size       = img->width_step * img->height;
     img->scan0      = data;
 
-    ATS_ImageSetROI(img, 0, 0, img->width, img->height);
+    ats_image_set_roi(img, 0, 0, img->width, img->height);
 
     return img;
 }

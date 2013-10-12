@@ -8,8 +8,12 @@
 #include "osa.h"
 #include "log.h"
 #include "cJSON.h"
+#include "test_drv.h"
 #include "device.h"
 #include "bus.h"
+#include "test_event.h"
+#include "module/test.h"
+#include "module/report.h"
 
 
 osa_bool_t  devLocked = OSA_FALSE;
@@ -129,29 +133,29 @@ osa_err_t   sysTestDevice(osa_ioch_t *ioch, osa_msg_t *msg)
     ats_device_t *dev = ats_device_find(devbus, devname);
     osa_ret_val_if_fail(dev != NULL, OSA_ERR_ERR);
 
-    if (dev->drv)
+    if (!dev->drv)
     {
-        osa_sockaddr_t *clientAddr=&((osa_socket_t *)(ioch->priv))->addr.in_addr;
-        // 打开报告文件
-#if 0
-        if (dev->drv->report.open && dev->drv->report.open(&dev->drv->report, clientAddr) != OSA_ERR_OK)
-        {
-            ats_log_error("Failed to  open report file!\n");
-        }
-#endif
+        ats_log_error("Device(%s) has no test driver, I don't known how to test !\n", dev->name);
+        return OSA_ERR_ERR;
     }
-
-    ats_device_tTest(dev);
-
-#if 0
-    if (dev->drv)
+    
+    osa_sockaddr_t *client_addr=&((osa_socket_t *)(ioch->priv))->addr.in_addr;
+    
+    ats_report_t *report = ats_report_open((void *)client_addr);
+    
+    osa_list_t      *l = NULL;
+    ats_tevent_t    *node = NULL;
+    
+    for (l = dev->drv->tevent_list_head.next; 
+        l != &dev->drv->tevent_list_head; l = l->next)
     {
-        if (dev->drv->report.close && dev->drv->report.close(&dev->drv->report) != OSA_ERR_OK)
-        {
-            ats_log_error("Failed to close report file!\n");
-        }
+        node = osa_list_entry(l, ats_tevent_t, list);
+        node->report = report;
     }
-#endif
+    
+    ats_test_device_test(dev);
+    
+    ats_report_close(report);
 }
 
 
@@ -159,6 +163,13 @@ osa_err_t   sysLoginDevice(osa_ioch_t *ioch, osa_msg_t *msg)
 {
     ats_log_info("Login device !\n");
 
+    ats_bus_t *devbus = ats_bus_find("dev_bus");
+    if (!devbus)
+    {
+        ats_log_error("no device bus found!\n");
+        return OSA_ERR_ERR;
+    }
+    
     cJSON *root = cJSON_Parse((char *)msg->data);
     osa_ret_val_if_fail(root != NULL, OSA_ERR_ERR);
 
@@ -166,7 +177,7 @@ osa_err_t   sysLoginDevice(osa_ioch_t *ioch, osa_msg_t *msg)
     char *user = cJSON_GetObjectItem(root, "user")->valuestring;
     char *passwd = cJSON_GetObjectItem(root, "password")->valuestring;
 
-    ats_device_t *dev = ATS_DevBusFindDev(devName);
+    ats_device_t *dev = ats_device_find(devbus, devName);
     osa_ret_val_if_fail(dev != NULL, OSA_ERR_ERR);
 
     osa_err_t flag = OSA_ERR_ERR;
