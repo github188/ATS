@@ -104,6 +104,7 @@ osa_err_t   ats_device_register(ats_bus_t *dev_bus, ats_device_t *dev)
             if (tdrv_bus->ops->match(node, dev) == OSA_TRUE)
             {
                 ats_log_info("Device matched driver!\n");
+                dev->drv = node;
                 break;
             }
         }
