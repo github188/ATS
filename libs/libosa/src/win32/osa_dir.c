@@ -114,3 +114,17 @@ osa_bool_t    osa_dir_is_exist(const osa_char_t *name)
 
     return OSA_TRUE;
 }
+
+void   osa_dir_getcwd(osa_char_t *out_buf, osa_size_t len)
+{
+    _getcwd(out_buf, len);
+}
+
+osa_err_t   osa_dir_chdir(const osa_char_t *dpath)
+{
+    if (_chdir(dpath) != 0)
+    {
+        return OSA_ERR_ERR;
+    }
+    return OSA_ERR_OK;
+}

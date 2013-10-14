@@ -7,20 +7,18 @@ LOCAL_MODULE           :=server
 all_srcs:= \
 		module/dev_prober/dev_prober.c  \
 		module/dev_prober/dev_prober_module.c  \
-		module/dev_prober/prober/dummy_prober.c  \
-		module/dev_prober/prober/Onvif_prober.c  \
+		module/dev_prober/prober/netcamera_prober.c  \
 		module/dev_prober/prober/table.c  \
 		module/erp/erp_module.c  \
 		module/report/report_module.c  \
 		module/report/socket_report.c  \
-		module/sdk/sdk_module.c  \
 		module/sys/sys.c  \
 		module/sys/sys_business.c  \
 		module/sys/sys_module.c  \
 		module/test/test_event.c  \
 		module/test/test_module.c  \
 		module/test/test.c \
-		src/conf_xml.cpp \
+		src/xml.cpp \
 		src/test_drv.c \
 		src/sys_bus.c \
 		src/main.c

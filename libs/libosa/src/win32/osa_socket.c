@@ -251,7 +251,7 @@ osa_int32_t     osa_tcpserver_accept(osa_tcpserver_t *sock, osa_uint32_t timeout
             FD_SET(node->fd, &sock->expfds);
         }
     }
-
+    
     // select
     ret = osa_select(0, &sock->readfds, NULL, NULL, &timeout);
 
@@ -276,6 +276,7 @@ osa_int32_t     osa_tcpserver_accept(osa_tcpserver_t *sock, osa_uint32_t timeout
     }
     else
     {
+
         // new client connected
         if (FD_ISSET(sock->fd, &sock->readfds))
         {

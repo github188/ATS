@@ -19,15 +19,21 @@ extern "C"
 
 struct ATS_DEV_PROBER_CLASS
 {
-    osa_char_t  name[OSA_NAME_MAX];
-
-    void        (*probe)();     // 探测设备
+    osa_char_t  *name;          // 名字
+    osa_char_t  *dev_support;   // 支持的设备表,以逗号分隔
+    osa_bool_t  (*dev_is_ok)(ats_device_t *dev);     // 设备是否OK
 };
 
+osa_err_t   ats_devpb_mod_init();
+void        ats_devpb_mod_exit();
 
+osa_bool_t  ats_devpb_is_support(ats_devpb_t *dp, const osa_char_t *dev_name);
+void        ats_devpb_probe();
 
-osa_err_t   ats_devprober_mod_init();
-void        ats_devprober_mod_exit();
+// table
+extern ats_devpb_t      *g_dptable[];
+// table size
+extern osa_uint32_t     g_dpnum;
 
 
 #ifdef __cplusplus

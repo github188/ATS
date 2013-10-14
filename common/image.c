@@ -5,9 +5,7 @@
 
 
 #include "osa.h"
-#include "class.h"
-#include "image.h"
-#include "log.h"
+#include "core.h"
 
 
 ats_image_t *image_new()

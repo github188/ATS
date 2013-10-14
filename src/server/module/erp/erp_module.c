@@ -6,9 +6,8 @@
  */
 
 #include "osa.h"
-#include "module.h"
-#include "conf_xml.h"
-#include "log.h"
+#include "core.h"
+#include "xml.h"
 #include "config.h"
 #include "module/erp.h"
 

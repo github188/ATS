@@ -5,10 +5,7 @@
 
  
 #include "osa.h"
-#include "class.h"
-#include "module.h"
-#include "bus.h"
-#include "log.h"
+#include "core.h"
 
 
 static osa_list_t   mod_list_head = OSA_LIST_HEAD(mod_list_head);
@@ -67,6 +64,7 @@ osa_err_t ats_module_unregister(const osa_char_t *mod_name)
     
     if ((p = ats_module_find(mod_name)) != NULL)
     {
+        p->ops->end(p);
         osa_list_remove(&p->list);
         ats_log_info("Unregister bus : name(%s)\n", p->name);
     }
@@ -93,6 +91,7 @@ void ats_module_all_init(int argc, char **argv)
                 ats_log_error("Failed to begin module (%s)!\n", node->name);
                 continue;
             }
+            ats_log_info("Succeed to start module: name(%s)\n", node->name);
         }
     }
 }

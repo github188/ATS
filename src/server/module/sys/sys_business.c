@@ -95,8 +95,8 @@ osa_err_t   sysGetDevs(osa_ioch_t *ioch, osa_msg_t *msg)
         cJSON_AddItemToArray(devArray, dev=cJSON_CreateObject());
 
         cJSON_AddStringToObject(dev, "name", node->name);
-        cJSON_AddStringToObject(dev, "ip", node->info.ip);
-        cJSON_AddNumberToObject(dev, "port", node->info.port);
+        cJSON_AddStringToObject(dev, "ip", node->info.addr.net_addr.ip);
+        cJSON_AddNumberToObject(dev, "port", node->info.addr.net_addr.port);
         cJSON_AddStringToObject(dev, "company", node->info.company);
 
         cnt++;

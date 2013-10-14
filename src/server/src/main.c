@@ -7,13 +7,10 @@
 
 
 #include "osa.h"
-#include "test_drv.h"
+#include "core.h"
 #include "data.h"
-#include "test_event.h"
-#include "log.h"
 #include "config.h"
-#include "sys_bus.h"
-
+#include "test_event.h"
 #include "module/test.h"
 #include "module/report.h"
 #include "module/erp.h"
@@ -56,7 +53,7 @@ int main(int argc, char **argv)
             break;
         }
 
-        if (ats_devprober_mod_init() != OSA_ERR_OK)
+        if (ats_devpb_mod_init() != OSA_ERR_OK)
         {
             ats_log_error("Failed to initialize <DEV_PROBER> module!\n");
             break;
@@ -67,11 +64,10 @@ int main(int argc, char **argv)
             ats_log_error("Failed to initialize <SYS> module!\n");
             break;
         }
-  
+
         ats_module_all_init(argc, argv);
-
+        
         ats_sys_exec();
-
     }while (0);
     
     ats_module_all_fini();

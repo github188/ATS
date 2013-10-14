@@ -4,8 +4,7 @@
  */
  
 #include "osa.h"
-#include "bus.h"
-#include "log.h"
+#include "core.h"
 
 
 static osa_list_t   bus_list_head = OSA_LIST_HEAD(bus_list_head);

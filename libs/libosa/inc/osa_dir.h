@@ -46,7 +46,8 @@ OSA_API osa_dir_t   *osa_dir_open(const osa_char_t *name);
 OSA_API osa_err_t   osa_dir_close(osa_dir_t *dir);
 OSA_API osa_err_t   osa_dir_read(osa_dir_t *dir, osa_dirent_t *out_entry);
 OSA_API osa_bool_t  osa_dir_is_exist(const osa_char_t *name);
-
+OSA_API void        osa_dir_getcwd(osa_char_t *out_buf, osa_size_t len);
+OSA_API osa_err_t   osa_dir_chdir(const osa_char_t *dpath);
 
 #ifdef __cplusplus
 }

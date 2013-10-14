@@ -5,14 +5,10 @@
 
 
 #include "osa.h"
-#include "conf_xml.h"
-#include "log.h"
+#include "core.h"
+#include "xml.h"
 #include "test_event.h"
 #include "module/report.h"
-
-#include "bus.h"
-#include "device.h"
-#include "test_drv.h"
 
 
 static osa_err_t    _def_init(ats_tevent_t *tevent);
@@ -24,11 +20,11 @@ static void         _def_fini(ats_tevent_t *tevent);
 static osa_err_t    _def_trv_remove(ats_tdrv_t *tevent);
 
 
-ats_tdrv_t  *ats_tdrv_new(const osa_char_t *name, const osa_char_t *drv_file)
+ats_tdrv_t  *ats_tdrv_new(const osa_char_t *drv_file)
 {
     ats_tdrv_t *drv = (ats_tdrv_t *)osa_mem_alloc(sizeof(ats_tdrv_t));
 
-    strncpy(drv->name, name, OSA_NAME_MAX - 1);
+    drv->dev = NULL;
     strncpy(drv->drv_file, drv_file, OSA_NAME_MAX - 1);
     osa_list_init(&drv->list);
     osa_list_init(&drv->tevent_list_head);
@@ -64,65 +60,6 @@ void    ats_tdrv_delete(ats_tdrv_t *tdrv)
     
     osa_list_remove(&tdrv->tevent_list_head);
     osa_mem_free(tdrv);
-}
-
-
-ats_tdrv_t  *ats_tdrv_find(ats_bus_t *drv_bus, const osa_char_t *tdrv_name)
-{
-    osa_assert(tdrv_name != NULL);
-
-    ats_tdrv_t  *node = NULL;
-    osa_list_t  *l = NULL;
-
-    for (l = drv_bus->ele_list_head.next; l != &drv_bus->ele_list_head; l = l->next)
-    {
-        node = osa_list_entry(l, ats_tdrv_t, list);
-        if (!strcmp(node->name, tdrv_name))
-        {
-            return node;
-        }
-    }
-
-    return NULL;
-}
-
-
-osa_err_t ats_tdrv_register(ats_bus_t *drv_bus, ats_tdrv_t *tdrv)
-{
-    ats_device_t *p = NULL;
-    
-    if ((p = ats_tdrv_find(drv_bus, tdrv->name)) != NULL)
-    {
-        ats_log_warn("Replace Device : name(%s)\n", tdrv->name);
-        p = tdrv;
-    }
-    else
-    {
-        ats_log_info("Register new device : name(%s)\n", tdrv->name);
-        osa_list_insert_before(&drv_bus->ele_list_head, &tdrv->list);
-    }
-    
-    return OSA_ERR_OK;
-}
-
-
-osa_err_t ats_tdrv_unregister(ats_bus_t *drv_bus, const osa_char_t *tdrv_name)
-{
-    osa_assert(tdrv_name != NULL);
-    
-    ats_device_t *p = NULL;
-    
-    if ((p = ats_device_find(drv_bus, tdrv_name)) != NULL)
-    {
-        osa_list_remove(&p->list);
-        if (p->remove)
-        {
-            p->remove(p);
-        }
-        ats_log_info("Unregister test driver : name(%s)\n", p->name);
-    }
-    
-    return OSA_ERR_OK;
 }
 
 
@@ -186,12 +123,20 @@ void ats_tdrv_do_test(ats_tdrv_t *drv)
     }
 }
 
-
-osa_err_t ats_tdrv_parse_drvfile(ats_tdrv_t *drv)
+ats_tdrv_t  *ats_tdrv_load(const osa_char_t *drv_file)
 {
-    return xml_parse_tdrvfile(drv);
+    osa_assert(drv_file != NULL);
+    
+    ats_tdrv_t *new_drv = ats_tdrv_new(drv_file);
+    if (!new_drv)
+    {
+        ats_log_error("Failed to new test driver object!\n");
+        return NULL;
+    }
+    
+    xml_parse_drvfile(drv_file);
 }
-
+void        ats_tdrv_unload(ats_tdrv_t *drv);
 
 static osa_err_t _def_init(ats_tevent_t *tevent)
 {

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ATS>
+    <module name="device">
+        <device name="XM:DEV:NetCamera" type="1">
+            <info>
+                <addr>192.168.1.10:34567</addr>
+                <user>admin</user>
+                <password></password>
+            </info>
+            <drv_file>/opt/ats/etc/drv/xm_ipc.xml</drv_file>
+            <sdk_plugin>/opt/ats/lib/sdk_plugins/xm_ipc.dll</sdk_plugin>
+        </device>
+        <device name="DH:DEV:ipc" type="1">
+            <info>
+                <addr>192.168.1.20:34567</addr>
+                <user>admin</user>
+                <password></password>
+            </info>
+            <drv_file>/opt/ats/etc/drv/dh_ipc.xml</drv_file>
+            <sdk_plugin>/opt/ats/lib/sdk_plugins/dh_ipc.dll</sdk_plugin>
+        </device>
+        <device name="TEST:DEV:DummyDev" type="2">
+            <info>
+                <addr>CON1</addr>
+                <user>admin</user>
+                <password></password>
+            </info>
+            <drv_file>/opt/ats/etc/drv/dummy.xml</drv_file>
+            <sdk_plugin></sdk_plugin>
+        </device>
+    </module>
+
+    <module name="test">
+        <!--测试模块-->
+        <state>on</state>
+    </module>
+    
+    <module name="report">
+        <!--报告模块-->
+        <state>on</state>
+        <output>STDOUT</output>
+    </module>
+	
+    <module name="erp">
+        <!--ERP模块-->
+        <state>off</state>
+	</module>
+
+    <module name="gui">
+        <!--GUI模块-->
+        <state>on</state>
+    </module>
+	
+    <module name="log">
+        <!--日志-->
+        <state>on</state>
+        <!--0: off, 1: fatal, 2: error, 3: warn, 4:info, 5:debug-->
+        <level>4</level>
+        <file>/tmp/ats.log</file>
+    </module>
+</ATS>

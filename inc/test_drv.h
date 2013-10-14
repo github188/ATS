@@ -19,7 +19,7 @@ extern "C" {
 
 struct ATS_TEST_DRIVER_CLASS
 {
-    osa_char_t      name[OSA_NAME_MAX];
+    ats_device_t    *dev;
     osa_char_t      drv_file[OSA_NAME_MAX]; 
     
     osa_list_t      list;
@@ -29,18 +29,12 @@ struct ATS_TEST_DRIVER_CLASS
 };
 
 
-ats_tdrv_t  *ats_tdrv_new(const osa_char_t *name, const osa_char_t *drv_file);
+ats_tdrv_t  *ats_tdrv_new(const osa_char_t *drv_file);
 void        ats_tdrv_delete(ats_tdrv_t *tdrv);
 
 
-ats_tdrv_t  *ats_tdrv_find(ats_bus_t *drv_bus, const osa_char_t *tdrv_name);
-osa_err_t   ats_tdrv_register(ats_bus_t *drv_bus, ats_tdrv_t *tdrv);
-osa_err_t   ats_tdrv_unregister(ats_bus_t *drv_bus, const osa_char_t *tdrv_name);
-
-
-
-// 解析测试驱动文件
-osa_err_t   ats_tdrv_parse_drvfile(ats_tdrv_t *drv);
+ats_tdrv_t  *ats_tdrv_load(const osa_char_t *drv_file);
+void        ats_tdrv_unload(ats_tdrv_t *drv);
 
 void        ats_tdrv_do_test(ats_tdrv_t *drv);
 

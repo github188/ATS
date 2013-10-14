@@ -22,15 +22,15 @@ typedef		    osa_int32_t	    sdk_mfd_t;
 
 struct ATS_SDK_CLASS
 {
-    osa_char_t      *name_space;
-    osa_char_t      *info;
-    osa_uint32_t    version;
-
-    osa_list_t      list;
-
+    /**
+     *  Initialize SDK
+     */
     osa_err_t       (*SDK_init)(void);
+    
+    /**
+     *  Finalize SDK
+     */
     void            (*SDK_exit)(void);
-
     
     /**
      *  Device match with SDK
@@ -67,15 +67,18 @@ struct ATS_SDK_CLASS
     sdk_mfd_t       (*SDK_play_live_media)(osa_uint32_t play_num, osa_uint32_t channel_num, void *user_data);
 
 	osa_err_t       (*SDK_stop_live_media)(sdk_mfd_t mfd); 
+    
+    /** private */
+    ats_device_t    *dev;
+    osa_char_t      *info;
+    osa_uint32_t    version;
+    osa_list_t      list;
 };
 
 
 
 ats_sdk_t   *ats_sdk_plugin_load(const osa_char_t *plugin_file);
-
-ats_sdk_t   *ats_sdk_find(ats_bus_t *sdk_bus, const osa_char_t *sdk_name);
-osa_err_t   ats_sdk_register(ats_bus_t *sdk_bus, ats_sdk_t *sdk);
-osa_err_t   ats_sdk_unregisetr(ats_bus_t *sdk_bus, const osa_char_t *sdk_name);
+void        ats_sdk_plugin_unload(ats_sdk_t *sdk);
 
 
 #ifdef __cplusplus

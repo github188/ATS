@@ -11,14 +11,12 @@
 #define DEV_PROBER(dp)  &dp
 
 /**----------------------------------------*/
-extern ats_devprober_t    dummy_prober;
-extern ats_devprober_t    onvif_prober;
+extern ats_devpb_t    netcamera_prober;
 
 
-ats_devprober_t   *g_devProberTable[] =
+ats_devpb_t   *g_dptable[] =
 {
-    DEV_PROBER(dummy_prober),
-    DEV_PROBER(onvif_prober),
+    DEV_PROBER(netcamera_prober),
 };
 
-osa_uint32_t g_devProberNum = sizeof(g_devProberTable)/sizeof(g_devProberTable[0]);
+osa_uint32_t g_dpnum = sizeof(g_dptable)/sizeof(g_dptable[0]);

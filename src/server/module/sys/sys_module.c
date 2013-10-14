@@ -4,10 +4,9 @@
  */
 
 #include "osa.h"
-#include "module.h"
-#include "conf_xml.h"
+#include "core.h"
+#include "xml.h"
 #include "config.h"
-#include "log.h"
 #include "module/sys.h"
 
 

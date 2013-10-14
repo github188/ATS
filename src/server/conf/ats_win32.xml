@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ATS>
+    <module name="device">
+        <device name="XM:DEV:NetCamera" type="1">
+            <info>
+                <!--如果是网络球机，则地址为IP+端口，
+                如果为模拟球机，则地址为串口-->
+                <addr>192.168.1.10:34567</addr>
+                <user>admin</user>
+                <password></password>
+            </info>
+            <drv_file>C:\ats\etc\drv\xm_ipc.xml</drv_file>
+            <sdk_plugin>C:\ats\lib\sdk_plugins\xm_ipc.dll</sdk_plugin>
+        </device>
+        <device name="DH:DEV:ipc" type="1">
+            <info>
+                <addr>192.168.1.20:34567</addr>
+                <user>admin</user>
+                <password></password>
+            </info>
+            <drv_file>C:\ats\etc\drv\dh_ipc.xml</drv_file>
+            <sdk_plugin>C:\ats\lib\sdk_plugins\dh_ipc.dll</sdk_plugin>
+        </device>
+        <device name="TEST:DEV:DummyDev" type="2">
+            <info>
+                <addr>con1</addr>
+                <user>admin</user>
+                <password></password>
+            </info>
+            <drv_file>C:\ats\etc\test_event\dummy.xml</drv_file>
+            <sdk_plugin></sdk_plugin>
+        </device>
+    </module>
+    
+    <module name="test">
+        <state>on</state>
+        <event_plugin>C:\ats\lib\libtevent.dll</event_plugin>
+    </module>
+    
+    <module name="report">
+        <state>on</state>
+    </module>
+	
+    <module name="erp">
+        <state>off</state>
+	</module>
+
+    <module name="gui">
+        <state>on</state>
+    </module>
+	
+    <module name="log">
+        <state>on</state>
+        <!--0: off, 1: fatal, 2: error, 3: warn, 4:info, 5:debug-->
+        <level>4</level>
+        <file>stdout</file>
+        <!--file>C:\ats_log.txt</file-->
+    </module>
+</ATS>

@@ -49,7 +49,15 @@ extern "C"
 #endif
 
 
+
+#ifdef  __OSA_OS_LINUX__
 #define     OSA_NAME_MAX    128
+#endif
+
+#ifdef __OSA_OS_WIN32__
+#include <stdlib.h>
+#define     OSA_NAME_MAX    MAX_PATH
+#endif
 
 
 #ifdef __cplusplus
