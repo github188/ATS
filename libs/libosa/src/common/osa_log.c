@@ -55,6 +55,7 @@ void    _logit(osa_logtype_t type, osa_char_t *f, osa_uint32_t l, const osa_char
     }
 
     vprintf(fmt, ap);
+    fflush(stdout);
 
     va_end(ap);
 }

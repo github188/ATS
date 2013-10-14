@@ -108,6 +108,7 @@ void ats_log_write(osa_uint8_t log_type, char *file, osa_uint32_t line, const ch
     else
     {
         osa_file_write(log.file, buf, strlen(buf));
+        fflush(log.file->fp);
     }
 
     va_end(ap);
