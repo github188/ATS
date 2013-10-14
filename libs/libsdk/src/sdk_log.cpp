@@ -13,13 +13,13 @@ osa_err_t   SDK_LogOpen(osa_char_t *logfile)
     {
         SDK_LogClose();
     }
-    
+
     logfp = fopen(logfile, "a");
     if (!logfp)
     {
         return OSA_ERR_ERR;
     }
-    
+
     return OSA_ERR_OK;
 }
 
@@ -43,7 +43,7 @@ void    _sdkWriteLog(SDK_LogType type, const char *file, int line, const char *f
             return;
         }
     }
-    
+
     va_list ap;
 
     va_start(ap, fmt);
@@ -75,10 +75,10 @@ void    _sdkWriteLog(SDK_LogType type, const char *file, int line, const char *f
         break;
     }
     }
-    
+
     vfprintf(logfp, fmt, ap);
-    
+
     fflush(logfp);
-    
+
     va_end(ap);
 }

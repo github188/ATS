@@ -4,7 +4,7 @@
  */
 
 
- 
+
 #include "osa_types.h"
 #include "osa_dll.h"
 #include "osa_log.h"

@@ -2,8 +2,8 @@
  *  class.h
  *
  */
- 
- 
+
+
 #ifndef __ATS_CLASS_H__
 #define __ATS_CLASS_H__
 

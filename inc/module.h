@@ -20,23 +20,24 @@ typedef enum
 {
     ATS_OFF = 0,
     ATS_ON = 1,
-}ats_switch_t;
+}
+ats_switch_t;
 
 
 typedef struct
 {
     osa_err_t   (*begin)(ats_module_t *m, int argc, char **argv);
     void        (*end)(ats_module_t *m);
-}ats_mops_t;
+} ats_mops_t;
 
 struct ATS_MODULE_CLASS
 {
     osa_char_t      name[OSA_NAME_MAX];
     osa_char_t      *conf_file;
-    
+
     ats_switch_t    state;
     osa_list_t      list;
-    
+
     ats_mops_t      *ops;
     void            *priv_data;     // 模块数据
 };

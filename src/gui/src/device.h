@@ -31,7 +31,7 @@ public:
     explicit Device(const string &name, const string &ip, osa_uint32_t port);
 
 
-/** business functions */
+    /** business functions */
 public:
     osa_err_t   loginDev(const string &user, const string &password);
     osa_err_t   logoutDev();
@@ -44,7 +44,7 @@ public:
 
     osa_err_t   playMedia();
 
-/** other functions */
+    /** other functions */
 public:
     static Device *findDev(const string &devName);
     static osa_err_t registerDev(Device *dev);

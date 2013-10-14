@@ -18,18 +18,18 @@
 QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_AboutDialog[] = {
 
- // content:
-       6,       // revision
-       0,       // classname
-       0,    0, // classinfo
-       0,    0, // methods
-       0,    0, // properties
-       0,    0, // enums/sets
-       0,    0, // constructors
-       0,       // flags
-       0,       // signalCount
+// content:
+    6,       // revision
+    0,       // classname
+    0,    0, // classinfo
+    0,    0, // methods
+    0,    0, // properties
+    0,    0, // enums/sets
+    0,    0, // constructors
+    0,       // flags
+    0,       // signalCount
 
-       0        // eod
+    0        // eod
 };
 
 static const char qt_meta_stringdata_AboutDialog[] = {
@@ -45,16 +45,19 @@ void AboutDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
 }
 
 const QMetaObjectExtraData AboutDialog::staticMetaObjectExtraData = {
-    0,  qt_static_metacall 
+    0,  qt_static_metacall
 };
 
 const QMetaObject AboutDialog::staticMetaObject = {
-    { &QDialog::staticMetaObject, qt_meta_stringdata_AboutDialog,
-      qt_meta_data_AboutDialog, &staticMetaObjectExtraData }
+    {   &QDialog::staticMetaObject, qt_meta_stringdata_AboutDialog,
+        qt_meta_data_AboutDialog, &staticMetaObjectExtraData
+    }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &AboutDialog::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &AboutDialog::getStaticMetaObject() {
+    return staticMetaObject;
+}
 #endif //Q_NO_DATA_RELOCATION
 
 const QMetaObject *AboutDialog::metaObject() const

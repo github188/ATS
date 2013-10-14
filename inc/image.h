@@ -20,7 +20,8 @@ typedef enum
 {
     IPL_8U = 8,
     IPL_16U = 16
-}ats_image_depth_t;
+}
+ats_image_depth_t;
 
 
 typedef struct IMAGE_ROI
@@ -29,7 +30,7 @@ typedef struct IMAGE_ROI
     osa_uint32_t    r_y;
     osa_uint32_t    r_width;
     osa_uint32_t    r_height;
-}ats_image_roi_t;
+} ats_image_roi_t;
 
 
 struct ATS_IMAGE_CLASS
@@ -49,11 +50,11 @@ struct ATS_IMAGE_CLASS
 
 
 ats_image_t     *ats_image_new();
-ats_image_t     *ats_image_new_ex(osa_uint32_t      width, 
-                                osa_uint32_t        height, 
-                                ats_image_depth_t   depth, 
-                                osa_uint32_t        channels, 
-                                osa_char_t          *data);
+ats_image_t     *ats_image_new_ex(osa_uint32_t      width,
+                                  osa_uint32_t        height,
+                                  ats_image_depth_t   depth,
+                                  osa_uint32_t        channels,
+                                  osa_char_t          *data);
 void        ats_image_delete(ats_image_t *img);
 
 

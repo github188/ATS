@@ -96,7 +96,7 @@ public:
 };
 
 namespace Ui {
-    class DevConnectDialog: public Ui_DevConnectDialog {};
+class DevConnectDialog: public Ui_DevConnectDialog {};
 } // namespace Ui
 
 QT_END_NAMESPACE

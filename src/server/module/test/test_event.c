@@ -91,10 +91,10 @@ void ats_tevent_plugin_unload()
 ats_tevent_t    *ats_tevent_find(ats_tdrv_t *drv, const osa_char_t *tevent_name)
 {
     osa_assert(tevent_name != NULL);
-    
+
     ats_tevent_t *node = NULL;
     osa_list_t   *l = NULL;
-    
+
     for (l = drv->tevent_list_head.next; l != &drv->tevent_list_head; l=l->next)
     {
         node = osa_list_entry(l, ats_tevent_t, list);
@@ -103,14 +103,14 @@ ats_tevent_t    *ats_tevent_find(ats_tdrv_t *drv, const osa_char_t *tevent_name)
             return node;
         }
     }
-    
+
     return NULL;
 }
 
-osa_err_t       ats_tevent_register(ats_tdrv_t *drv, ats_tevent_t *tevent)
+osa_err_t ats_tevent_register(ats_tdrv_t *drv, ats_tevent_t *tevent)
 {
     ats_tevent_t *p = NULL;
-    
+
     if ((p = ats_tevent_find(drv, tevent)) != NULL)
     {
         p = tevent;
@@ -122,14 +122,14 @@ osa_err_t       ats_tevent_register(ats_tdrv_t *drv, ats_tevent_t *tevent)
     return OSA_ERR_OK;
 }
 
-osa_err_t       ats_tevent_unregister(ats_tdrv_t *drv, const osa_char_t *tevent_name)
+osa_err_t ats_tevent_unregister(ats_tdrv_t *drv, const osa_char_t *tevent_name)
 {
     ats_tevent_t *p = NULL;
-    
+
     if ((p = ats_tevent_find(drv, tevent_name)) != NULL)
     {
         osa_list_remove(&p->list);
     }
-    
+
     return OSA_ERR_OK;
 }

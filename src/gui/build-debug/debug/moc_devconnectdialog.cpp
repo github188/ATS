@@ -18,22 +18,22 @@
 QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_DevConnectDialog[] = {
 
- // content:
-       6,       // revision
-       0,       // classname
-       0,    0, // classinfo
-       2,   14, // methods
-       0,    0, // properties
-       0,    0, // enums/sets
-       0,    0, // constructors
-       0,       // flags
-       0,       // signalCount
+// content:
+    6,       // revision
+    0,       // classname
+    0,    0, // classinfo
+    2,   14, // methods
+    0,    0, // properties
+    0,    0, // enums/sets
+    0,    0, // constructors
+    0,       // flags
+    0,       // signalCount
 
- // slots: signature, parameters, type, tag, flags
-      18,   17,   17,   17, 0x08,
-      35,   17,   17,   17, 0x08,
+// slots: signature, parameters, type, tag, flags
+    18,   17,   17,   17, 0x08,
+    35,   17,   17,   17, 0x08,
 
-       0        // eod
+    0        // eod
 };
 
 static const char qt_meta_stringdata_DevConnectDialog[] = {
@@ -47,25 +47,33 @@ void DevConnectDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         Q_ASSERT(staticMetaObject.cast(_o));
         DevConnectDialog *_t = static_cast<DevConnectDialog *>(_o);
         switch (_id) {
-        case 0: _t->onLoginClicked(); break;
-        case 1: _t->onExitClicked(); break;
-        default: ;
+        case 0:
+            _t->onLoginClicked();
+            break;
+        case 1:
+            _t->onExitClicked();
+            break;
+        default:
+            ;
         }
     }
     Q_UNUSED(_a);
 }
 
 const QMetaObjectExtraData DevConnectDialog::staticMetaObjectExtraData = {
-    0,  qt_static_metacall 
+    0,  qt_static_metacall
 };
 
 const QMetaObject DevConnectDialog::staticMetaObject = {
-    { &QDialog::staticMetaObject, qt_meta_stringdata_DevConnectDialog,
-      qt_meta_data_DevConnectDialog, &staticMetaObjectExtraData }
+    {   &QDialog::staticMetaObject, qt_meta_stringdata_DevConnectDialog,
+        qt_meta_data_DevConnectDialog, &staticMetaObjectExtraData
+    }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &DevConnectDialog::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &DevConnectDialog::getStaticMetaObject() {
+    return staticMetaObject;
+}
 #endif //Q_NO_DATA_RELOCATION
 
 const QMetaObject *DevConnectDialog::metaObject() const

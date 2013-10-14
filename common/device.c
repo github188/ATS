@@ -14,7 +14,7 @@ static void _def_dev_remove(ats_device_t *self);
 ats_device_t *ats_device_new(const osa_char_t *dev_name, ats_devtype_t type)
 {
     osa_assert(dev_name != NULL);
-    
+
     ats_device_t *dev = (ats_device_t *)osa_mem_alloc(sizeof(ats_device_t));
 
     strncpy(dev->name, dev_name, OSA_NAME_MAX-1);
@@ -39,37 +39,63 @@ void ats_device_delete(ats_device_t *dev)
 
 
 void ats_device_setinfo(ats_device_t *dev, const osa_char_t *addr,
-                    const osa_char_t *user, const osa_char_t *passwd)
+                        const osa_char_t *user, const osa_char_t *passwd)
 {
+    osa_assert(addr != NULL);
+
+    strncpy(dev->info.addr.addr, addr, strlen(addr));
+
     // net camera, use  ip + port
     if (dev->type == DT_NET_CAMERA)
     {
-        osa_char_t ipaddr[32] = {0};
-		osa_char_t *ip = ipaddr;
-        osa_char_t *port = NULL;
-        
-        osa_char_t *ptr = addr;
+        char ip[32] = {0};
+        char port[32] = {0};
+        char *ptr = addr;
+        osa_uint8_t flag= 0;
+        osa_uint32_t i=0;
+
         while (*ptr)
         {
             if (*ptr == ':')
             {
-                port = ptr++;
-                break;
+                flag = 1;
+                ptr++;
+                i=0;
+                continue;
             }
-            *(ip++) = *ptr;
+            if (flag == 0)
+            {
+                ip[i++] = *ptr;
+                ip[sizeof(ip)-1] = '\0';
+            }
+            else
+            {
+                port[i++] = *ptr;
+                port[sizeof(port)-1] = '\0';
+            }
+            ptr++;
         }
-        
-        strncpy(dev->info.addr.net_addr.ip, ipaddr, sizeof(dev->info.addr.net_addr.ip)-1);
+        strncpy(dev->info.addr.net_addr.ip, ip, strlen(ip));
         dev->info.addr.net_addr.port = atoi(port);
     }
     // simulator camera, user CON. port
     else if (dev->type = DT_SIM_CAMERA)
     {
-        strncpy(dev->info.addr.con_addr, addr, sizeof(dev->info.addr.con_addr)-1);
+        strncpy(dev->info.addr.con_addr, addr, strlen(addr));
+    }
+    else
+    {
+        ats_log_error("Unknown device type!\n");
     }
 
-    strncpy(dev->info.user, user, 31);
-    strncpy(dev->info.passwd, passwd, 31);
+    if (user)
+    {
+        strncpy(dev->info.user, user, strlen(user));
+    }
+    if (passwd)
+    {
+        strncpy(dev->info.passwd, passwd, strlen(passwd));
+    }
 }
 
 
@@ -88,14 +114,14 @@ ats_device_t  *ats_device_find(ats_bus_t *dev_bus, const osa_char_t *name)
             return node;
         }
     }
-    
+
     return NULL;
 }
 
 osa_err_t   ats_device_register(ats_bus_t *dev_bus, ats_device_t *dev)
 {
     ats_device_t *p = NULL;
-    
+
     if ((p = ats_device_find(dev_bus, dev->name)) != NULL)
     {
         ats_log_warn("Replace Device : name(%s)\n", dev->name);
@@ -103,75 +129,20 @@ osa_err_t   ats_device_register(ats_bus_t *dev_bus, ats_device_t *dev)
     }
     else
     {
-        ats_log_info("Register new device : name(%s)\n", dev->name);
+        ats_log_info("Register new device : name(%s), type(%d), addr(%s), user(%s), password(%s)\n",
+                     dev->name, dev->type, dev->info.addr.addr, dev->info.user, dev->info.passwd);
         osa_list_insert_before(&dev_bus->ele_list_head, &dev->list);
     }
-    
-    /** find the driver */
-    ats_bus_t *tdrv_bus = ats_bus_find("tdrv_bus");
-    if (!tdrv_bus)
-    {
-        ats_log_warn("No suitable test driver for device (%s)!\n", dev->name);
-    }
-    
-    ats_bus_t *sdk_bus = ats_bus_find("sdk_bus");
-    if (!sdk_bus)
-    {
-        ats_log_warn("No suitable sdk for device (%s)!\n", dev->name);
-    }
-    
-    ats_tdrv_t *tdrv = NULL;
-    ats_sdk_t  *sdk = NULL;
-    osa_list_t *l = NULL;
-    
-    for (l=tdrv_bus->ele_list_head.next; l!=&tdrv_bus->ele_list_head; l=l->next)
-    {
-        tdrv = osa_list_entry(l, ats_tdrv_t, list);
-        if (tdrv_bus->ops->match)
-        {
-            if (tdrv_bus->ops->match(tdrv, dev) == OSA_TRUE)
-            {
-                ats_log_info("Device matched driver: %s!\n", dev->name);
-                dev->drv = tdrv;
-				tdrv->dev = dev;
-                break;
-            }
-        }
-    }
-    if (l == &tdrv_bus->ele_list_head)
-    {
-        ats_log_warn("No suitable test driver for device : %s\n", dev->name);
-    }
-    
-    /** find the sdk */
-    for (l=sdk_bus->ele_list_head.next; l!=&sdk_bus->ele_list_head; l=l->next)
-    {
-        sdk = osa_list_entry(l, ats_sdk_t, list);
-        if (sdk_bus->ops->match)
-        {
-            if (sdk_bus->ops->match(sdk, dev) == OSA_TRUE)
-            {
-                ats_log_info("Device matched : %s!\n", dev->name);
-                dev->sdk = sdk;
-				sdk->dev = dev;
-                break;
-            }
-        }
-    }
-    if (l == &sdk_bus->ele_list_head)
-    {
-        ats_log_warn("No suitable sdk for device : %s\n", dev->name);
-    }
-    
+
     return OSA_ERR_OK;
 }
 
 osa_err_t   ats_device_unregister(ats_bus_t *dev_bus, const osa_char_t *dev_name)
 {
     osa_assert(dev_name != NULL);
-    
+
     ats_device_t *p = NULL;
-    
+
     if ((p = ats_device_find(dev_bus, dev_name)) != NULL)
     {
         osa_list_remove(&p->list);
@@ -181,13 +152,13 @@ osa_err_t   ats_device_unregister(ats_bus_t *dev_bus, const osa_char_t *dev_name
         }
         ats_log_info("Unregister device : name(%s)\n", p->name);
     }
-    
+
     return OSA_ERR_OK;
 }
 
 static void _def_dev_remove(ats_device_t *self)
 {
     ats_log_info("Remove device : name(%s)\n", self->name);
-    
+
     ats_device_delete(self);
 }

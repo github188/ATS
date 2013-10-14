@@ -158,9 +158,9 @@ SDK_MediaFD MainWindow::playLiveMedia(Device *dev)
     }
 
     err = devSdk->SDK_LoginDevice(devInfo.ipAddr.c_str(),  /** ip address */
-                            devInfo.port,           /** port */
-                            devInfo.loginUser.c_str(),  /** user */
-                            devInfo.loginPasswd.c_str());   /** password */
+                                  devInfo.port,           /** port */
+                                  devInfo.loginUser.c_str(),  /** user */
+                                  devInfo.loginPasswd.c_str());   /** password */
     if (err != OSA_ERR_OK)
     {
         GUI_LogError("Failed to login device!\n");

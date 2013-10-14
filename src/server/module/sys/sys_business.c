@@ -138,23 +138,23 @@ osa_err_t   sysTestDevice(osa_ioch_t *ioch, osa_msg_t *msg)
         ats_log_error("Device(%s) has no test driver, I don't known how to test !\n", dev->name);
         return OSA_ERR_ERR;
     }
-    
+
     osa_sockaddr_t *client_addr=&((osa_socket_t *)(ioch->priv))->addr.in_addr;
-    
+
     ats_report_t *report = ats_report_open((void *)client_addr);
-    
+
     osa_list_t      *l = NULL;
     ats_tevent_t    *node = NULL;
-    
-    for (l = dev->drv->tevent_list_head.next; 
-        l != &dev->drv->tevent_list_head; l = l->next)
+
+    for (l = dev->drv->tevent_list_head.next;
+            l != &dev->drv->tevent_list_head; l = l->next)
     {
         node = osa_list_entry(l, ats_tevent_t, list);
         node->report = report;
     }
-    
+
     ats_test_device_test(dev);
-    
+
     ats_report_close(report);
 }
 
@@ -169,7 +169,7 @@ osa_err_t   sysLoginDevice(osa_ioch_t *ioch, osa_msg_t *msg)
         ats_log_error("no device bus found!\n");
         return OSA_ERR_ERR;
     }
-    
+
     cJSON *root = cJSON_Parse((char *)msg->data);
     osa_ret_val_if_fail(root != NULL, OSA_ERR_ERR);
 

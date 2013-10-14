@@ -25,7 +25,8 @@ typedef enum
     SDK_LOG_ERROR = 2,
     SDK_LOG_WARN = 3,
     SDK_LOG_INFO = 4
-}SDK_LogType;
+}
+SDK_LogType;
 
 
 #define     SDK_LOG_FILE        "C:\\SDK_log.txt"

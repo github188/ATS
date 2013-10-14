@@ -68,8 +68,8 @@ static void version_fini(ats_tevent_t *self)
 
     osa_char_t buf[1024]  = {0};
 
-    sprintf(buf, "[%s] Test Times: %d, Fail Times: %d, Fail Rate: %.2f%%", 
-                self->name, all_times, fail_times, fail_rate);
+    sprintf(buf, "[%s] Test Times: %d, Fail Times: %d, Fail Rate: %.2f%%",
+            self->name, all_times, fail_times, fail_rate);
 
     ats_report_write(self->report, buf, sizeof(buf));
 }

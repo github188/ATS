@@ -20,12 +20,12 @@ extern "C" {
 struct ATS_TEST_DRIVER_CLASS
 {
     ats_device_t    *dev;
-    osa_char_t      drv_file[OSA_NAME_MAX]; 
-    
+    osa_char_t      drv_file[OSA_NAME_MAX];
+
     osa_list_t      list;
     osa_list_t      tevent_list_head;
 
-    osa_err_t       (*remove)(ats_tdrv_t *self);  
+    osa_err_t       (*remove)(ats_tdrv_t *self);
 };
 
 

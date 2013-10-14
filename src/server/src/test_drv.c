@@ -28,9 +28,9 @@ ats_tdrv_t  *ats_tdrv_new(const osa_char_t *drv_file)
     strncpy(drv->drv_file, drv_file, OSA_NAME_MAX - 1);
     osa_list_init(&drv->list);
     osa_list_init(&drv->tevent_list_head);
-    
+
     drv->remove = _def_trv_remove;
-    
+
     return drv;
 }
 
@@ -41,7 +41,7 @@ void    ats_tdrv_delete(ats_tdrv_t *tdrv)
     {
         return;
     }
-    
+
     ats_tevent_t    *node = NULL;
     osa_list_t      *l = NULL;
 
@@ -57,21 +57,21 @@ void    ats_tdrv_delete(ats_tdrv_t *tdrv)
             node->ops.fini(node);
         }
     }
-    
+
     osa_list_remove(&tdrv->tevent_list_head);
     osa_mem_free(tdrv);
 }
 
 
 void ats_tdrv_do_test(ats_tdrv_t *drv)
-{   
+{
     /** attention: char pointer */
     osa_uint8_t     *ptr = NULL;
     osa_uint32_t    i;
-    
+
     osa_list_t      *l = NULL;
     ats_tevent_t    *node = NULL;
-    
+
     for (l = drv->tevent_list_head.next; l != &drv->tevent_list_head; l = l->next)
     {
         node = osa_list_entry(l, ats_tevent_t, list);
@@ -94,9 +94,9 @@ void ats_tdrv_do_test(ats_tdrv_t *drv)
             ats_log_error("Failed to begin test!\n");
             continue;
         }
-        
+
         node->attr.stat.fail_times = 0;
-        
+
         for (i = 0; i < node->attr.tcb.tc_num; i++)
         {
             ats_log_info("Test case : %d\n", i + 1);
@@ -116,9 +116,9 @@ void ats_tdrv_do_test(ats_tdrv_t *drv)
                 node->attr.stat.fail_times ++;
             }
         }
-        
+
         node->attr.stat.test_times = node->attr.tcb.tc_num;
-        
+
         node->ops.fini(node);
     }
 }
@@ -126,17 +126,21 @@ void ats_tdrv_do_test(ats_tdrv_t *drv)
 ats_tdrv_t  *ats_tdrv_load(const osa_char_t *drv_file)
 {
     osa_assert(drv_file != NULL);
-    
+
     ats_tdrv_t *new_drv = ats_tdrv_new(drv_file);
     if (!new_drv)
     {
         ats_log_error("Failed to new test driver object!\n");
         return NULL;
     }
-    
-    xml_parse_drvfile(drv_file);
+
+    xml_parse_drvfile(new_drv);
 }
-void        ats_tdrv_unload(ats_tdrv_t *drv);
+
+void ats_tdrv_unload(ats_tdrv_t *drv)
+{
+    ats_tdrv_delete(drv);
+}
 
 static osa_err_t _def_init(ats_tevent_t *tevent)
 {

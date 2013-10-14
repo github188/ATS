@@ -26,12 +26,12 @@ struct ATS_SDK_CLASS
      *  Initialize SDK
      */
     osa_err_t       (*SDK_init)(void);
-    
+
     /**
      *  Finalize SDK
      */
     void            (*SDK_exit)(void);
-    
+
     /**
      *  Device match with SDK
      *
@@ -41,7 +41,7 @@ struct ATS_SDK_CLASS
      *  @return if device matched with sdk ,return OSA_TRUE , or return OSA_FALSE
      */
     osa_bool_t      (*SDK_match_dev)(ats_sdk_t *self, const osa_char_t *dev_name);
-    
+
     /**
      *  Login Device
      *
@@ -52,8 +52,8 @@ struct ATS_SDK_CLASS
      *
      *  @return error code
      */
-    osa_err_t       (*SDK_login_device)(const osa_char_t *ip, osa_uint32_t port, 
-                                    const osa_char_t *user, const osa_char_t *passwd);
+    osa_err_t       (*SDK_login_device)(const osa_char_t *ip, osa_uint32_t port,
+                                        const osa_char_t *user, const osa_char_t *passwd);
 
     /**
      *  Play Live Media
@@ -66,8 +66,8 @@ struct ATS_SDK_CLASS
      */
     sdk_mfd_t       (*SDK_play_live_media)(osa_uint32_t play_num, osa_uint32_t channel_num, void *user_data);
 
-	osa_err_t       (*SDK_stop_live_media)(sdk_mfd_t mfd); 
-    
+    osa_err_t       (*SDK_stop_live_media)(sdk_mfd_t mfd);
+
     /** private */
     ats_device_t    *dev;
     osa_char_t      *info;

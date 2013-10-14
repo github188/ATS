@@ -24,9 +24,9 @@ static void __exit();
 
 int main(int argc, char **argv)
 {
-    
+
     __init();
-  
+
     do
     {
         if (system_bus_init() != OSA_ERR_OK)
@@ -66,14 +66,14 @@ int main(int argc, char **argv)
         }
 
         ats_module_all_init(argc, argv);
-        
+
         ats_sys_exec();
-    }while (0);
-    
+    } while (0);
+
     ats_module_all_fini();
-    
+
     system_bus_fini();
-    
+
     __exit();
 
     return  -1;
@@ -88,7 +88,7 @@ void __init()
         osa_log_error("Failed to parse log configuration file!\n");
         return -1;
     }
-    
+
     if (ats_log_open(logcf.logfile) != OSA_ERR_OK)
     {
         osa_log_error("Failed to open log!\n");

@@ -20,22 +20,23 @@ typedef enum
 {
     DT_NET_CAMERA = 1,      // 网络摄像机
     DT_SIM_CAMERA = 2,      // 模拟球机
-    
+
     DT_DUMMY
-}ats_devtype_t;
+}
+ats_devtype_t;
 
 typedef struct _ATS_DEVICE_INFO
 {
     union
     {
+        osa_char_t  addr[32];
         struct _ipaddr
         {
             osa_char_t  ip[20];
             osa_uint32_t port;
-        }net_addr;
-        
-        osa_char_t  con_addr;
-    }addr;
+        } net_addr;
+        osa_char_t  con_addr[32];
+    } addr;
     osa_char_t      user[32];     // 设备登陆用户名
     osa_char_t      passwd[32];   // 设备登陆密码
     osa_char_t      company[32];  // 设备厂商
@@ -61,7 +62,7 @@ ats_device_t    *ats_device_new(const osa_char_t *dev_name, ats_devtype_t type);
 void            ats_device_delete(ats_device_t *dev);
 
 void            ats_device_setinfo(ats_device_t *dev,  const osa_char_t *addr,
-                                const osa_char_t *user, const osa_char_t *passwd);
+                                   const osa_char_t *user, const osa_char_t *passwd);
 
 ats_device_t    *ats_device_find(ats_bus_t *dev_bus, const osa_char_t *dev_name);
 osa_err_t       ats_device_register(ats_bus_t *dev_bus, ats_device_t *dev);

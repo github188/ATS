@@ -24,27 +24,27 @@ void    _logit(osa_logtype_t type, osa_char_t *f, osa_uint32_t l, const osa_char
     }
     case OSA_LOG_FATAL:
     {
-        printf("[FATAL] ");
+        printf("[OSA_FATAL] ");
         break;
     }
     case OSA_LOG_ERROR:
     {
-        printf("[ERROR] ");
+        printf("[OSA_ERROR] ");
         break;
     }
     case OSA_LOG_WARN:
     {
-        printf("[WARN] ");
+        printf("[OSA_WARN] ");
         break;
     }
     case OSA_LOG_INFO:
     {
-        printf("[INFO] ");
+        printf("[OSA_INFO] ");
         break;
     }
     case OSA_LOG_DEBUG:
     {
-        printf("[DEBUG]<%s, %d> ", f, l);
+        printf("[OSA_DEBUG]<%s, %d> ", f, l);
         break;
     }
     case OSA_LOG_MAX:

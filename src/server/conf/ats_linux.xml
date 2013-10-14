@@ -8,7 +8,7 @@
                 <password></password>
             </info>
             <drv_file>/opt/ats/etc/drv/xm_ipc.xml</drv_file>
-            <sdk_plugin>/opt/ats/lib/sdk_plugins/xm_ipc.dll</sdk_plugin>
+            <sdk_plugin></sdk_plugin>
         </device>
         <device name="DH:DEV:ipc" type="1">
             <info>
@@ -17,7 +17,7 @@
                 <password></password>
             </info>
             <drv_file>/opt/ats/etc/drv/dh_ipc.xml</drv_file>
-            <sdk_plugin>/opt/ats/lib/sdk_plugins/dh_ipc.dll</sdk_plugin>
+            <sdk_plugin></sdk_plugin>
         </device>
         <device name="TEST:DEV:DummyDev" type="2">
             <info>
@@ -26,7 +26,7 @@
                 <password></password>
             </info>
             <drv_file>/opt/ats/etc/drv/dummy.xml</drv_file>
-            <sdk_plugin></sdk_plugin>
+			<sdk_plugin></sdk_plugin>
         </device>
     </module>
 
@@ -56,6 +56,6 @@
         <state>on</state>
         <!--0: off, 1: fatal, 2: error, 3: warn, 4:info, 5:debug-->
         <level>4</level>
-        <file>/tmp/ats.log</file>
+        <file>stdout</file>
     </module>
 </ATS>

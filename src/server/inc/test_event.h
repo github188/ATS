@@ -1,7 +1,7 @@
- /**
- * test_event.h
- *
- */
+/**
+* test_event.h
+*
+*/
 
 #ifndef __TEST_EVENT_H__
 #define __TEST_EVENT_H__
@@ -21,7 +21,8 @@ typedef enum
 {
     ATS_SUCCEED     = 0,
     ATS_FAILED      = -1,
-}ats_result_t;
+}
+ats_result_t;
 
 
 /** test case box */
@@ -30,7 +31,7 @@ typedef struct
     osa_uint32_t    tc_num;     // 测试用例数量
     osa_uint32_t    tc_size;    // 每个测试用例大小
     void           *tc_cases;     // 测试用例数据地址
-}ats_tcasebox_t;
+} ats_tcasebox_t;
 
 
 /** test statistic */
@@ -38,7 +39,7 @@ typedef struct
 {
     osa_uint32_t    test_times;     // 总共测试次数
     osa_uint32_t    fail_times;     // 失败次数
-}ats_tstatistic_t;
+} ats_tstatistic_t;
 
 
 /** test attribute */
@@ -48,7 +49,7 @@ typedef struct
     ats_tcasebox_t      tcb;    // 测试用例容器
     ats_result_t        result; // 测试结果
     ats_tstatistic_t    stat;  // 结果统计
-}ats_testattr_t;
+} ats_testattr_t;
 
 
 /** test ops */
@@ -61,19 +62,19 @@ typedef struct
     /** test stop function */
     void            (*test_stop)(ats_tevent_t *tevent);
     /** success callback function */
-    void            (*suss_cb)(ats_tevent_t *tevent); 
+    void            (*suss_cb)(ats_tevent_t *tevent);
     /** fail callback function */
     void            (*fail_cb)(ats_tevent_t *tevent);
     /** end function */
     void            (*fini)(ats_tevent_t *tevent);
-}ats_tevent_ops_t;
+} ats_tevent_ops_t;
 
 
 struct ATS_TEST_EVENT_CLASS
 {
-    osa_char_t      *name;      // 测试项名称   
+    osa_char_t      *name;      // 测试项名称
     ats_tevent_ops_t ops;       // ops
-    
+
     /** private data */
     ats_testattr_t  attr;       // attribute
     ats_report_t	*report;    // report

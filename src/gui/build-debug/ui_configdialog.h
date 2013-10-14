@@ -104,7 +104,7 @@ public:
 };
 
 namespace Ui {
-    class ConfigDialog: public Ui_ConfigDialog {};
+class ConfigDialog: public Ui_ConfigDialog {};
 } // namespace Ui
 
 QT_END_NAMESPACE

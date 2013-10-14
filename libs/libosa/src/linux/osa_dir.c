@@ -61,33 +61,33 @@ osa_err_t     osa_dir_read(osa_dir_t *dir, osa_dirent_t *out_entry)
     {
         return OSA_ERR_ERR;
     }
-    
+
     switch (de->d_type)
     {
-        case DT_DIR:
-        {
-            out_entry->ft = OSA_FT_DIRECTORY;
-            break;
-        }
-        case DT_BLK:
-        case DT_CHR:
-        {
-            out_entry->ft = OSA_FT_DEVICE;
-            break;
-        }
-        case DT_REG:
-        {
-            out_entry->ft = OSA_FT_ARCHIVE;
-            break;
-        }
-        default:
-        {
-            out_entry->ft = OSA_FT_UNKNOWN;
-            break;
-        }
+    case DT_DIR:
+    {
+        out_entry->ft = OSA_FT_DIRECTORY;
+        break;
+    }
+    case DT_BLK:
+    case DT_CHR:
+    {
+        out_entry->ft = OSA_FT_DEVICE;
+        break;
+    }
+    case DT_REG:
+    {
+        out_entry->ft = OSA_FT_ARCHIVE;
+        break;
+    }
+    default:
+    {
+        out_entry->ft = OSA_FT_UNKNOWN;
+        break;
+    }
     }
     strcpy(out_entry->name, de->d_name);
-    
+
     return OSA_ERR_OK;
 }
 

@@ -18,32 +18,32 @@
 QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_MainWindow[] = {
 
- // content:
-       6,       // revision
-       0,       // classname
-       0,    0, // classinfo
-      12,   14, // methods
-       0,    0, // properties
-       0,    0, // enums/sets
-       0,    0, // constructors
-       0,       // flags
-       0,       // signalCount
+// content:
+    6,       // revision
+    0,       // classname
+    0,    0, // classinfo
+    12,   14, // methods
+    0,    0, // properties
+    0,    0, // enums/sets
+    0,    0, // constructors
+    0,       // flags
+    0,       // signalCount
 
- // slots: signature, parameters, type, tag, flags
-      12,   11,   11,   11, 0x08,
-      28,   11,   11,   11, 0x08,
-      45,   11,   11,   11, 0x08,
-      70,   61,   11,   11, 0x08,
-     118,  114,   11,   11, 0x08,
-     156,  149,   11,   11, 0x08,
-     187,   11,   11,   11, 0x08,
-     205,   11,   11,   11, 0x08,
-     222,   11,   11,   11, 0x08,
-     244,  114,   11,   11, 0x08,
-     278,  149,   11,   11, 0x08,
-     313,   11,   11,   11, 0x08,
+// slots: signature, parameters, type, tag, flags
+    12,   11,   11,   11, 0x08,
+    28,   11,   11,   11, 0x08,
+    45,   11,   11,   11, 0x08,
+    70,   61,   11,   11, 0x08,
+    118,  114,   11,   11, 0x08,
+    156,  149,   11,   11, 0x08,
+    187,   11,   11,   11, 0x08,
+    205,   11,   11,   11, 0x08,
+    222,   11,   11,   11, 0x08,
+    244,  114,   11,   11, 0x08,
+    278,  149,   11,   11, 0x08,
+    313,   11,   11,   11, 0x08,
 
-       0        // eod
+    0        // eod
 };
 
 static const char qt_meta_stringdata_MainWindow[] = {
@@ -65,34 +65,62 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         Q_ASSERT(staticMetaObject.cast(_o));
         MainWindow *_t = static_cast<MainWindow *>(_o);
         switch (_id) {
-        case 0: _t->onOpenClicked(); break;
-        case 1: _t->onCloseClicked(); break;
-        case 2: _t->onExitClicked(); break;
-        case 3: _t->onTreeViewItemPressed((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 4: _t->onTreeViewRightClicked((*reinterpret_cast< QPoint(*)>(_a[1]))); break;
-        case 5: _t->onTreeViewMenuShowed((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
-        case 6: _t->onConfigClicked(); break;
-        case 7: _t->onAboutClicked(); break;
-        case 8: _t->onReportSockHasData(); break;
-        case 9: _t->onTextBrowserRightClicked((*reinterpret_cast< QPoint(*)>(_a[1]))); break;
-        case 10: _t->onTextBrowserMenuClicked((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
-        case 11: _t->onStartTestClicked(); break;
-        default: ;
+        case 0:
+            _t->onOpenClicked();
+            break;
+        case 1:
+            _t->onCloseClicked();
+            break;
+        case 2:
+            _t->onExitClicked();
+            break;
+        case 3:
+            _t->onTreeViewItemPressed((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])));
+            break;
+        case 4:
+            _t->onTreeViewRightClicked((*reinterpret_cast< QPoint(*)>(_a[1])));
+            break;
+        case 5:
+            _t->onTreeViewMenuShowed((*reinterpret_cast< QAction*(*)>(_a[1])));
+            break;
+        case 6:
+            _t->onConfigClicked();
+            break;
+        case 7:
+            _t->onAboutClicked();
+            break;
+        case 8:
+            _t->onReportSockHasData();
+            break;
+        case 9:
+            _t->onTextBrowserRightClicked((*reinterpret_cast< QPoint(*)>(_a[1])));
+            break;
+        case 10:
+            _t->onTextBrowserMenuClicked((*reinterpret_cast< QAction*(*)>(_a[1])));
+            break;
+        case 11:
+            _t->onStartTestClicked();
+            break;
+        default:
+            ;
         }
     }
 }
 
 const QMetaObjectExtraData MainWindow::staticMetaObjectExtraData = {
-    0,  qt_static_metacall 
+    0,  qt_static_metacall
 };
 
 const QMetaObject MainWindow::staticMetaObject = {
-    { &QMainWindow::staticMetaObject, qt_meta_stringdata_MainWindow,
-      qt_meta_data_MainWindow, &staticMetaObjectExtraData }
+    {   &QMainWindow::staticMetaObject, qt_meta_stringdata_MainWindow,
+        qt_meta_data_MainWindow, &staticMetaObjectExtraData
+    }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &MainWindow::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &MainWindow::getStaticMetaObject() {
+    return staticMetaObject;
+}
 #endif //Q_NO_DATA_RELOCATION
 
 const QMetaObject *MainWindow::metaObject() const

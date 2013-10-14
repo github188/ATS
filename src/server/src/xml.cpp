@@ -69,18 +69,18 @@ osa_err_t xml_parse_report_conf(const osa_char_t *cf, cf_report_t *out_data)
     {
         mroot = get_module_root(cf, "report");
         if (!mroot) break;
-            
+
         tmp = mroot->FirstChildElement("state")->FirstChild()->Value();
         if (!tmp) break;
         out_data->state = (strcmp(tmp, "on") == 0)? ATS_ON : ATS_OFF;
- 
+
         strncpy(out_data->name, "report", OSA_NAME_MAX-1);
-        
+
         return OSA_ERR_OK;
-    }while(0);
-    
+    } while(0);
+
     delete mroot;
-    
+
     osa_log_error("Error when parse configuration file : %s\n", cf);
     return OSA_ERR_ERR;
 }
@@ -90,31 +90,31 @@ osa_err_t xml_parse_log_conf(const osa_char_t *cf, cf_log_t *out_data)
 {
     TiXmlElement    *mroot = NULL;
     const char *tmp = NULL;
-    
+
     do
     {
         mroot = get_module_root(cf, "log");
         if (!mroot) break;
-        
+
         tmp = mroot->FirstChildElement("state")->FirstChild()->Value();
         if (!tmp) break;
         out_data->state = (strcmp(tmp, "on") == 0)? ATS_ON : ATS_OFF;
-            
+
         tmp = mroot->FirstChildElement("level")->FirstChild()->Value();
         if (!tmp) break;
         out_data->level = atoi(tmp);
-        
+
         tmp = mroot->FirstChildElement("file")->FirstChild()->Value();
         if (!tmp) break;
         strncpy(out_data->logfile, tmp, OSA_NAME_MAX-1);
-        
+
         strncpy(out_data->name, "log", OSA_NAME_MAX-1);
-        
+
         return OSA_ERR_OK;
-    }while(0);
-    
+    } while(0);
+
     delete mroot;
-    
+
     ats_log_error("Error occured when parse configuration file : %s\n", cf);
     return OSA_ERR_ERR;
 }
@@ -129,25 +129,24 @@ osa_err_t xml_parse_test_conf(const osa_char_t *cf, cf_test_t *out_data)
     {
         mroot = get_module_root(cf, "test");
         if (!mroot) break;
-        
+
         tmp = mroot->FirstChildElement("state")->FirstChild()->Value();
         if (!tmp) break;
         out_data->state = (strcmp(tmp, "on") == 0)? ATS_ON : ATS_OFF;
 
         strncpy(out_data->name, "test", OSA_NAME_MAX-1);
-        
+
         return OSA_ERR_OK;
-    }while (0);
-    
+    } while (0);
+
     delete mroot;
-    
+
     ats_log_error("Error occured when parse configuration file : %s\n", cf);
     return OSA_ERR_ERR;
 }
 
 osa_err_t xml_parse_drvfile(ats_tdrv_t *tdrv)
 {
-    TiXmlElement    *moduleRoot = NULL;
     TiXmlElement    *node       = NULL;
 
     if (osa_file_is_exist(tdrv->drv_file) != OSA_TRUE)

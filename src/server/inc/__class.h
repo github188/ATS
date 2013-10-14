@@ -1,9 +1,9 @@
 /**
- *  class.h 
+ *  class.h
  *
  */
- 
- 
+
+
 #ifndef __ATS_SERVER_CLASS_H__
 #define __ATS_SERVER_CLASS_H__
 

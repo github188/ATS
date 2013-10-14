@@ -31,12 +31,12 @@ osa_err_t ats_test_mod_init()
     {
         ats_log_info("The test event plugin loaded!\n");
     }
-    
+
     test_mops.begin = test_begin;
     test_mops.end   = test_end;
-    
+
     test_module.conf_file = ATS_CONFIG_FILE;
-    
+
     return ats_module_register(&test_module, "test", &test_mops);
 }
 

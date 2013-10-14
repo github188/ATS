@@ -30,8 +30,8 @@ static osa_int32_t      playID = -1;
 static osa_err_t    xmSDK_Init(void);
 static void         xmSDK_Exit(void);
 static void         xmSDK_MatchDev(SDK_Layer *self, const osa_char_t *devName);
-static osa_err_t    xmSDK_LoginDevice(const osa_char_t *ip, osa_uint32_t port, 
-                                        const osa_char_t *user, const osa_char_t *passwd);
+static osa_err_t    xmSDK_LoginDevice(const osa_char_t *ip, osa_uint32_t port,
+                                      const osa_char_t *user, const osa_char_t *passwd);
 static SDK_MediaFD  xmSDK_PlayLiveMedia(osa_uint32_t playNum, osa_uint32_t chNum, void *priv);
 static osa_err_t	xmSDK_StopLiveMedia(SDK_MediaFD mfd)
 
@@ -53,7 +53,7 @@ SDK_Layer   *SDK_PluginGet()
     xm_sdk.SDK_Exit = xmSDK_Exit;
     xm_sdk.SDK_LoginDevice = xmSDK_LoginDevice;
     xm_sdk.SDK_PlayLiveMedia = xmSDK_PlayLiveMedia;
-	xm_sdk.SDK_StopLiveMedia = xmSDK_StopLiveMedia;
+    xm_sdk.SDK_StopLiveMedia = xmSDK_StopLiveMedia;
 
     return &xm_sdk;
 }
@@ -63,15 +63,15 @@ SDK_Layer   *SDK_PluginGet()
 //-------------------------------------priv---------------------
 static osa_err_t   xmSDK_Init(void)
 {
-	SDK_LogOpen(SDK_LOG_FILE);
-	
-	if (H264_DVR_Init(NULL, 0) != TRUE)
-	{
-		SDK_LogError("Failed to initialize XiongMai SDK!\n");
-		return OSA_ERR_ERR;
-	}
-	
-	SDK_LogInfo("Succeed to initialize XiongMai SDK\n")
+    SDK_LogOpen(SDK_LOG_FILE);
+
+    if (H264_DVR_Init(NULL, 0) != TRUE)
+    {
+        SDK_LogError("Failed to initialize XiongMai SDK!\n");
+        return OSA_ERR_ERR;
+    }
+
+    SDK_LogInfo("Succeed to initialize XiongMai SDK\n")
 
     return OSA_ERR_OK;
 }
@@ -81,9 +81,9 @@ static void        xmSDK_Exit(void)
 {
     SDK_LogInfo("Exit Xiong Mai SDK!\n");
 
-	H264_DVR_Cleanup();
-	
-	SDK_LogClose();
+    H264_DVR_Cleanup();
+
+    SDK_LogClose();
 }
 
 static osa_err_t    xmSDK_LoginDevice(const osa_char_t *ip, osa_uint32_t port, const osa_char_t *user, const osa_char_t *passwd)
@@ -102,8 +102,8 @@ static osa_err_t    xmSDK_LoginDevice(const osa_char_t *ip, osa_uint32_t port, c
         return OSA_ERR_ERR;
     }
 
-	SDK_LogInfo("Succeed to login device: softwareVerion(%s), hardwareVersion(%s), serialNumber(%s)\n", 
-				devInfo.sSoftWareVersion,  devInfo.sHardWareVersion, devInfo.sSerialNumber);
+    SDK_LogInfo("Succeed to login device: softwareVerion(%s), hardwareVersion(%s), serialNumber(%s)\n",
+                devInfo.sSoftWareVersion,  devInfo.sHardWareVersion, devInfo.sSerialNumber);
 
     return OSA_ERR_OK;
 }
@@ -134,8 +134,8 @@ static SDK_MediaFD   xmSDK_PlayLiveMedia(osa_uint32_t playNum, osa_uint32_t chNu
         SDK_LogError("Failed to set stream mode!\n");
         return OSA_ERR_ERR;
     }
-	
-	HWND playWnd = (HWND)(*(HWND *)priv);
+
+    HWND playWnd = (HWND)(*(HWND *)priv);
 
     if (H264_PLAY_Play(playNum, playWnd) != TRUE)
     {
@@ -168,20 +168,20 @@ static void _realDataCB(long h, long dtype, char *out_buf, long size, long priv)
 
 static osa_err_t	xmSDK_StopLiveMedia(SDK_MediaFD mfd)
 {
-	if (mfd <= 0)
-	{
-		return OSA_ERR_OK;
-	}
+    if (mfd <= 0)
+    {
+        return OSA_ERR_OK;
+    }
 
-	H264_DVR_StopRealPlay(mfd);
+    H264_DVR_StopRealPlay(mfd);
 }
 
 
 static void         xmSDK_MatchDev(SDK_Layer *self, const osa_char_t *devName)
 {
     osa_assert(devName != NULL);
-    
-    
+
+
 }
 
 #ifdef __cplusplus

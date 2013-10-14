@@ -25,7 +25,8 @@ typedef enum
     OSA_FT_DIRECTORY = 2,       // directory
     OSA_FT_DEVICE = 4,          // device
     OSA_FT_UNKNOWN = 8          // unknown
-}osa_ftype_t;
+}
+osa_ftype_t;
 
 
 typedef struct _OSA_DIR

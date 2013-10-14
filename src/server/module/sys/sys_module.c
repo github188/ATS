@@ -21,9 +21,9 @@ osa_err_t ats_sys_mod_init()
 {
     sys_mops.begin = sys_begin;
     sys_mops.end = sys_end;
-    
+
     sys_module.conf_file = ATS_CONFIG_FILE;
-    
+
     return ats_module_register(&sys_module, "sys", &sys_mops);
 }
 

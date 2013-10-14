@@ -3,7 +3,7 @@
  *
  */
 
- 
+
 #include "osa.h"
 #include "core.h"
 
@@ -26,7 +26,7 @@ ats_module_t *ats_module_find(const char *name)
             return node;
         }
     }
-    
+
     return NULL;
 }
 
@@ -34,13 +34,13 @@ ats_module_t *ats_module_find(const char *name)
 osa_err_t ats_module_register(ats_module_t *m, const osa_char_t *name, ats_mops_t *ops)
 {
     osa_assert(name != NULL);
-    
+
     strncpy(m->name, name, OSA_NAME_MAX-1);
     osa_list_init(&m->list);
     m->ops = ops;
-    
+
     ats_module_t   *p = NULL;
-    
+
     if ((p = ats_module_find(m->name)) != NULL)
     {
         ats_log_warn("Replace module : name(%s)\n", m->name);
@@ -51,7 +51,7 @@ osa_err_t ats_module_register(ats_module_t *m, const osa_char_t *name, ats_mops_
         ats_log_info("Register new module : name(%s)\n", m->name);
         osa_list_insert_before(&mod_list_head, &m->list);
     }
-    
+
     return OSA_ERR_OK;
 }
 
@@ -59,16 +59,16 @@ osa_err_t ats_module_register(ats_module_t *m, const osa_char_t *name, ats_mops_
 osa_err_t ats_module_unregister(const osa_char_t *mod_name)
 {
     osa_assert(mod_name != NULL);
-    
+
     ats_module_t *p = NULL;
-    
+
     if ((p = ats_module_find(mod_name)) != NULL)
     {
         p->ops->end(p);
         osa_list_remove(&p->list);
         ats_log_info("Unregister bus : name(%s)\n", p->name);
     }
-    
+
     return OSA_ERR_OK;
 }
 

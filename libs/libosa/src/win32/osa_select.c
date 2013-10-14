@@ -3,7 +3,7 @@
  *
  */
 
- 
+
 
 #include "osa_types.h"
 #include "osa_select.h"

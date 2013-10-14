@@ -2,7 +2,7 @@
  *  sdk.c
  *
  */
- 
+
 #include "osa.h"
 #include "core.h"
 
@@ -20,15 +20,18 @@ static struct sdk_plugin plugins[PLUGIN_MAX];
 
 ats_sdk_t   *ats_sdk_plugin_load(const osa_char_t *plugin_file)
 {
-    osa_assert(plugin_file != NULL);
-    
+    if (!plugin_file)
+    {
+        return NULL;
+    }
+
     typedef ats_sdk_t *(*sdk_get)(void);
-    
+
     ats_sdk_t   *sdk = NULL;
     void        *p = NULL;
     sdk_get     getsdk = NULL;
     osa_uint32_t i;
-            
+
     do
     {
         for (i=0; i<PLUGIN_MAX; i++)
@@ -43,7 +46,7 @@ ats_sdk_t   *ats_sdk_plugin_load(const osa_char_t *plugin_file)
             ats_log_error("SDK max!\n");
             break;
         }
-        
+
         if (osa_dll_load(&plugins[i].dll, plugin_file) != OSA_ERR_OK)
         {
             ats_log_error("Failed to load sdk plugin:%s\n", plugin_file);
@@ -57,7 +60,7 @@ ats_sdk_t   *ats_sdk_plugin_load(const osa_char_t *plugin_file)
         }
 
         getsdk = (sdk_get)p;
-        
+
         sdk = getsdk();
         if (!sdk)
         {
@@ -65,8 +68,8 @@ ats_sdk_t   *ats_sdk_plugin_load(const osa_char_t *plugin_file)
             break;
         }
         plugins[i].sdk = sdk;
-    }while(0);
-    
+    } while(0);
+
     return sdk;
 }
 
@@ -78,16 +81,16 @@ void ats_sdk_plugin_unload(ats_sdk_t *sdk)
         ats_log_error("No sdk bus found!\n");
         return;
     }
-    
+
     osa_uint32_t i;
-    
+
     for (i=0; i<PLUGIN_MAX; i++)
     {
         if (plugins[i].sdk && plugins[i].sdk == sdk)
         {
             ats_log_info("Unload device(%s) sdk\n", sdk->dev->name);
 
-           	sdk->dev->sdk = NULL; 
+            sdk->dev->sdk = NULL;
             osa_dll_unload(&plugins[i].dll);
             plugins[i].sdk = NULL;
         }

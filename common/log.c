@@ -3,7 +3,7 @@
  *
  */
 
- 
+
 #include "osa.h"
 #include "log.h"
 
@@ -72,27 +72,27 @@ void ats_log_write(osa_uint8_t log_type, char *file, osa_uint32_t line, const ch
     {
     case ATS_LOG_FATAL:
     {
-        sz += sprintf(buf, "[FATAL] ");
+        sz += sprintf(buf, "[ATS_FATAL] ");
         break;
     }
     case ATS_LOG_ERROR:
     {
-        sz += sprintf(buf, "[ERROR] ");
+        sz += sprintf(buf, "[ATS_ERROR] ");
         break;
     }
     case ATS_LOG_WARN:
     {
-        sz += sprintf(buf, "[WARN] ");
+        sz += sprintf(buf, "[ATS_WARN] ");
         break;
     }
     case ATS_LOG_INFO:
     {
-        sz += sprintf(buf, "[INFO] ");
+        sz += sprintf(buf, "[ATS_INFO] ");
         break;
     }
     case ATS_LOG_DEBUG:
     {
-        sz += sprintf(buf, "[DEBUG]<%s, %d> ", file, line);
+        sz += sprintf(buf, "[ATS_DEBUG]<%s, %d> ", file, line);
         break;
     }
     }

@@ -5,23 +5,24 @@ LOCAL_PATH             :=$(call MyDir)
 LOCAL_MODULE           :=server
 
 all_srcs:= \
-		module/dev_prober/dev_prober.c  \
-		module/dev_prober/dev_prober_module.c  \
-		module/dev_prober/prober/netcamera_prober.c  \
-		module/dev_prober/prober/table.c  \
-		module/erp/erp_module.c  \
-		module/report/report_module.c  \
-		module/report/socket_report.c  \
-		module/sys/sys.c  \
-		module/sys/sys_business.c  \
-		module/sys/sys_module.c  \
-		module/test/test_event.c  \
-		module/test/test_module.c  \
-		module/test/test.c \
-		src/xml.cpp \
-		src/test_drv.c \
-		src/sys_bus.c \
-		src/main.c
+src/sys_bus.c  \
+src/test_drv.c  \
+src/main.c  \
+module/test/test_module.c  \
+module/test/test_event.c  \
+module/test/test.c  \
+module/erp/erp_module.c  \
+module/sys/sys.c  \
+module/sys/sys_module.c  \
+module/sys/sys_business.c  \
+module/dev_prober/prober/table.c  \
+module/dev_prober/prober/netcamera_prober.c  \
+module/dev_prober/dev_prober_module.c  \
+module/report/report_module.c  \
+module/report/socket_report.c  \
+src/xml.cpp \
+module/test/test_event/xml_parse.cpp \
+module/dev_prober/dev_prober.cpp
 
 LOCAL_SRC_FILES        :=$(all_srcs)
 

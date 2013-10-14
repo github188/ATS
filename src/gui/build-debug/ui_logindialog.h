@@ -95,7 +95,7 @@ public:
 };
 
 namespace Ui {
-    class LoginDialog: public Ui_LoginDialog {};
+class LoginDialog: public Ui_LoginDialog {};
 } // namespace Ui
 
 QT_END_NAMESPACE
