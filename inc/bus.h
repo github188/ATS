@@ -29,8 +29,9 @@ struct ATS_BUS_CLASS
 {
     osa_char_t      name[OSA_NAME_MAX];
 
-    osa_list_t      list;           // 总线链表节点
-    osa_list_t      ele_list_head;       // 总线中保存的元素的链表头节点
+    osa_list_t      list;             // 总线链表节点
+    osa_list_t      ele_list_head;    // 总线中保存的元素的链表头节点
+    osa_mutex_t     mutex;            // mutex
 
     ats_bus_ops_t   *ops;
 };

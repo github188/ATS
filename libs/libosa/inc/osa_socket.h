@@ -42,7 +42,9 @@ typedef struct _OSA_SOCKADDR
 } osa_sockaddr_t;
 
 
-OSA_API void    osa_sockaddr_set(osa_sockaddr_t *addr, const osa_char_t *ip, osa_uint32_t port);
+OSA_API void    osa_sockaddr_set(osa_sockaddr_t *addr, 
+                                const osa_char_t *ip, 
+                                osa_uint32_t port);
 
 
 typedef struct _OSA_SOCKET
@@ -71,29 +73,43 @@ typedef struct _OSA_TCP_SERVER
 #define    OSA_SOCK_HAS_DATA        2
 
 // TCP socket
-OSA_API osa_socket_t    *osa_tcpclient_open();
-OSA_API osa_err_t       osa_tcpclient_close(osa_socket_t *sock);
-OSA_API osa_err_t       osa_tcpclient_connect(osa_socket_t *sock,  osa_sockaddr_t *addr);
-OSA_API osa_size_t      osa_tcpclient_write(osa_socket_t *sock, osa_char_t *buf, osa_size_t size);
-OSA_API osa_size_t      osa_tcpclient_read(osa_socket_t *sock, osa_char_t *out_buf, osa_size_t size);
+OSA_API osa_socket_t *osa_tcpclient_open();
+OSA_API osa_err_t    osa_tcpclient_close(osa_socket_t *sock);
+OSA_API osa_err_t    osa_tcpclient_connect(osa_socket_t *sock, 
+                                            osa_sockaddr_t *addr);
+OSA_API osa_size_t   osa_tcpclient_write(osa_socket_t *sock, 
+                                        osa_char_t *buf, 
+                                        osa_size_t size);
+OSA_API osa_size_t   osa_tcpclient_read(osa_socket_t *sock, 
+                                        osa_char_t *out_buf, 
+                                        osa_size_t size);
 
 
 OSA_API osa_tcpserver_t *osa_tcpserver_open();
-OSA_API osa_err_t       osa_tcpserver_close(osa_tcpserver_t *sock);
-OSA_API osa_err_t       osa_tcpserver_close_client(osa_tcpserver_t *sock, osa_socket_t *client);
-OSA_API osa_err_t       osa_tcpserver_listen(osa_tcpserver_t *sock, osa_sockaddr_t *addr);
-OSA_API osa_int32_t     osa_tcpserver_accept(osa_tcpserver_t *sock, osa_uint32_t timeout_secs);
-OSA_API osa_socket_t    *osa_tcpserver_get_client(osa_tcpserver_t *sock);
-OSA_API osa_bool_t      osa_tcpserver_client_ready(osa_tcpserver_t *sock, osa_socket_t *client);
+OSA_API osa_err_t   osa_tcpserver_close(osa_tcpserver_t *sock);
+OSA_API osa_err_t   osa_tcpserver_close_client(osa_tcpserver_t *sock, 
+                                        osa_socket_t *client);
+OSA_API osa_err_t   osa_tcpserver_listen(osa_tcpserver_t *sock, 
+                                        osa_sockaddr_t *addr);
+OSA_API osa_int32_t osa_tcpserver_accept(osa_tcpserver_t *sock, 
+                                        osa_uint32_t timeout_secs);
+OSA_API osa_socket_t *osa_tcpserver_get_client(osa_tcpserver_t *sock);
+OSA_API osa_bool_t   osa_tcpserver_client_ready(osa_tcpserver_t *sock, 
+                                        osa_socket_t *client);
 
 
 // UDP socket
-OSA_API osa_socket_t    *osa_udpsock_open();
-OSA_API osa_err_t       osa_udpsock_close(osa_socket_t *sock);
-OSA_API osa_err_t       osa_udpsock_bind(osa_socket_t *sock, osa_sockaddr_t *addr);
-OSA_API osa_size_t      osa_udpsock_write_dgram(osa_socket_t *sock, void *data, osa_size_t size, osa_sockaddr_t *addr);
-OSA_API osa_int32_t     osa_udpsock_wait_dgram(osa_socket_t *sock, osa_uint32_t timeout_secs);
-OSA_API osa_size_t      osa_udpsock_read_dgram(osa_socket_t *sock, void *out_data, osa_size_t size);
+OSA_API osa_socket_t *osa_udpsock_open();
+OSA_API osa_err_t    osa_udpsock_close(osa_socket_t *sock);
+OSA_API osa_err_t    osa_udpsock_bind(osa_socket_t *sock, 
+                                    osa_sockaddr_t *addr);
+OSA_API osa_size_t   osa_udpsock_write_dgram(osa_socket_t *sock, 
+                                    const void *data, osa_size_t size, 
+                                    osa_sockaddr_t *addr);
+OSA_API osa_int32_t  osa_udpsock_wait_dgram(osa_socket_t *sock, 
+                                    osa_uint32_t timeout_secs);
+OSA_API osa_size_t   osa_udpsock_read_dgram(osa_socket_t *sock, 
+                                    void *out_data, osa_size_t size);
 
 
 #ifdef __cplusplus

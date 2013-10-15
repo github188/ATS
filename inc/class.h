@@ -21,6 +21,7 @@ typedef struct  ATS_IMAGE_CLASS         ats_image_t;
 typedef struct  ATS_LOG_CLASS           ats_log_t;
 typedef struct  ATS_SDK_CLASS           ats_sdk_t;
 typedef struct  ATS_MODULE_CLASS        ats_module_t;
+typedef struct  ATS_TEST_EVENT_CLASS    ats_tevent_t;
 
 
 #ifdef __cplusplus

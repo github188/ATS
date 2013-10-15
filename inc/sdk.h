@@ -22,6 +22,9 @@ typedef		    osa_int32_t	    sdk_mfd_t;
 
 struct ATS_SDK_CLASS
 {
+    osa_char_t      *info;
+    osa_uint32_t    version;
+    
     /**
      *  Initialize SDK
      */
@@ -70,9 +73,8 @@ struct ATS_SDK_CLASS
 
     /** private */
     ats_device_t    *dev;
-    osa_char_t      *info;
-    osa_uint32_t    version;
-    osa_list_t      list;
+    osa_char_t      sdk_plugin[OSA_NAME_MAX];
+    osa_dll_t       dll;
 };
 
 

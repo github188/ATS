@@ -17,8 +17,6 @@ static ats_mops_t       test_mops;
 
 static osa_err_t    test_begin(ats_module_t *m, int argc, char **argv);
 static void         test_end(ats_module_t *m);
-static osa_err_t    load_sdk_plugins();
-static void         unload_sdk_plugins();
 
 
 osa_err_t ats_test_mod_init()

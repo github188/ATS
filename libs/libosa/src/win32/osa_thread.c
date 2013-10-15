@@ -12,7 +12,7 @@
 #include <process.h>
 
 
-osa_err_t   osa_thread_init(osa_thread_t *t, osa_char_t *name, thread_entry entry, void *param)
+osa_err_t osa_thread_init(osa_thread_t *t, osa_char_t *name, thread_entry entry, void *param)
 {
     strncpy(t->name, name, OSA_NAME_MAX-1);
 
@@ -22,12 +22,12 @@ osa_err_t   osa_thread_init(osa_thread_t *t, osa_char_t *name, thread_entry entr
     return OSA_ERR_OK;
 }
 
-void        osa_thread_exit(osa_thread_t *t)
+void osa_thread_exit()
 {
     _endthread();
 }
 
-osa_err_t   osa_thread_start(osa_thread_t *t)
+osa_err_t osa_thread_start(osa_thread_t *t)
 {
     typedef void ( *entry_func )(void *);
 
@@ -36,6 +36,45 @@ osa_err_t   osa_thread_start(osa_thread_t *t)
     return OSA_ERR_OK;
 }
 
-void        osa_thread_stop(osa_thread_t *t)
+
+osa_err_t   osa_mutex_init(osa_mutex_t *mtx)
 {
+    *mtx = CreateMutex(NULL, 0, "");
+    if (*mtx == 0)
+    {
+        return OSA_ERR_ERR;
+    }
+    return OSA_ERR_OK;
+}
+
+void        osa_mutex_fini(osa_mutex_t *mtx)
+{
+    CloseHandle(*mtx);
+}
+
+osa_err_t   osa_mutex_lock(osa_mutex_t *mtx)
+{
+    DWORD ret = WaitForSingleObject(*mtx, INFINITE);
+    if (ret == WAIT_FAILED)
+    {
+        osa_log_error("mutex error!\n");
+        return OSA_ERR_ERR;
+    }
+    return OSA_ERR_OK;
+}
+
+osa_err_t   osa_mutex_unlock(osa_mutex_t *mtx)
+{
+    ReleaseMutex(*mtx);
+}
+
+osa_err_t   osa_mutex_trylock(osa_mutex_t *mtx)
+{
+    DWORD ret = WaitForSingleObject(*mtx, 0);
+    if (ret == WAIT_FAILED)
+    {
+        osa_log_error("mutex error!\n");
+        return OSA_ERR_ERR;
+    }
+    return OSA_ERR_OK;
 }

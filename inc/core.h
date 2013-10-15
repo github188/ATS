@@ -16,6 +16,7 @@
 #include "module.h"
 #include "sdk.h"
 #include "test_drv.h"
+#include "test_event.h"
 
 
 #endif

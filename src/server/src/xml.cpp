@@ -145,51 +145,6 @@ osa_err_t xml_parse_test_conf(const osa_char_t *cf, cf_test_t *out_data)
     return OSA_ERR_ERR;
 }
 
-osa_err_t xml_parse_drvfile(ats_tdrv_t *tdrv)
-{
-    TiXmlElement    *node       = NULL;
-
-    if (osa_file_is_exist(tdrv->drv_file) != OSA_TRUE)
-    {
-        ats_log_error("File not exist: %s\n", tdrv->drv_file);
-        return OSA_ERR_ERR;
-    }
-
-    TiXmlDocument   doc(tdrv->drv_file);
-    if (doc.LoadFile() != true)
-    {
-        ats_log_error("Failed to load file : name(%s)\n", tdrv->drv_file);
-        return OSA_ERR_ERR;
-    }
-
-    TiXmlElement    *root = doc.RootElement();
-    if (!root)
-    {
-        ats_log_error("XML root not found!\n");
-        return OSA_ERR_ERR;
-    }
-
-    TiXmlAttribute  *attr = NULL;
-    const char 		*tmp = NULL;
-    ats_tevent_t    *tevent = NULL;
-
-    node = root->FirstChildElement("test_event");
-
-    while (node)
-    {
-        tmp = node->Attribute("name");
-        if (!tmp) continue;
-
-        if ((tevent = ats_tevent_get(tmp)) != NULL)
-        {
-            ats_tevent_register(tdrv, tevent);
-        }
-
-        node = node->NextSiblingElement("test_event");
-    }
-
-    return OSA_ERR_OK;
-}
 
 
 #ifdef __cplusplus

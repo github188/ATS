@@ -10,7 +10,9 @@
 #include "core.h"
 #include "data.h"
 #include "config.h"
-#include "test_event.h"
+#include "xml.h"
+#include "sys_bus.h"
+
 #include "module/test.h"
 #include "module/report.h"
 #include "module/erp.h"
@@ -20,6 +22,7 @@
 
 static void __init();
 static void __exit();
+static void int_handler(osa_int32_t num);
 
 
 int main(int argc, char **argv)
@@ -86,17 +89,28 @@ void __init()
     if (xml_parse_log_conf(ATS_CONFIG_FILE, &logcf) != OSA_ERR_OK)
     {
         osa_log_error("Failed to parse log configuration file!\n");
-        return -1;
+        return ;
     }
 
     if (ats_log_open(logcf.logfile) != OSA_ERR_OK)
     {
         osa_log_error("Failed to open log!\n");
-        return -1;
+        return;
     }
+    
+    osa_signal_bind(OSA_SIG_INT, int_handler);
 }
 
 static void __exit()
 {
     ats_log_close();
+}
+
+static void int_handler(osa_int32_t num)
+{
+    ats_module_all_fini();
+
+    system_bus_fini();
+
+    __exit();
 }

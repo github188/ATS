@@ -4,10 +4,7 @@
  */
 
 #include "osa.h"
-#include "log.h"
-#include "config.h"
-#include "test_event.h"
-#include "test_drv.h"
+#include "core.h"
 
 
 static osa_dll_t        dll;
@@ -29,6 +26,8 @@ osa_err_t ats_tevent_plugin_load(const osa_char_t *plugin_file)
         return OSA_ERR_ERR;
     }
 
+	ats_log_info("Load test event plugin!\n");
+
     return OSA_ERR_OK;
 }
 
@@ -47,22 +46,19 @@ ats_tevent_t *ats_tevent_get(const osa_char_t *tevent_name)
 
     if ((entry = osa_dll_sym(&dll, "tableGetBegin")) == NULL)
     {
-        ats_log_error("Can not found tableGetBegin in file %s!\n", ATS_TEST_EVENT_PLUGIN);
-        return OSA_ERR_ERR;
+		goto err;
     }
     begin = (beginItr)entry;
 
     if ((entry = osa_dll_sym(&dll, "tableGetEnd")) == NULL)
     {
-        ats_log_error("Can not found tableGetEnd in file %s!\n", ATS_TEST_EVENT_PLUGIN);
-        return OSA_ERR_ERR;
+		goto err;
     }
     end = (endItr)entry;
 
     if ((entry = osa_dll_sym(&dll, "tableGetNext")) == NULL)
     {
-        ats_log_error("Can not found tableGetNext in file %s!\n", ATS_TEST_EVENT_PLUGIN);
-        return OSA_ERR_ERR;
+		goto err;
     }
     next = (nextItr)entry;
 
@@ -78,12 +74,16 @@ ats_tevent_t *ats_tevent_get(const osa_char_t *tevent_name)
         }
     }
 
-    return NULL;
+err:
+	ats_log_error("Error occured when load test event plugin!\n");
+	ats_tevent_plugin_unload();
+	return NULL;
 }
 
 
 void ats_tevent_plugin_unload()
 {
+	ats_log_info("Unload test event plugin!\n");
     osa_dll_unload(&dll);
 }
 
@@ -111,14 +111,17 @@ osa_err_t ats_tevent_register(ats_tdrv_t *drv, ats_tevent_t *tevent)
 {
     ats_tevent_t *p = NULL;
 
-    if ((p = ats_tevent_find(drv, tevent)) != NULL)
+    if ((p = ats_tevent_find(drv, tevent->name)) != NULL)
     {
+		ats_log_warn("Replace test event (%s) from device (%s)\n", tevent->name, drv->dev->name);
         p = tevent;
     }
     else
     {
+		ats_log_info("Register new test event (%s)to device (%s)\n", tevent->name, drv->dev->name);
         osa_list_insert_before(&drv->tevent_list_head, &tevent->list);
     }
+
     return OSA_ERR_OK;
 }
 

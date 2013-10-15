@@ -44,7 +44,7 @@ static osa_err_t report_begin(ats_module_t *m, int argc, char **argv)
         ats_log_error("Failed to parse configuration file!\n");
         return OSA_ERR_ERR;
     }
-
+	return OSA_ERR_OK;
 }
 
 static void report_end(ats_module_t *m)

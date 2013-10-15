@@ -17,7 +17,8 @@ linux_srcs:=src/linux/osa_file.c\
 			src/linux/osa_process.c \
 			src/linux/osa_thread.c \
 			src/linux/osa_timer.c \
-			src/linux/osa_time.c
+			src/linux/osa_time.c \
+			src/linux/osa_signal.c
 			
 win32_srcs:=src/win32/osa_file.c \
 			src/win32/osa_dll.c \
@@ -27,7 +28,8 @@ win32_srcs:=src/win32/osa_file.c \
 			src/win32/osa_thread.c \
 			src/win32/osa_timer.c \
 			src/win32/osa_time.c \
-			src/win32/osa_cvt.c
+			src/win32/osa_cvt.c \
+			src/win32/osa_signal.c
 
 ifeq (MINGW32, $(TOOL))
 srcs:=$(common_srcs) $(win32_srcs)

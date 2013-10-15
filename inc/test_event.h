@@ -9,7 +9,6 @@
 
 #include "osa.h"
 #include "class.h"
-#include "__class.h"
 
 
 #ifdef __cplusplus
@@ -77,7 +76,7 @@ struct ATS_TEST_EVENT_CLASS
 
     /** private data */
     ats_testattr_t  attr;       // attribute
-    ats_report_t	*report;    // report
+    void	        *report;    // report
     osa_list_t      list;       // 链表
 };
 

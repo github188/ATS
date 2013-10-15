@@ -27,7 +27,7 @@
                 <user>admin</user>
                 <password></password>
             </info>
-            <drv_file>C:\ats\etc\test_event\dummy.xml</drv_file>
+            <drv_file>C:\ats\etc\drv\dummy.xml</drv_file>
             <sdk_plugin></sdk_plugin>
         </device>
     </module>

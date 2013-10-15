@@ -20,7 +20,7 @@ ats_module_t *ats_module_find(const char *name)
 
     for (l = mod_list_head.next; l != &mod_list_head; l = l->next)
     {
-        node = osa_list_entry(l, ats_bus_t, list);
+        node = osa_list_entry(l, ats_module_t, list);
         if (!strcmp(node->name, name))
         {
             return node;
@@ -74,9 +74,6 @@ osa_err_t ats_module_unregister(const osa_char_t *mod_name)
 
 void ats_module_all_init(int argc, char **argv)
 {
-    osa_uint32_t i;
-    osa_err_t   err;
-
     ats_module_t    *node   = NULL;
     osa_list_t      *l      = NULL;
 
@@ -104,7 +101,8 @@ void ats_module_all_fini()
     for (l = mod_list_head.next; l != &mod_list_head; l = l->next)
     {
         node = osa_list_entry(l, ats_module_t, list);
-
+        
+        ats_log_info("Finalize module : name(%s)\n", node->name);
         if (node->ops->end)
         {
             node->ops->end(node);

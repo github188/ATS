@@ -17,7 +17,7 @@
 
 
 
-void    osa_sockaddr_set(osa_sockaddr_t *addr, const osa_char_t *ip, osa_uint32_t port)
+void osa_sockaddr_set(osa_sockaddr_t *addr, const osa_char_t *ip, osa_uint32_t port)
 {
     memset(addr, 0, sizeof(osa_sockaddr_t));
 
@@ -33,7 +33,7 @@ void    osa_sockaddr_set(osa_sockaddr_t *addr, const osa_char_t *ip, osa_uint32_
     addr->in_addr.sin_port = htons(port);
 }
 
-osa_socket_t    *osa_tcpclient_open()
+osa_socket_t *osa_tcpclient_open()
 {
     osa_socket_t *sock = osa_mem_alloc(sizeof(osa_socket_t));
 
@@ -56,7 +56,7 @@ osa_socket_t    *osa_tcpclient_open()
 }
 
 
-osa_err_t       osa_tcpclient_close(osa_socket_t *sock)
+osa_err_t osa_tcpclient_close(osa_socket_t *sock)
 {
     osa_list_remove(&sock->list);
 
@@ -70,7 +70,7 @@ osa_err_t       osa_tcpclient_close(osa_socket_t *sock)
     return OSA_ERR_OK;
 }
 
-osa_err_t       osa_tcpclient_connect(osa_socket_t *sock,  osa_sockaddr_t *addr)
+osa_err_t osa_tcpclient_connect(osa_socket_t *sock,  osa_sockaddr_t *addr)
 {
 
     if (sock->fd > 0 && connect(sock->fd, (struct sockaddr *)&addr->in_addr, sizeof(struct sockaddr_in)) < 0)
@@ -83,7 +83,7 @@ osa_err_t       osa_tcpclient_connect(osa_socket_t *sock,  osa_sockaddr_t *addr)
     return OSA_ERR_OK;
 }
 
-osa_size_t      osa_tcpclient_write(osa_socket_t *sock, osa_char_t *buf, osa_size_t size)
+osa_size_t osa_tcpclient_write(osa_socket_t *sock, osa_char_t *buf, osa_size_t size)
 {
     osa_size_t sendsz = 0;
 
@@ -98,7 +98,7 @@ osa_size_t      osa_tcpclient_write(osa_socket_t *sock, osa_char_t *buf, osa_siz
 }
 
 
-osa_size_t      osa_tcpclient_read(osa_socket_t *sock, osa_char_t *out_buf, osa_size_t size)
+osa_size_t osa_tcpclient_read(osa_socket_t *sock, osa_char_t *out_buf, osa_size_t size)
 {
     osa_size_t recvsz = 0;
 
@@ -138,7 +138,7 @@ osa_tcpserver_t *osa_tcpserver_open()
     return sock;
 }
 
-osa_err_t       osa_tcpserver_close(osa_tcpserver_t *sock)
+osa_err_t osa_tcpserver_close(osa_tcpserver_t *sock)
 {
     osa_list_t  *l = NULL;
     osa_socket_t *node = NULL;
@@ -160,14 +160,15 @@ osa_err_t       osa_tcpserver_close(osa_tcpserver_t *sock)
     return OSA_ERR_OK;
 }
 
-osa_err_t       osa_tcpserver_listen(osa_tcpserver_t *sock, osa_sockaddr_t *addr)
+osa_err_t osa_tcpserver_listen(osa_tcpserver_t *sock, osa_sockaddr_t *addr)
 {
     if (sock->fd < 0)
     {
         return OSA_ERR_ERR;
     }
 
-    if ((bind(sock->fd, (struct sockaddr *)&addr->in_addr, sizeof(struct sockaddr_in))) < 0)
+    if ((bind(sock->fd, (struct sockaddr *)&addr->in_addr,
+        sizeof(struct sockaddr_in))) < 0)
     {
         osa_log_error("Failed to bind socket!\n");
         return OSA_ERR_ERR;
@@ -182,14 +183,14 @@ osa_err_t       osa_tcpserver_listen(osa_tcpserver_t *sock, osa_sockaddr_t *addr
     return OSA_ERR_OK;
 }
 
-osa_err_t       osa_tcpserver_close_client(osa_tcpserver_t *sock, osa_socket_t *client)
+osa_err_t osa_tcpserver_close_client(osa_tcpserver_t *sock, osa_socket_t *client)
 {
     FD_CLR(client->fd, &sock->readfds);
 
     return osa_tcpclient_close(client);
 }
 
-osa_int32_t     osa_tcpserver_accept(osa_tcpserver_t *sock, osa_uint32_t timeout_secs)
+osa_int32_t osa_tcpserver_accept(osa_tcpserver_t *sock, osa_uint32_t timeout_secs)
 {
     osa_int32_t ret = 0;
     osa_list_t *l = NULL;
@@ -249,7 +250,8 @@ osa_int32_t     osa_tcpserver_accept(osa_tcpserver_t *sock, osa_uint32_t timeout
 
             osa_uint32_t  addrsz = sizeof(struct sockaddr_in);
 
-            client->fd = accept(sock->fd, (struct sockaddr *)&client->addr.in_addr, &addrsz);
+            client->fd = accept(sock->fd, 
+                    (struct sockaddr *)&client->addr.in_addr, &addrsz);
             if (client->fd <= 0)
             {
                 osa_log_error("Failed to accept socket!\n");
@@ -265,7 +267,6 @@ osa_int32_t     osa_tcpserver_accept(osa_tcpserver_t *sock, osa_uint32_t timeout
             // attention: if there is a new connection or data at same time, we just deal with the new connection
             return OSA_SOCK_HAS_CONNECT;
         }
-
 #if 0
         for (l=sock->clientListHead.next; l!=&sock->clientListHead; l=l->next)
         {
@@ -277,12 +278,11 @@ osa_int32_t     osa_tcpserver_accept(osa_tcpserver_t *sock, osa_uint32_t timeout
             }
         }
 #endif
-
         return OSA_SOCK_HAS_DATA;
     }
 }
 
-osa_socket_t    *osa_tcpserver_get_client(osa_tcpserver_t *sock)
+osa_socket_t *osa_tcpserver_get_client(osa_tcpserver_t *sock)
 {
     osa_socket_t *lastClient = NULL;
 
@@ -293,8 +293,7 @@ osa_socket_t    *osa_tcpserver_get_client(osa_tcpserver_t *sock)
     return lastClient;
 }
 
-
-osa_bool_t      osa_tcpserver_client_ready(osa_tcpserver_t *sock, osa_socket_t *client)
+osa_bool_t osa_tcpserver_client_ready(osa_tcpserver_t *sock, osa_socket_t *client)
 {
     if (FD_ISSET(client->fd, &sock->readfds))
     {
@@ -303,8 +302,7 @@ osa_bool_t      osa_tcpserver_client_ready(osa_tcpserver_t *sock, osa_socket_t *
     return OSA_FALSE;
 }
 
-
-osa_socket_t    *osa_udpsock_open()
+osa_socket_t *osa_udpsock_open()
 {
     osa_socket_t *sock = osa_mem_alloc(sizeof(osa_socket_t));
 
@@ -327,8 +325,7 @@ osa_socket_t    *osa_udpsock_open()
 
 }
 
-
-osa_err_t       osa_udpsock_close(osa_socket_t *sock)
+osa_err_t osa_udpsock_close(osa_socket_t *sock)
 {
     osa_list_remove(&sock->list);
 
@@ -343,10 +340,10 @@ osa_err_t       osa_udpsock_close(osa_socket_t *sock)
 
 }
 
-
-osa_err_t       osa_udpsock_bind(osa_socket_t *sock, osa_sockaddr_t *addr)
+osa_err_t osa_udpsock_bind(osa_socket_t *sock, osa_sockaddr_t *addr)
 {
-    if ((bind(sock->fd, (struct sockaddr *)&addr->in_addr, sizeof(struct sockaddr_in))) < 0)
+    if ((bind(sock->fd, (struct sockaddr *)&addr->in_addr, 
+        sizeof(struct sockaddr_in))) < 0)
     {
         osa_log_error("Failed to bind socket!\n");
         return OSA_ERR_ERR;
@@ -355,10 +352,13 @@ osa_err_t       osa_udpsock_bind(osa_socket_t *sock, osa_sockaddr_t *addr)
     return OSA_ERR_OK;
 }
 
-
-osa_size_t      osa_udpsock_write_dgram(osa_socket_t *sock, void *data, osa_size_t size, osa_sockaddr_t *addr)
+osa_size_t osa_udpsock_write_dgram(osa_socket_t *sock, 
+                                const void *data, osa_size_t size, 
+                                osa_sockaddr_t *addr)
 {
-    osa_size_t sz = sendto(sock->fd, data, size, 0, (struct sockaddr *)&addr->in_addr, sizeof(struct sockaddr_in));
+    osa_size_t sz = sendto(sock->fd, data, size, 
+                    0, (struct sockaddr *)&addr->in_addr, 
+                    sizeof(struct sockaddr_in));
     if (sz != size)
     {
         osa_log_warn("The actuial bytes to send is %d\n", sz);
@@ -366,7 +366,6 @@ osa_size_t      osa_udpsock_write_dgram(osa_socket_t *sock, void *data, osa_size
 
     return sz;
 }
-
 
 osa_int32_t osa_udpsock_wait_dgram(osa_socket_t *sock, osa_uint32_t timeout_secs)
 {
@@ -407,8 +406,7 @@ osa_int32_t osa_udpsock_wait_dgram(osa_socket_t *sock, osa_uint32_t timeout_secs
     }
 }
 
-
-osa_size_t  osa_udpsock_read_dgram(osa_socket_t *sock, void *out_data, osa_size_t size)
+osa_size_t osa_udpsock_read_dgram(osa_socket_t *sock, void *out_data, osa_size_t size)
 {
     osa_sockaddr_t  client;
     osa_size_t  addrsz = sizeof(struct sockaddr);

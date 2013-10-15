@@ -20,6 +20,7 @@ static void        *devpb_routine(void *param);
 static osa_thread_t     devpb_thread;
 static ats_module_t     devpb_module;
 static ats_mops_t       devpb_mops;
+static osa_cond_t       exit_cond;
 
 
 osa_err_t ats_devpb_mod_init()
@@ -48,23 +49,37 @@ static osa_err_t devpb_begin(ats_module_t *m, int argc, char **argv)
 
         return OSA_ERR_ERR;
     }
+
+    return OSA_ERR_OK;
 }
 
 
 static void devpb_end(ats_module_t *m)
 {
-    osa_thread_stop(&devpb_thread);
+    //osa_cond_signal(&exit_cond);
 }
 
 
 static void *devpb_routine(void *param)
 {
-    osa_bool_t  isExit = OSA_FALSE;
+    osa_bool_t  to_exit = OSA_FALSE;
+    osa_timespec_t timeout;
+    
+    osa_cond_init(&exit_cond);
 
-    while (isExit != OSA_TRUE)
+    while (to_exit != OSA_TRUE)
     {
+        timeout.tv_sec = 5;
+        timeout.tv_nsec = 0;
+        
         ats_devpb_probe();
 
-        osa_timer_delay(5, 0);
+        osa_cond_wait(&exit_cond, &timeout);
     }
+    
+    osa_cond_fini(&exit_cond);
+    
+    osa_thread_exit();
+
+	return NULL;
 }

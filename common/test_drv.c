@@ -6,9 +6,6 @@
 
 #include "osa.h"
 #include "core.h"
-#include "xml.h"
-#include "test_event.h"
-#include "module/report.h"
 
 
 static osa_err_t    _def_init(ats_tevent_t *tevent);
@@ -17,7 +14,7 @@ static void         _def_stop_test(ats_tevent_t *tevent);
 static void         _def_suss_cb(ats_tevent_t *tevent);
 static void         _def_fail_cb(ats_tevent_t *tevent);
 static void         _def_fini(ats_tevent_t *tevent);
-static osa_err_t    _def_trv_remove(ats_tdrv_t *tevent);
+static void			_def_trv_remove(ats_tdrv_t *tevent);
 
 
 ats_tdrv_t  *ats_tdrv_new(const osa_char_t *drv_file)
@@ -26,7 +23,6 @@ ats_tdrv_t  *ats_tdrv_new(const osa_char_t *drv_file)
 
     drv->dev = NULL;
     strncpy(drv->drv_file, drv_file, OSA_NAME_MAX - 1);
-    osa_list_init(&drv->list);
     osa_list_init(&drv->tevent_list_head);
 
     drv->remove = _def_trv_remove;
@@ -123,24 +119,6 @@ void ats_tdrv_do_test(ats_tdrv_t *drv)
     }
 }
 
-ats_tdrv_t  *ats_tdrv_load(const osa_char_t *drv_file)
-{
-    osa_assert(drv_file != NULL);
-
-    ats_tdrv_t *new_drv = ats_tdrv_new(drv_file);
-    if (!new_drv)
-    {
-        ats_log_error("Failed to new test driver object!\n");
-        return NULL;
-    }
-
-    xml_parse_drvfile(new_drv);
-}
-
-void ats_tdrv_unload(ats_tdrv_t *drv)
-{
-    ats_tdrv_delete(drv);
-}
 
 static osa_err_t _def_init(ats_tevent_t *tevent)
 {
@@ -166,6 +144,7 @@ static void _def_fail_cb(ats_tevent_t *tevent)
 
 static void _def_fini(ats_tevent_t *tevent)
 {
+#if 0
     char buf[1024] = {0};
 
     int testTimes = tevent->attr.stat.test_times;
@@ -173,13 +152,13 @@ static void _def_fini(ats_tevent_t *tevent)
     sprintf(buf, "[%s] Test times : %d, Failed times : %d, Fail rate : %.2f%%", tevent->name, testTimes, failTimes, failTimes / (testTimes * 1.0) * 100);
 
     ats_report_write(tevent->report, buf, strlen(buf));
+#endif
 }
 
-static osa_err_t _def_trv_remove(ats_tdrv_t *tevent)
+static void _def_trv_remove(ats_tdrv_t *tevent)
 {
     if (tevent)
     {
-        osa_list_remove(&tevent->list);
         ats_tdrv_delete(tevent);
     }
 }

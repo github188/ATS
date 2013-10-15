@@ -20,7 +20,6 @@
 
 static osa_tcpserver_t  *sysServer;
 static osa_socket_t     *clientSock[CLIENT_MAX] = {NULL};
-static osa_fdset_t      readfds;
 static osa_ioch_t       sysIOCH;
 
 
@@ -60,6 +59,8 @@ osa_err_t ats_sys_init()
     sysIOCH.close   = _sysIOCHClose;
     sysIOCH.read    = _sysIOCHRead;
     sysIOCH.write   = _sysIOCHWrite;
+
+	return OSA_ERR_OK;
 }
 
 
@@ -67,11 +68,8 @@ void ats_sys_exec()
 {
     ats_log_info("Start system message loop!\n");
 
-    osa_int32_t     ret = 0;
     osa_char_t      buf[2048];
-    osa_sfd_t       maxfd = sysServer->fd;
     osa_uint32_t    idx = 0;
-    struct timeval  timeout;
     osa_int32_t     val = 0;
 
     while (1)

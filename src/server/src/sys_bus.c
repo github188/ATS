@@ -13,10 +13,6 @@
 
 static ats_bus_t        dev_bus;
 static ats_bus_ops_t    dev_bus_ops;
-static ats_bus_t        tdrv_bus;
-static ats_bus_ops_t    tdrv_bus_ops;
-static ats_bus_t        sdk_bus;
-static ats_bus_ops_t    sdk_bus_ops;
 
 
 
@@ -28,6 +24,9 @@ osa_err_t system_bus_init()
 {
     dev_bus_ops.match = NULL;
     dev_bus_ops.remove = dev_bus_remove;
+    
+    osa_mutex_init(&dev_bus.mutex);
+    
     ats_bus_register(&dev_bus, "dev_bus", &dev_bus_ops);
 
     return OSA_ERR_OK;
@@ -35,6 +34,7 @@ osa_err_t system_bus_init()
 
 void system_bus_fini()
 {
+    osa_mutex_fini(&dev_bus.mutex);
     dev_bus_remove(&dev_bus);
 }
 

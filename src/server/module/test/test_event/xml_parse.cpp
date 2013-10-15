@@ -55,8 +55,6 @@ TiXmlElement *_getTestPointRoot(osa_char_t *xmlfile, char *node_name)
 static TEST_Dummy  dummy[2];
 osa_err_t   dummyTestParse(ats_tevent_t *tp, osa_char_t *cf)
 {
-    osa_uint32_t    i;
-
     strcpy(dummy[0].dummyIn, "hello");
     strcpy(dummy[0].dummyExpOut, "world");
 

@@ -113,6 +113,8 @@ osa_err_t   sysGetDevs(osa_ioch_t *ioch, osa_msg_t *msg)
 
     osa_msg_delete(retmsg);
     cJSON_Delete(root);
+	
+	return OSA_ERR_OK;
 }
 
 
@@ -139,7 +141,7 @@ osa_err_t   sysTestDevice(osa_ioch_t *ioch, osa_msg_t *msg)
         return OSA_ERR_ERR;
     }
 
-    osa_sockaddr_t *client_addr=&((osa_socket_t *)(ioch->priv))->addr.in_addr;
+    osa_sockaddr_t *client_addr=(osa_sockaddr_t *)(ioch->priv);
 
     ats_report_t *report = ats_report_open((void *)client_addr);
 
@@ -156,6 +158,8 @@ osa_err_t   sysTestDevice(osa_ioch_t *ioch, osa_msg_t *msg)
     ats_test_device_test(dev);
 
     ats_report_close(report);
+
+	return OSA_ERR_OK;
 }
 
 

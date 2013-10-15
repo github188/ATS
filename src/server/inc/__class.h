@@ -16,7 +16,6 @@ extern "C"
 #endif
 
 
-typedef struct ATS_TEST_EVENT_CLASS     ats_tevent_t;
 typedef struct ATS_REPORT_CLASS         ats_report_t;
 typedef struct ATS_DEV_PROBER_CLASS     ats_devpb_t;
 typedef struct ATS_ERP_CLASS            ats_erp_t;
