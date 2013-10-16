@@ -27,15 +27,14 @@ extern "C"
 #define    OSA_SELECT_TIMEOUT       0
 
 
-typedef     fd_set      osa_fdset_t;
+typedef fd_set osa_fdset_t;
 
 
-OSA_API osa_int32_t osa_select(osa_uint32_t maxfd,
-                               osa_fdset_t *rfds,
-                               osa_fdset_t *wfds,
-                               osa_fdset_t *efds,
-                               osa_timeval_t *timeout);
-
+OSA_API osa_int32_t osa_select(osa_uint32_t     maxfd,
+                               osa_fdset_t      *rfds,
+                               osa_fdset_t      *wfds,
+                               osa_fdset_t      *efds,
+                               osa_timeval_t    *timeout);
 
 #ifdef __cplusplus
 }

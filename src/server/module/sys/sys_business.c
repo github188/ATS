@@ -45,7 +45,7 @@ osa_err_t   sysLogin(osa_ioch_t *ioch, osa_msg_t *msg)
         result = OSA_ERR_OK;
     }
 
-    osa_msg_t *retmsg = osa_msg_new_with_data(msg->header.id, "RET:LoginSystem", NULL, 0);
+    osa_msg_t *retmsg = osa_msg_new_ex(msg->header.id, "RET:LoginSystem", NULL, 0);
     osa_msg_set_result(retmsg, result);
 
     osa_msg_send(ioch, retmsg);
@@ -106,7 +106,7 @@ osa_err_t   sysGetDevs(osa_ioch_t *ioch, osa_msg_t *msg)
 
     osa_char_t *data = cJSON_Print(root);
 
-    osa_msg_t *retmsg = osa_msg_new_with_data(msg->header.id, "RET:GetDevices", data, strlen(data));
+    osa_msg_t *retmsg = osa_msg_new_ex(msg->header.id, "RET:GetDevices", data, strlen(data));
     osa_msg_set_result(retmsg, OSA_ERR_OK);
 
     osa_msg_send(ioch, retmsg);
@@ -193,7 +193,7 @@ osa_err_t   sysLoginDevice(osa_ioch_t *ioch, osa_msg_t *msg)
         flag = OSA_ERR_OK;
     }
 
-    osa_msg_t *retmsg = osa_msg_new_with_data(msg->header.id, "RET:LoginDevice", NULL, 0);
+    osa_msg_t *retmsg = osa_msg_new_ex(msg->header.id, "RET:LoginDevice", NULL, 0);
     osa_msg_set_result(retmsg, flag);
 
     osa_msg_send(ioch, retmsg);

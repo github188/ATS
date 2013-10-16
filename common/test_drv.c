@@ -125,12 +125,12 @@ static osa_err_t _def_init(ats_tevent_t *tevent)
     return OSA_ERR_OK;
 }
 
-static ats_result_t  _def_start_test(void *testCase)
+static ats_result_t _def_start_test(void *testCase)
 {
     return ATS_SUCCEED;
 }
 
-static void         _def_stop_test(ats_tevent_t *tevent)
+static void _def_stop_test(ats_tevent_t *tevent)
 {
 }
 
@@ -149,7 +149,8 @@ static void _def_fini(ats_tevent_t *tevent)
 
     int testTimes = tevent->attr.stat.test_times;
     int failTimes = tevent->attr.stat.fail_times;
-    sprintf(buf, "[%s] Test times : %d, Failed times : %d, Fail rate : %.2f%%", tevent->name, testTimes, failTimes, failTimes / (testTimes * 1.0) * 100);
+    sprintf(buf, "[%s] Test times : %d, Failed times : %d, Fail rate : %.2f%%", 
+            tevent->name, testTimes, failTimes, failTimes / (testTimes * 1.0) * 100);
 
     ats_report_write(tevent->report, buf, strlen(buf));
 #endif

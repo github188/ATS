@@ -38,7 +38,9 @@ struct ATS_BUS_CLASS
 
 
 ats_bus_t   *ats_bus_find(const osa_char_t *bus_name);
-osa_err_t   ats_bus_register(ats_bus_t *bus, const osa_char_t *bus_name, ats_bus_ops_t *ops);
+osa_err_t   ats_bus_register(ats_bus_t          *bus, 
+                             const osa_char_t   *bus_name, 
+                             ats_bus_ops_t      *ops);
 osa_err_t   ats_bus_unregister(const osa_char_t *bus_name);
 
 void        ats_bus_foreach(ats_bus_t *bus, void (*foreach)(void *ele));

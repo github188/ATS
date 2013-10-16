@@ -139,7 +139,7 @@ osa_err_t   ats_device_register(ats_bus_t *dev_bus, ats_device_t *dev)
     }
     else
     {
-        ats_log_info("Register new device : name(%s), type(%d), addr(%s), user(%s), password(%s)\n",
+        ats_log_info("Register device : name(%s), type(%d), addr(%s), user(%s), password(%s)\n",
                      dev->name, dev->type, dev->info.addr.addr, dev->info.user, dev->info.passwd);
         osa_list_insert_before(&dev_bus->ele_list_head, &dev->list);
     }
@@ -149,7 +149,8 @@ osa_err_t   ats_device_register(ats_bus_t *dev_bus, ats_device_t *dev)
     return OSA_ERR_OK;
 }
 
-osa_err_t   ats_device_unregister(ats_bus_t *dev_bus, const osa_char_t *dev_name)
+osa_err_t ats_device_unregister(ats_bus_t         *dev_bus, 
+                                const osa_char_t  *dev_name)
 {
     osa_assert(dev_name != NULL);
 
@@ -169,7 +170,8 @@ osa_err_t   ats_device_unregister(ats_bus_t *dev_bus, const osa_char_t *dev_name
     return OSA_ERR_OK;
 }
 
-osa_err_t ats_device_load_tdrv(ats_device_t *dev, const osa_char_t *tdrv_file)
+osa_err_t ats_device_load_tdrv(ats_device_t     *dev, 
+                               const osa_char_t *tdrv_file)
 {
     osa_assert(tdrv_file != NULL);
     
@@ -187,7 +189,8 @@ osa_err_t ats_device_load_tdrv(ats_device_t *dev, const osa_char_t *tdrv_file)
     return xml_parse_drvfile(dev->drv);
 }
 
-osa_err_t ats_device_load_sdk(ats_device_t *dev, const osa_char_t *sdk_plugin)
+osa_err_t ats_device_load_sdk(ats_device_t      *dev, 
+                              const osa_char_t  *sdk_plugin)
 {
     osa_assert(sdk_plugin != NULL);
     

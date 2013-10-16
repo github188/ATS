@@ -79,10 +79,6 @@ struct ATS_SDK_CLASS
 
 
 
-ats_sdk_t   *ats_sdk_plugin_load(const osa_char_t *plugin_file);
-void        ats_sdk_plugin_unload(ats_sdk_t *sdk);
-
-
 #ifdef __cplusplus
 }
 #endif

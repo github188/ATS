@@ -43,7 +43,10 @@ typedef struct
 } osa_thread_t;
 
 
-OSA_API osa_err_t   osa_thread_init(osa_thread_t *t, osa_char_t *name, thread_entry entry, void *param);
+OSA_API osa_err_t   osa_thread_init(osa_thread_t    *t,
+                                    osa_char_t      *name, 
+                                    thread_entry    entry, 
+                                    void            *param);
 
 OSA_API osa_err_t   osa_thread_start(osa_thread_t *t);
 OSA_API void        osa_thread_exit();
@@ -93,7 +96,8 @@ OSA_API osa_err_t   osa_cond_init(osa_cond_t *cond);
 OSA_API void        osa_cond_fini(osa_cond_t *cond);
 
 OSA_API osa_err_t   osa_cond_signal(osa_cond_t *cond);
-OSA_API osa_err_t   osa_cond_wait(osa_cond_t *cond, osa_timespec_t *timeout);
+OSA_API osa_err_t   osa_cond_wait(osa_cond_t        *cond, 
+                                  osa_timespec_t    *timeout);
 
 #ifdef __cplusplus
 }

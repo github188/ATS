@@ -87,13 +87,15 @@ void            ats_tevent_plugin_unload();
 
 ats_tevent_t    *ats_tevent_get(const osa_char_t *tevent_name);
 
-ats_tevent_t    *ats_tevent_find(ats_tdrv_t *drv, const osa_char_t *tevent_name);
-osa_err_t       ats_tevent_register(ats_tdrv_t *drv, ats_tevent_t *tevent);
-osa_err_t       ats_tevent_unregister(ats_tdrv_t *drv, const osa_char_t *tevent_name);
-
+ats_tevent_t    *ats_tevent_find(ats_tdrv_t         *drv, 
+                                 const osa_char_t   *tevent_name);
+osa_err_t       ats_tevent_register(ats_tdrv_t      *drv, 
+                                    ats_tevent_t    *tevent);
+osa_err_t       ats_tevent_unregister(ats_tdrv_t        *drv, 
+                                      const osa_char_t  *tevent_name);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* ATS_TEST_H_ */
+#endif

@@ -58,22 +58,30 @@ struct ATS_DEVICE_CLASS
 };
 
 
-ats_device_t *ats_device_new(const osa_char_t *dev_name, ats_devtype_t type);
-void         ats_device_delete(ats_device_t *dev);
+ats_device_t    *ats_device_new(const osa_char_t    *dev_name, 
+                                ats_devtype_t       type);
+void            ats_device_delete(ats_device_t *dev);
 
-void        ats_device_setinfo(ats_device_t *dev,  const osa_char_t *addr,
-                                   const osa_char_t *user, const osa_char_t *passwd);
+void            ats_device_setinfo(ats_device_t     *dev,
+                                   const osa_char_t *addr,
+                                   const osa_char_t *user, 
+                                   const osa_char_t *passwd);
                                    
-osa_err_t   ats_device_load_tdrv(ats_device_t *dev, const osa_char_t *tdrv_file);
-osa_err_t   ats_device_load_sdk(ats_device_t *dev, const osa_char_t *sdk_plugin);
-void        ats_device_unload_tdrv(ats_device_t *dev);
-void        ats_device_unload_sdk(ats_device_t *dev);
+osa_err_t       ats_device_load_tdrv(ats_device_t       *dev, 
+                                     const osa_char_t   *tdrv_file);
+osa_err_t       ats_device_load_sdk(ats_device_t        *dev, 
+                                    const osa_char_t    *sdk_plugin);
+void            ats_device_unload_tdrv(ats_device_t *dev);
+void            ats_device_unload_sdk(ats_device_t *dev);
                                    
-ats_device_t *ats_device_find(ats_bus_t *dev_bus, const osa_char_t *dev_name);
-osa_err_t   ats_device_register(ats_bus_t *dev_bus, ats_device_t *dev);
-osa_err_t   ats_device_unregister(ats_bus_t *dev_bus, const osa_char_t *dev_name);
+ats_device_t    *ats_device_find(ats_bus_t          *dev_bus, 
+                                 const osa_char_t   *dev_name);
+osa_err_t       ats_device_register(ats_bus_t       *dev_bus, 
+                                    ats_device_t    *dev);
+osa_err_t       ats_device_unregister(ats_bus_t         *dev_bus, 
+                                      const osa_char_t  *dev_name);
 
-void        ats_device_print(ats_device_t *dev);
+void            ats_device_print(ats_device_t *dev);
 
 #ifdef __cplusplus
 }

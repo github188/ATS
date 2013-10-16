@@ -33,10 +33,10 @@ typedef struct _timespec
 } osa_timespec_t;
 #endif
 
-typedef osa_uint64_t    osa_time_t;
+typedef osa_uint64_t osa_time_t;
 
 
-OSA_API void        osa_time_gettimeofday(osa_timeval_t *out_tv);
+OSA_API void osa_time_gettimeofday(osa_timeval_t *out_tv);
 
 
 #ifdef __cplusplus

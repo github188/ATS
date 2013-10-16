@@ -53,12 +53,18 @@ typedef struct
 #define    OSA_F_APPEND     "a"
 
 
-OSA_API osa_file_t    *osa_file_open(const osa_char_t *name, osa_char_t *mode);
-OSA_API osa_err_t     osa_file_close(osa_file_t *file);
-OSA_API osa_size_t    osa_file_read(osa_file_t *file, osa_char_t *out_buf, osa_size_t size);
-OSA_API osa_size_t    osa_file_write(osa_file_t *file, const osa_char_t *buf, osa_size_t size);
+OSA_API osa_file_t    *osa_file_open(const osa_char_t   *name,
+                                     osa_char_t         *mode);
+OSA_API osa_err_t     osa_file_close(osa_file_t     *file);
+OSA_API osa_size_t    osa_file_read(osa_file_t      *file, 
+                                    osa_char_t      *out_buf, 
+                                    osa_size_t      size);
+OSA_API osa_size_t    osa_file_write(osa_file_t     *file,
+                                     const osa_char_t *buf, 
+                                     osa_size_t     size);
 OSA_API osa_bool_t    osa_file_is_exist(const osa_char_t *name);
-OSA_API osa_err_t     osa_file_rename(const osa_char_t *nfile, const osa_char_t *ofile);
+OSA_API osa_err_t     osa_file_rename(const osa_char_t  *nfile, 
+                                      const osa_char_t  *ofile);
 OSA_API osa_err_t     osa_file_delete(const osa_char_t *name);
 
 OSA_API const osa_char_t *osa_file_suffix(const osa_char_t *name);

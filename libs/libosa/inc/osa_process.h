@@ -42,7 +42,10 @@ typedef struct _OSA_TASK
 } osa_process_t;
 
 
-OSA_API osa_err_t   osa_process_init(osa_process_t *process, osa_char_t *name, process_entry entry, void *param);
+OSA_API osa_err_t   osa_process_init(osa_process_t  *process,
+                                     osa_char_t     *name, 
+                                     process_entry  entry,
+                                     void           *param);
 OSA_API osa_err_t   osa_process_start(osa_process_t *process);
 OSA_API void        osa_process_exit(osa_process_t *process);
 

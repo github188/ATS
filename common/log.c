@@ -55,7 +55,11 @@ osa_uint8_t ats_log_get_level()
 }
 
 
-void ats_log_write(osa_uint8_t log_type, const char *file, osa_uint32_t line, const char *fmt, ...)
+void ats_log_write(osa_uint8_t  log_type,
+                   const char   *file, 
+                   osa_uint32_t line, 
+                   const char   *fmt, 
+                   ...)
 {
     if (log_type > log.level)
     {

@@ -47,7 +47,9 @@ struct ATS_MODULE_CLASS
 
 
 ats_module_t    *ats_module_find(const char *mod_name);
-osa_err_t       ats_module_register(ats_module_t *m, const osa_char_t *name, ats_mops_t *ops);
+osa_err_t       ats_module_register(ats_module_t        *m,
+                                    const osa_char_t    *name,
+                                    ats_mops_t          *ops);
 osa_err_t       ats_module_unregister(const osa_char_t *mod_name);
 
 void            ats_module_all_init(int argc, char **argv);

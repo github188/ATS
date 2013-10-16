@@ -29,7 +29,9 @@ ats_bus_t *ats_bus_find(const osa_char_t *bus_name)
     return NULL;
 }
 
-osa_err_t ats_bus_register(ats_bus_t *bus, const osa_char_t *bus_name, ats_bus_ops_t *ops)
+osa_err_t ats_bus_register(ats_bus_t        *bus, 
+                           const osa_char_t *bus_name, 
+                           ats_bus_ops_t    *ops)
 {
     osa_assert(bus_name != NULL);
 

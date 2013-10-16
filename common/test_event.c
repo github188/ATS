@@ -88,7 +88,7 @@ void ats_tevent_plugin_unload()
 }
 
 
-ats_tevent_t    *ats_tevent_find(ats_tdrv_t *drv, const osa_char_t *tevent_name)
+ats_tevent_t *ats_tevent_find(ats_tdrv_t *drv, const osa_char_t *tevent_name)
 {
     osa_assert(tevent_name != NULL);
 
@@ -113,12 +113,14 @@ osa_err_t ats_tevent_register(ats_tdrv_t *drv, ats_tevent_t *tevent)
 
     if ((p = ats_tevent_find(drv, tevent->name)) != NULL)
     {
-		ats_log_warn("Replace test event (%s) from device (%s)\n", tevent->name, drv->dev->name);
+		ats_log_warn("Replace test event (%s) from device (%s)\n", 
+                    tevent->name, drv->dev->name);
         p = tevent;
     }
     else
     {
-		ats_log_info("Register new test event (%s)to device (%s)\n", tevent->name, drv->dev->name);
+		ats_log_info("Register new test event (%s)to device (%s)\n", 
+                    tevent->name, drv->dev->name);
         osa_list_insert_before(&drv->tevent_list_head, &tevent->list);
     }
 

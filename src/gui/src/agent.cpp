@@ -177,7 +177,7 @@ osa_err_t Agent::exitSystem()
         return OSA_ERR_OK;
     }
 
-    osa_msg_t *sendmsg = osa_msg_new_with_data(100, "ExitSystem", NULL, 0);
+    osa_msg_t *sendmsg = osa_msg_new_ex(100, "ExitSystem", NULL, 0);
 
     ioch.open(&ioch, (void *)this->socket);
 
@@ -192,7 +192,7 @@ osa_err_t Agent::exitSystem()
 
 osa_err_t Agent::getDevices()
 {
-    osa_msg_t *sendMsg =osa_msg_new_with_data(100, "GetDevices", NULL, 0);
+    osa_msg_t *sendMsg =osa_msg_new_ex(100, "GetDevices", NULL, 0);
 
     osa_msg_t recvMsg;
 
@@ -266,7 +266,7 @@ osa_err_t Agent::testDevice(const osa_char_t *devName)
 
     char *pData = cJSON_Print(root);
 
-    osa_msg_t *sndmsg = osa_msg_new_with_data(200, "TestDevice", pData, strlen(pData));
+    osa_msg_t *sndmsg = osa_msg_new_ex(200, "TestDevice", pData, strlen(pData));
 
     ioch.open(&ioch, socket);
 
@@ -293,7 +293,7 @@ osa_err_t Agent::loginDevice(const osa_char_t *devName, const osa_char_t *user, 
 
     char *pData = cJSON_Print(root);
 
-    osa_msg_t *sndmsg = osa_msg_new_with_data(200, "LoginDevice", pData, strlen(pData));
+    osa_msg_t *sndmsg = osa_msg_new_ex(200, "LoginDevice", pData, strlen(pData));
 
     osa_msg_t retmsg;
 

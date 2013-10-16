@@ -27,7 +27,8 @@ struct ATS_DEV_PROBER_CLASS
 osa_err_t   ats_devpb_mod_init();
 void        ats_devpb_mod_exit();
 
-osa_bool_t  ats_devpb_is_support(ats_devpb_t *dp, const osa_char_t *dev_name);
+osa_bool_t  ats_devpb_is_support(ats_devpb_t        *dp,
+                                 const osa_char_t   *dev_name);
 void        ats_devpb_probe();
 
 // table

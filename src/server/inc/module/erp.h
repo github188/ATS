@@ -15,10 +15,9 @@ struct ATS_ERP_CLASS
 {
     osa_err_t       (*init)();
     void            (*exit)();
-    void            *(*connect)(const char *erpFile, osa_uint32_t timeout);
+    void            *(*connect)(const char *addr, osa_uint32_t timeout);
     osa_uint8_t     (*disconnect)(void *erpFd);
     osa_err_t       (*send)(void *erpFd, void *data, osa_size_t size);
-
 };
 
 

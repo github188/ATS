@@ -121,7 +121,7 @@ void ats_devpb_probe()
         sdk_plugin = (tmp->FirstChild()) ? tmp->FirstChild()->Value(): NULL;
 
         flag = OSA_FALSE;
-        // 找到支持此款设备的设备检测器
+        // 由设备对应的设备检测器认领设备
         for (i=0; i<g_dpnum; i++)
         {
             dp = g_dptable[i];
@@ -181,7 +181,7 @@ osa_bool_t ats_devpb_is_support(ats_devpb_t *dp, const osa_char_t *dev_name)
     }
 
 	osa_size_t sz = strlen(dp->dev_support);
-    osa_char_t *devs = (osa_char_t *)osa_mem_alloc(sz);
+    char *devs = (char *)osa_mem_alloc(sz);
     strncpy(devs, dp->dev_support, strlen(dp->dev_support));
 
     char *p = strtok(devs, ",");

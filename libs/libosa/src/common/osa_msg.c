@@ -25,7 +25,7 @@ osa_msg_t   *osa_msg_new()
     return p;
 }
 
-osa_msg_t   *osa_msg_new_with_data(osa_uint32_t id, osa_char_t *cmd, void *data, osa_size_t size)
+osa_msg_t   *osa_msg_new_ex(osa_uint32_t id, osa_char_t *cmd, void *data, osa_size_t size)
 {
     osa_msg_t *p = (osa_msg_t* )osa_mem_alloc(sizeof(osa_msg_t));
 

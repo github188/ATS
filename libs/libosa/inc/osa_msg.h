@@ -42,26 +42,32 @@ typedef struct _OSA_MSG
 
 
 OSA_API osa_msg_t   *osa_msg_new();
-OSA_API osa_msg_t   *osa_msg_new_with_data(osa_uint32_t id, osa_char_t *cmd, void *data, osa_size_t size);
+OSA_API osa_msg_t   *osa_msg_new_ex(osa_uint32_t    id,
+                                    osa_char_t      *cmd, 
+                                    void            *data, 
+                                    osa_size_t      size);
 OSA_API void        osa_msg_delete(osa_msg_t *msg);
 
 OSA_API void        osa_msg_set_result(osa_msg_t *msg, osa_err_t result);
 
-OSA_API void        osa_msg_init(osa_msg_t *msg, osa_uint32_t id, osa_char_t *cmd, void *data, osa_size_t size);
+OSA_API void        osa_msg_init(osa_msg_t      *msg, 
+                                 osa_uint32_t   id, 
+                                 osa_char_t     *cmd, 
+                                 void           *data, 
+                                 osa_size_t     size);
 OSA_API void        osa_msg_fini(osa_msg_t *msg);
-
 
 OSA_API osa_char_t  *osa_msg_pack(osa_msg_t *msg);
 OSA_API osa_msg_t   *osa_msg_unpack(osa_char_t *str);
 
-
 OSA_API void        osa_msg_dump(osa_msg_t *msg);
-
 
 OSA_API osa_err_t   osa_msg_send(osa_ioch_t *ioch, osa_msg_t *msg);
 OSA_API osa_err_t   osa_msg_recv(osa_ioch_t *ioch, osa_msg_t *out_msg);
-OSA_API osa_err_t   osa_msg_send_recv(osa_ioch_t *ioch, osa_msg_t *sndmsg, osa_msg_t *out_rcvmsg, osa_uint32_t timeout_secs);
-
+OSA_API osa_err_t   osa_msg_send_recv(osa_ioch_t    *ioch,
+                                      osa_msg_t     *sndmsg, 
+                                      osa_msg_t     *out_rcvmsg, 
+                                      osa_uint32_t  timeout_secs);
 
 #ifdef __cplusplus
 }

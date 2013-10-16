@@ -7,7 +7,8 @@ LOCAL_MODULE           :=libosa
 common_srcs:=src/common/osa_mem.c \
 			src/common/osa_msg.c \
 			src/common/osa_random.c \
-			src/common/osa_log.c
+			src/common/osa_log.c \
+			src/common/osa_ioch.c
 			
 linux_srcs:=src/linux/osa_file.c\
 			src/linux/osa_dir.c \
