@@ -73,7 +73,6 @@ struct ATS_SDK_CLASS
 
     /** private */
     ats_device_t    *dev;
-    osa_char_t      sdk_plugin[OSA_NAME_MAX];
     osa_dll_t       dll;
 };
 

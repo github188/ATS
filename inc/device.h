@@ -27,6 +27,7 @@ ats_devtype_t;
 
 typedef struct _ATS_DEVICE_INFO
 {
+    ats_devtype_t   type;       // 设备类型
     union
     {
         osa_char_t  addr[32];
@@ -36,21 +37,26 @@ typedef struct _ATS_DEVICE_INFO
             osa_uint32_t port;
         } net_addr;
         osa_char_t  con_addr[32];
-    } addr;
+    } addr;                       // 设备地址
     osa_char_t      user[32];     // 设备登陆用户名
     osa_char_t      passwd[32];   // 设备登陆密码
     osa_char_t      company[32];  // 设备厂商
 } ats_devinfo_t;
 
-
+void    ats_devinfo_set(ats_devinfo_t    *devinfo,
+                        ats_devtype_t    type,
+                        const osa_char_t *addr,
+                        const osa_char_t *user, 
+                        const osa_char_t *passwd);
 
 struct ATS_DEVICE_CLASS
 {
     osa_char_t      name[OSA_NAME_MAX];     // 设备名字
-    ats_devtype_t   type;                   // 设备类型
     ats_devinfo_t   info;                   // 设备其他信息
 
+    osa_char_t      drv_file[OSA_NAME_MAX]; // 测试驱动文件
     ats_tdrv_t      *drv;                   // 测试驱动，每款设备对应一个测试驱动
+    osa_char_t      sdk_plugin[OSA_NAME_MAX];
     ats_sdk_t       *sdk;                   // SDK
     osa_list_t      list;                   // 设备链表
 
@@ -58,14 +64,8 @@ struct ATS_DEVICE_CLASS
 };
 
 
-ats_device_t    *ats_device_new(const osa_char_t    *dev_name, 
-                                ats_devtype_t       type);
+ats_device_t    *ats_device_new(const osa_char_t *dev_name);
 void            ats_device_delete(ats_device_t *dev);
-
-void            ats_device_setinfo(ats_device_t     *dev,
-                                   const osa_char_t *addr,
-                                   const osa_char_t *user, 
-                                   const osa_char_t *passwd);
                                    
 osa_err_t       ats_device_load_tdrv(ats_device_t       *dev, 
                                      const osa_char_t   *tdrv_file);

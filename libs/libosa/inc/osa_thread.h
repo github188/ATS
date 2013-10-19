@@ -50,6 +50,7 @@ OSA_API osa_err_t   osa_thread_init(osa_thread_t    *t,
 
 OSA_API osa_err_t   osa_thread_start(osa_thread_t *t);
 OSA_API void        osa_thread_exit();
+OSA_API osa_err_t   osa_thread_cancel(osa_thread_t *t);
 
 
 /** mutex */

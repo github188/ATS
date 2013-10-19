@@ -11,14 +11,13 @@
 static void _def_dev_remove(ats_device_t *self);
 
 
-ats_device_t *ats_device_new(const osa_char_t *dev_name, ats_devtype_t type)
+ats_device_t *ats_device_new(const osa_char_t *dev_name)
 {
     osa_assert(dev_name != NULL);
 
     ats_device_t *dev = (ats_device_t *)osa_mem_alloc(sizeof(ats_device_t));
 
     strncpy(dev->name, dev_name, OSA_NAME_MAX-1);
-    dev->type = type;
     dev->sdk = NULL;
     dev->drv = NULL;
     dev->remove = _def_dev_remove;
@@ -38,15 +37,19 @@ void ats_device_delete(ats_device_t *dev)
 }
 
 
-void ats_device_setinfo(ats_device_t *dev, const osa_char_t *addr,
-                        const osa_char_t *user, const osa_char_t *passwd)
+void    ats_devinfo_set(ats_devinfo_t    *devinfo,
+                        ats_devtype_t    type,
+                        const osa_char_t *addr,
+                        const osa_char_t *user, 
+                        const osa_char_t *passwd)
 {
     osa_assert(addr != NULL);
 
-    strncpy(dev->info.addr.addr, addr, strlen(addr));
+    devinfo->type = type;
+    strncpy(devinfo->addr.addr, addr, strlen(addr));
 
     // net camera, use  ip + port
-    if (dev->type == DT_NET_CAMERA)
+    if (type == DT_NET_CAMERA)
     {
         char ip[32] = {0};
         char port[32] = {0};
@@ -75,13 +78,12 @@ void ats_device_setinfo(ats_device_t *dev, const osa_char_t *addr,
             }
             ptr++;
         }
-        strncpy(dev->info.addr.net_addr.ip, ip, strlen(ip));
-        dev->info.addr.net_addr.port = atoi(port);
+        strncpy(devinfo->addr.net_addr.ip, ip, strlen(ip));
+        devinfo->addr.net_addr.port = atoi(port);
     }
-    // simulator camera, user CON. port
-    else if (dev->type == DT_SIM_CAMERA)
+    else if (type == DT_SIM_CAMERA)
     {
-        strncpy(dev->info.addr.con_addr, addr, strlen(addr));
+        strncpy(devinfo->addr.con_addr, addr, strlen(addr));
     }
     else
     {
@@ -89,13 +91,9 @@ void ats_device_setinfo(ats_device_t *dev, const osa_char_t *addr,
     }
 
     if (user)
-    {
-        strncpy(dev->info.user, user, strlen(user));
-    }
+        strncpy(devinfo->user, user, strlen(user));
     if (passwd)
-    {
-        strncpy(dev->info.passwd, passwd, strlen(passwd));
-    }
+        strncpy(devinfo->passwd, passwd, strlen(passwd));
 }
 
 
@@ -134,15 +132,16 @@ osa_err_t   ats_device_register(ats_bus_t *dev_bus, ats_device_t *dev)
 
     if ((p = ats_device_find(dev_bus, dev->name)) != NULL)
     {
-        ats_log_warn("Replace Device : name(%s)\n", dev->name);
-        p = dev;
+        ats_log_warn("The device existed: %s\n", dev->name);
+        return OSA_ERR_ERR;
     }
-    else
-    {
-        ats_log_info("Register device : name(%s), type(%d), addr(%s), user(%s), password(%s)\n",
-                     dev->name, dev->type, dev->info.addr.addr, dev->info.user, dev->info.passwd);
-        osa_list_insert_before(&dev_bus->ele_list_head, &dev->list);
-    }
+
+    ats_log_info("Register device: name(%s),type(%d),addr(%s),user(%s),password(%s)\n",
+                 dev->name, dev->info.type, 
+                 dev->info.addr.addr, 
+                 dev->info.user, 
+                 dev->info.passwd);
+    osa_list_insert_before(&dev_bus->ele_list_head, &dev->list);
 
     //osa_mutex_unlock(&dev_bus->mutex);
     
@@ -184,9 +183,9 @@ osa_err_t ats_device_load_tdrv(ats_device_t     *dev,
     
     dev->drv->dev = dev;
     
-    extern osa_err_t xml_parse_drvfile(ats_tdrv_t *tdrv);
+    extern osa_err_t xml_parse_drvfile(ats_tdrv_t *tdrv, const osa_char_t *drv_file);
     
-    return xml_parse_drvfile(dev->drv);
+    return xml_parse_drvfile(dev->drv, tdrv_file);
 }
 
 osa_err_t ats_device_load_sdk(ats_device_t      *dev, 
@@ -221,10 +220,9 @@ osa_err_t ats_device_load_sdk(ats_device_t      *dev,
             
     dev->sdk = sdk;
     dev->sdk->dev = dev;
-    strncpy(sdk->sdk_plugin, sdk_plugin, OSA_NAME_MAX-1);
     dev->sdk->dll.handler = dll.handler;
     
-    ats_log_info("Load sdk(%s) for device (%s)!\n", sdk->sdk_plugin, dev->name);
+    ats_log_info("Load sdk(%s) for device (%s)!\n", sdk_plugin, dev->name);
     
     return OSA_ERR_OK;
 }
@@ -253,17 +251,14 @@ void ats_device_unload_sdk(ats_device_t *dev)
 
 void ats_device_print(ats_device_t *dev)
 {
-    char *drv_file = (dev->drv)? dev->drv->drv_file : NULL;
-    char *sdk_plugin = (dev->sdk) ? dev->sdk->sdk_plugin : NULL;
-    
     printf("---------------------device----------------------\n");
     printf(" name       : %s\n", dev->name);
-    printf(" type       : %d\n", dev->type);
+    printf(" type       : %d\n", dev->info.type);
     printf(" addr       : %s\n", dev->info.addr.addr);
     printf(" user       : %s\n", dev->info.user);
     printf(" password   : %s\n", dev->info.passwd);
-    printf(" drv_file   : %s\n", drv_file);
-    printf(" sdk_plugin : %s\n", sdk_plugin);
+    printf(" drv_file   : %s\n", dev->drv_file);
+    printf(" sdk_plugin : %s\n", dev->sdk_plugin);
     printf("------------------------------------------------\n\n");
 }
 

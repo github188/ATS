@@ -33,8 +33,8 @@ struct _OSA_IO_CHANNEL
                         osa_char_t *out_data,
                         osa_size_t size);
     osa_err_t   (*ioctrl)(osa_ioch_t     *self,
-                         osa_int32_t    cmd,
-                         void           *param);
+                          osa_int32_t    cmd,
+                          void           *param);
 };
 
 OSA_API osa_err_t   osa_ioch_open(osa_ioch_t *ch, void *user_data);

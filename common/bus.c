@@ -44,14 +44,12 @@ osa_err_t ats_bus_register(ats_bus_t        *bus,
 
     if ((p = ats_bus_find(bus_name)) != NULL)
     {
-        ats_log_warn("Replace Device : name(%s)\n", bus->name);
-        p = bus;
+        ats_log_warn("The bus existed: %s\n!", bus->name);
+        return OSA_ERR_ERR;
     }
-    else
-    {
-        ats_log_info("Register new bus : name(%s)\n", bus->name);
-        osa_list_insert_before(&bus_list_head, &bus->list);
-    }
+
+    ats_log_info("Register new bus : name(%s)\n", bus->name);
+    osa_list_insert_before(&bus_list_head, &bus->list);
 
     return OSA_ERR_OK;
 }

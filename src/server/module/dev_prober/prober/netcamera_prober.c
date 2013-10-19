@@ -9,7 +9,7 @@
 #include "module/dev_prober.h"
 
 
-static osa_bool_t netcamera_dev_is_ok(ats_device_t *dev);
+static osa_bool_t netcamera_dev_is_ok(ats_devinfo_t *devinfo);
 
 
 ats_devpb_t netcamera_prober =
@@ -19,7 +19,7 @@ ats_devpb_t netcamera_prober =
     .dev_is_ok = netcamera_dev_is_ok,
 };
 
-static osa_bool_t netcamera_dev_is_ok(ats_device_t *dev)
+static osa_bool_t netcamera_dev_is_ok(ats_devinfo_t *devinfo)
 {
     return OSA_TRUE;
 }

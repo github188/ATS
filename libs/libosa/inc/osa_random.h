@@ -22,3 +22,4 @@ OSA_API osa_int32_t osa_rand_int32(osa_int32_t min, osa_int32_t max);
 #endif
 
 #endif
+

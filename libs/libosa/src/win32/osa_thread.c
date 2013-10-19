@@ -39,8 +39,8 @@ osa_err_t osa_thread_start(osa_thread_t *t)
 
 osa_err_t   osa_mutex_init(osa_mutex_t *mtx)
 {
-    *mtx = CreateMutex(NULL, 0, "");
-    if (*mtx == 0)
+    mtx->mutex = CreateMutex(NULL, 0, "");
+    if (mtx->mutex == 0)
     {
         return OSA_ERR_ERR;
     }
@@ -49,12 +49,12 @@ osa_err_t   osa_mutex_init(osa_mutex_t *mtx)
 
 void        osa_mutex_fini(osa_mutex_t *mtx)
 {
-    CloseHandle(*mtx);
+    CloseHandle(mtx->mutex);
 }
 
 osa_err_t   osa_mutex_lock(osa_mutex_t *mtx)
 {
-    DWORD ret = WaitForSingleObject(*mtx, INFINITE);
+    DWORD ret = WaitForSingleObject(mtx->mutex, INFINITE);
     if (ret == WAIT_FAILED)
     {
         osa_log_error("mutex error!\n");
@@ -65,12 +65,13 @@ osa_err_t   osa_mutex_lock(osa_mutex_t *mtx)
 
 osa_err_t   osa_mutex_unlock(osa_mutex_t *mtx)
 {
-    ReleaseMutex(*mtx);
+    ReleaseMutex(mtx->mutex);
+	return OSA_ERR_OK;
 }
 
 osa_err_t   osa_mutex_trylock(osa_mutex_t *mtx)
 {
-    DWORD ret = WaitForSingleObject(*mtx, 0);
+    DWORD ret = WaitForSingleObject(mtx->mutex, 0);
     if (ret == WAIT_FAILED)
     {
         osa_log_error("mutex error!\n");
@@ -78,3 +79,25 @@ osa_err_t   osa_mutex_trylock(osa_mutex_t *mtx)
     }
     return OSA_ERR_OK;
 }
+
+osa_err_t   osa_cond_init(osa_cond_t *cond)
+{
+    return OSA_ERR_ERR;
+}
+
+void        osa_cond_fini(osa_cond_t *cond)
+{
+    
+}
+
+osa_err_t   osa_cond_signal(osa_cond_t *cond)
+{
+    return OSA_ERR_ERR;
+}
+
+osa_err_t   osa_cond_wait(osa_cond_t     *cond, 
+                          osa_timespec_t *timeout)
+{
+    return OSA_ERR_ERR;
+}
+

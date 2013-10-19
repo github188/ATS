@@ -38,6 +38,11 @@ osa_err_t osa_thread_start(osa_thread_t *t)
     return OSA_ERR_OK;
 }
 
+osa_err_t osa_thread_cancel(osa_thread_t *t)
+{
+    pthread_cancel(t->tid);
+    return OSA_ERR_OK;
+}
 
 osa_err_t osa_mutex_init(osa_mutex_t *mtx)
 {

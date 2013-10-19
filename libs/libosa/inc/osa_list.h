@@ -71,3 +71,4 @@ static osa_inline int osa_list_is_empty(const osa_list_t *l)
 #endif
 
 #endif
+

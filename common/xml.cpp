@@ -15,20 +15,20 @@ extern "C"
 #endif
 
 
-osa_err_t   xml_parse_drvfile(ats_tdrv_t *tdrv)
+osa_err_t xml_parse_drvfile(ats_tdrv_t *tdrv, const osa_char_t *drv_file)
 {
-    if (osa_file_is_exist(tdrv->drv_file) != OSA_TRUE)
+    if (osa_file_is_exist(drv_file) != OSA_TRUE)
     {
-        ats_log_error("Driver file(%s) not exist!\n", tdrv->drv_file);
+        ats_log_error("Driver file(%s) not exist!\n", drv_file);
         return OSA_ERR_ERR;
     }
     
     TiXmlElement    *node       = NULL;
 
-    TiXmlDocument   doc(tdrv->drv_file);
+    TiXmlDocument   doc(drv_file);
     if (doc.LoadFile() != true)
     {
-        ats_log_error("Failed to load file : name(%s)\n", tdrv->drv_file);
+        ats_log_error("Failed to load file : name(%s)\n", drv_file);
         return OSA_ERR_ERR;
     }
 

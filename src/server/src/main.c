@@ -108,8 +108,9 @@ static void __exit()
 
 static void int_handler(osa_int32_t num)
 {
+    ats_log_info("exit system ....\n");
+    
     ats_module_all_fini();
-
     system_bus_fini();
 
     __exit();

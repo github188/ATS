@@ -113,16 +113,13 @@ osa_err_t ats_tevent_register(ats_tdrv_t *drv, ats_tevent_t *tevent)
 
     if ((p = ats_tevent_find(drv, tevent->name)) != NULL)
     {
-		ats_log_warn("Replace test event (%s) from device (%s)\n", 
-                    tevent->name, drv->dev->name);
-        p = tevent;
+		ats_log_warn("The test event existed : %s\n", tevent->name);
+        return OSA_ERR_ERR;
     }
-    else
-    {
-		ats_log_info("Register new test event (%s)to device (%s)\n", 
-                    tevent->name, drv->dev->name);
-        osa_list_insert_before(&drv->tevent_list_head, &tevent->list);
-    }
+
+    ats_log_info("Register new test event (%s)to device (%s)\n", 
+                tevent->name, drv->dev->name);
+    osa_list_insert_before(&drv->tevent_list_head, &tevent->list);
 
     return OSA_ERR_OK;
 }

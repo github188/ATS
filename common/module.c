@@ -45,14 +45,12 @@ osa_err_t ats_module_register(ats_module_t      *m,
 
     if ((p = ats_module_find(m->name)) != NULL)
     {
-        ats_log_warn("Replace module : name(%s)\n", m->name);
-        p = m;
+        ats_log_warn("The module existed: %s\n", m->name);
+        return OSA_ERR_ERR;
     }
-    else
-    {
-        ats_log_info("Register new module : name(%s)\n", m->name);
-        osa_list_insert_before(&mod_list_head, &m->list);
-    }
+
+    ats_log_info("Register new module : name(%s)\n", m->name);
+    osa_list_insert_before(&mod_list_head, &m->list);
 
     return OSA_ERR_OK;
 }

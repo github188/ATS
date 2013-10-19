@@ -3,45 +3,38 @@
  *
  */
  
-#ifndef __OSA_IOCH_H__
-#define __OSA_IOCH_H__
-
 #include "osa_types.h"
+#include "osa_error.h"
 #include "osa_ioch.h"
+#include "osa_log.h"
 
-#ifdef __cplusplus
-extern "C"
+
+osa_err_t   osa_ioch_open(osa_ioch_t *ch, void *user_data)
 {
-#endif
-
-
-OSA_API osa_err_t   osa_ioch_open(osa_ioch_t *ch, void *user_data)
-{
+	return OSA_ERR_ERR;
 }
 
-OSA_API void        osa_ioch_close(osa_ioch_t *ch)
+void        osa_ioch_close(osa_ioch_t *ch)
 {
 }
 
-OSA_API osa_size_t  osa_ioch_write(osa_ioch_t   *ch, 
-                                   osa_char_t   *data,
-                                   osa_size_t   size)
+osa_size_t  osa_ioch_write(osa_ioch_t   *ch, 
+                           osa_char_t   *data,
+                           osa_size_t   size)
 {
+	return 0;
 }
 
-OSA_API osa_size_t  osa_ioch_read(osa_ioch_t    *ch,
-                                  osa_char_t    *data,
-                                  osa_size_t    size)
+osa_size_t  osa_ioch_read(osa_ioch_t    *ch,
+                          osa_char_t    *data,
+                          osa_size_t    size)
 {
-}
-OSA_API osa_err_t   osa_ioch_ctrl(osa_ioch_t    *ch,
-                                  osa_int32_t   cmd,
-                                  void          *param)
-{
+	return 0;
 }
 
-#ifdef __cplusplus
+osa_err_t   osa_ioch_ctrl(osa_ioch_t    *ch,
+                          osa_int32_t   cmd,
+                          void          *param)
+{
+	return OSA_ERR_ERR;
 }
-#endif
-
-#endif

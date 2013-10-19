@@ -15,6 +15,11 @@ extern "C"
 {
 #endif
 
+#define DEV_MAX     20
+
+static ats_device_t dev[DEV_MAX];
+static osa_uint32_t idx = 0;
+
 static TiXmlElement *get_module_root(const char *xmlfile, const char *node_name)
 {
     osa_assert(xmlfile != NULL);
@@ -59,17 +64,15 @@ static TiXmlElement *get_module_root(const char *xmlfile, const char *node_name)
     return NULL;
 }
 
-void ats_devpb_probe()
+osa_err_t ats_devpb_init()
 {
-    ats_bus_t   *dev_bus = ats_bus_find("dev_bus");
-    if (!dev_bus)
+    if (idx >= DEV_MAX)
     {
-        ats_log_error("No device bus find!\n");
+        return OSA_ERR_ERR;
     }
-
+    
     TiXmlElement *mroot = get_module_root(ATS_CONFIG_FILE, "device");
     osa_assert(mroot != NULL);
-
 
     TiXmlElement    *dev_node = NULL;
     TiXmlElement    *info_node = NULL;
@@ -82,9 +85,6 @@ void ats_devpb_probe()
     const char 		*password = NULL;
     const char		*drv_file = NULL;
     const char		*sdk_plugin = NULL;
-    ats_devpb_t     *dp = NULL;
-    osa_uint32_t    i;
-    osa_bool_t     flag = OSA_FALSE;
 
     dev_node = mroot->FirstChildElement("device");
     osa_assert(dev_node != NULL);
@@ -119,56 +119,95 @@ void ats_devpb_probe()
         tmp = dev_node->FirstChildElement("sdk_plugin");
         osa_assert(tmp != NULL);
         sdk_plugin = (tmp->FirstChild()) ? tmp->FirstChild()->Value(): NULL;
+      
+        /** device init */
+        if (dev_name)
+            strncpy(dev[idx].name, dev_name, strlen(dev_name));
+        if (drv_file)
+            strncpy(dev[idx].drv_file, drv_file, strlen(drv_file));
+        if (sdk_plugin)
+            strncpy(dev[idx].sdk_plugin, sdk_plugin, strlen(sdk_plugin));
+        ats_devinfo_set(&dev[idx].info, dev_type, addr, user, password);
 
-        flag = OSA_FALSE;
-        // 由设备对应的设备检测器认领设备
-        for (i=0; i<g_dpnum; i++)
-        {
-            dp = g_dptable[i];
-            if (ats_devpb_is_support(dp, dev_name) == OSA_TRUE)
-            {
-                flag = OSA_TRUE;
-                break;
-            }
-        }
+        idx++;
+        dev_node = dev_node->NextSiblingElement("device");
+    }
+    
+    delete mroot;
+    
+	return OSA_ERR_OK;
+}
 
-        if (flag == OSA_FALSE || dp->dev_is_ok == NULL)
+void ats_devpb_probe()
+{
+    ats_bus_t   *dev_bus = ats_bus_find("dev_bus");
+    if (!dev_bus)
+    {
+        ats_log_error("No device bus find!\n");
+    }
+
+    ats_devpb_t     *dp = NULL;
+    osa_uint32_t    i = 0;
+    
+    for (i=0; i<idx; i++)
+    {
+        dp = ats_devpb_obtain(dev[i].name);
+        if (!dp)
         {
-            ats_log_warn("No suitable device prober for device(%s), ignore device!\n", dev_name);
-            dev_node = dev_node->NextSiblingElement("device");
+            ats_log_warn("No suitable prober for device(%s)!\n", dev[i].name);
             continue;
         }
         
-        ats_device_t *new_dev = ats_device_new(dev_name, dev_type);
-        ats_device_setinfo(new_dev, addr, user, password);
-        
-        if (dp->dev_is_ok(new_dev) !=OSA_TRUE)
+        if (dp->dev_is_ok(&dev[i].info) !=OSA_TRUE)
         {
-            ats_device_unregister(dev_bus, new_dev->name);
-            ats_device_delete(new_dev);
+            ats_device_unregister(dev_bus, dev[i].name);
+            continue;
         }
-        else
+        
+        if (ats_device_find(dev_bus, dev[i].name) == NULL)
         {
-            if (ats_device_find(dev_bus, new_dev->name) == NULL)
+            ats_device_t *new_dev = ats_device_new(dev[i].name);
+            ats_devinfo_set(&new_dev->info, 
+                            dev[i].info.type, 
+                            dev[i].info.addr.addr, 
+                            dev[i].info.user, 
+                            dev[i].info.passwd);
+            
+            if (dev[i].drv_file[0] !='\0' &&
+                ats_device_load_tdrv(new_dev, dev[i].drv_file) != OSA_ERR_OK)
             {
-                if (drv_file && 
-                    ats_device_load_tdrv(new_dev, drv_file) != OSA_ERR_OK)
-                {
-                    ats_log_warn("Failed to load test driver for device: %s\n", new_dev->name);
-                }
-                
-                if (sdk_plugin && 
-                    ats_device_load_sdk(new_dev, sdk_plugin) != OSA_ERR_OK)
-                {
-                    ats_log_warn("Failed to load sdk plugin for device :%s\n", new_dev->name);
-                }
-                ats_device_print(new_dev);
-                ats_device_register(dev_bus, new_dev);
+                ats_log_warn("Failed to load test driver for device: %s\n", new_dev->name);
             }
+            
+            if (dev[i].sdk_plugin[0] !='\0' && 
+                ats_device_load_sdk(new_dev, dev[i].sdk_plugin) != OSA_ERR_OK)
+            {
+                ats_log_warn("Failed to load sdk plugin for device :%s\n", new_dev->name);
+            }
+            
+            ats_device_print(new_dev);
+            ats_device_register(dev_bus, new_dev);
         }
-        
-        dev_node = dev_node->NextSiblingElement("device");
     }
+}
+
+ats_devpb_t *ats_devpb_obtain(const osa_char_t *dev_name)
+{
+    osa_uint32_t i = 0;
+    ats_devpb_t *dp = NULL;
+    
+    // 找到设备探测器
+    for (i=0; i<g_dpnum; i++)
+    {
+        dp = g_dptable[i];
+        if (ats_devpb_is_support(dp, dev_name) == OSA_TRUE)
+        {
+            return dp;
+            break;
+        }
+    }
+    
+    return NULL;
 }
 
 osa_bool_t ats_devpb_is_support(ats_devpb_t *dp, const osa_char_t *dev_name)
@@ -180,8 +219,7 @@ osa_bool_t ats_devpb_is_support(ats_devpb_t *dp, const osa_char_t *dev_name)
         return OSA_FALSE;
     }
 
-	osa_size_t sz = strlen(dp->dev_support);
-    char *devs = (char *)osa_mem_alloc(sz);
+    char *devs = (char *)osa_mem_alloc(strlen(dp->dev_support)+1);
     strncpy(devs, dp->dev_support, strlen(dp->dev_support));
 
     char *p = strtok(devs, ",");

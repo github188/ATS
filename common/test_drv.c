@@ -22,7 +22,6 @@ ats_tdrv_t  *ats_tdrv_new(const osa_char_t *drv_file)
     ats_tdrv_t *drv = (ats_tdrv_t *)osa_mem_alloc(sizeof(ats_tdrv_t));
 
     drv->dev = NULL;
-    strncpy(drv->drv_file, drv_file, OSA_NAME_MAX - 1);
     osa_list_init(&drv->tevent_list_head);
 
     drv->remove = _def_trv_remove;
